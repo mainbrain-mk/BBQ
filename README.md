@@ -10,6 +10,8 @@ gibt es keine funktionierende Android-App mehr. Dieses Projekt ersetzt sie:
   Zieltemperaturen an. Mit Display zeigt es ein Vollbildfenster, solange Messwerte kommen.
 - **`bbq_client.py`** ist das Fenster für den Rechner: beide Temperaturen, Klick auf eine Karte setzt das Ziel.
   Qt (PyQt6), folgt den Systemfarben hell/dunkel.
+- **`android/`** ist dieselbe App fürs Handy (Kotlin, Jetpack Compose, ab Android 8), dazu ein Hintergrunddienst,
+  der die Werte als Benachrichtigung zeigt und Alarm gibt, wenn ein Fühler sein Ziel erreicht.
 
 ## Gateway auf dem Pi
 
@@ -71,6 +73,21 @@ Besitzer lesbar), und die App verbindet sich beim nächsten Start von selbst, nu
 Auf dem Pi stehen gekoppelte Rechner in `bbq.clients` (nur ein Hash des Tokens, Datum, Name): Zeile löschen
 entkoppelt den Rechner. `bbq.crt`/`bbq.key` entstehen beim ersten Start; werden sie gelöscht, müssen alle
 Rechner neu koppeln.
+
+### Android
+
+Bauen braucht JDK 17 und das Android SDK (Plattform 36), kein Android Studio:
+
+```bash
+cd android && ANDROID_HOME=~/Android/Sdk ./gradlew assembleDebug testDebugUnitTest
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+Koppeln wie am Rechner (Adresse, **Koppeln**, Pi-Kennung vergleichen, Code). Danach hält ein Dienst die Verbindung
+auch bei ausgeschaltetem Bildschirm: Die Benachrichtigung zeigt beide Werte, erreicht ein Fühler sein Ziel, kommt
+ein Alarm mit Ton und Vibration (erneut erst, wenn er 2 °C darunter war). Dafür bleiben CPU und WLAN wach, solange
+der Dienst läuft; **Beenden** in der Benachrichtigung trennt und gibt beides frei. Klappt `<name>.local` auf dem
+Handy nicht, die IP-Adresse des Pi eintragen.
 
 ## Protokoll
 

@@ -5,3 +5,8 @@ bbq.env
 bbq.crt
 bbq.key
 bbq.clients
+android/.gradle/
+android/.kotlin/
+android/build/
+android/app/build/
+android/local.properties
