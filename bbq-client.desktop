@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Grill
+Comment=Grillthermometer: Temperaturen vom Pi, Ziel per Klick setzen
+Exec=python3 @DIR@/bbq_client.py @HOST@
+Icon=@DIR@/assets/bbq-logo.png
+Categories=Utility;
+StartupWMClass=bbq-client

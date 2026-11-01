@@ -1,0 +1,16 @@
+# Grillthermometer-Gateway. Pfade und User anpassen, dann nach /etc/systemd/system/ (siehe README.md).
+# Startet vor der Grafiksitzung ins Leere (kein :0) und wird dann neu gestartet, bis das Fenster aufgeht.
+[Unit]
+Description=Day_BBQ-Grillthermometer (BLE -> TCP 51235 + Vollbildfenster)
+After=bluetooth.service
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/bbq
+Environment=DISPLAY=:0 XAUTHORITY=/home/pi/.Xauthority PYTHONUNBUFFERED=1
+ExecStart=/home/pi/bbq/venv/bin/python3 /home/pi/bbq/bbq.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
