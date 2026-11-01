@@ -60,12 +60,6 @@ kbuildsycoca6                                # nur KDE: sonst startet das Menü 
 
 Klick auf eine Karte öffnet das Ziel: Enter oder Klick daneben übernimmt, Esc verwirft.
 
-## Sicherheit
-
-Port 51235 hat keine Anmeldung: Wer ihn erreicht, kann die Werte lesen und Zieltemperaturen setzen.
-Gedacht fürs Heimnetz. Nicht ins Internet weiterleiten; wer mehr will, sperrt den Port per Firewall und
-geht per SSH-Tunnel (`ssh -L 51235:localhost:51235 <pi>`, dann `python3 bbq_client.py localhost`).
-
 ## Protokoll
 
 Herausgefunden aus der Android-App „lazy BBQ“ (`com.bbq.dc`) und am Gerät geprüft. Dienst `fe551580-4180-8a02-ef2c-1b42a0ac3f83`:
