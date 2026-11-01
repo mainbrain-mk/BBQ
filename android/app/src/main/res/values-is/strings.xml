@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">bíð eftir mæligildum…</string>
+    <string name="change">Breyta</string>
+    <string name="target">Markmið %1$d °C</string>
+    <string name="target_none">Markmið --</string>
+    <string name="target_dialog">Markmið P%1$d</string>
+    <string name="set">Stilla</string>
+    <string name="cancel">Hætta við</string>
+    <string name="chart_empty">Engin mæligildi síðan forritið var ræst</string>
+    <string name="chart_dashed">brotin lína: markmið</string>
+    <string name="pair_title">Para Pi</string>
+    <string name="pair_hint">Vistfang Raspberry Pi\nsem er tengd hitamælinum:</string>
+    <string name="pair_placeholder">t.d. raspberrypi.local eða 192.168.0.10</string>
+    <string name="pair">Para</string>
+    <string name="pi_id">Auðkenni Pi %1$s: verður að passa við það á skjá Pi.</string>
+    <string name="code_label">Kóði af skjá Pi</string>
+    <string name="confirm">Staðfesta</string>
+    <string name="direct_title">Án Pi</string>
+    <string name="direct_hint">Síminn tengist sjálfur með Bluetooth. Aðeins eitt tæki getur verið tengt hitamælinum: slökktu því á Pi.</string>
+    <string name="scan">Leita að hitamæli</string>
+    <string name="scanning">leita…</string>
+    <string name="ble_denied">Án Bluetooth-heimildar finnur forritið ekki hitamælinn.</string>
+    <string name="back">Til baka</string>
+    <string name="bad_address">Sláðu inn hýsilheiti eða IP-tölu, t.d. raspberrypi.local</string>
+    <string name="none_found">Enginn hitamælir fannst: er kveikt á honum? Er slökkt á Pi? (Android 8–11: kveiktu líka á staðsetningu)</string>
+    <string name="bt_off">Slökkt er á Bluetooth: kveiktu á því.</string>
+    <string name="connecting_to">tengist %1$s…</string>
+    <string name="pi_closed">Pi lokaði tengingunni</string>
+    <string name="code_shown">Kóðinn birtist nú á skjá Pi (gildir í 2 mínútur).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Rangur kóði, %d tilraun eftir.</item>
+        <item quantity="other">Rangur kóði, %d tilraunir eftir.</item>
+    </plurals>
+    <string name="code_expired">Kóðinn er útrunninn eða sleginn rangt inn of oft: paraðu aftur.</string>
+    <string name="busy">Of margar misheppnaðar tilraunir: paraðu aftur eftir 30 sekúndur.</string>
+    <string name="not_paired">Þessi sími er ekki (lengur) paraður við Pi: paraðu hann.</string>
+    <string name="other_cert">Pi sýnir annað vottorð en við pörun. Paraðu aftur ef hún var sett upp á ný.</string>
+    <string name="ble_lost">Tenging rofnaði, tengist aftur…</string>
+    <string name="ble_not_found">Hitamælir %1$s fannst ekki (slökktur, utan sviðs eða tengdur við Pi?), leita áfram…</string>
+    <string name="ble_connected">tengt</string>
+    <string name="ble_revoked">Forritið má ekki lengur nota Bluetooth: leitaðu aftur undir „Breyta“.</string>
+    <string name="channel_status">Tenging</string>
+    <string name="channel_alarm">Markmiði náð</string>
+    <string name="connecting">tengist…</string>
+    <string name="notify_readings">P1 %1$s (markmið %2$d) · P2 %3$s (markmið %4$d)</string>
+    <string name="alarm_title">P%1$d hefur náð %2$d °C</string>
+    <string name="alarm_text">Markmiðið var %1$d °C</string>
+    <string name="stop">Hætta</string>
+</resources>

@@ -8,7 +8,7 @@
 <li>beží ďalej na pozadí, hodnoty sú v upozornení</li>
 <li>priebeh teplôt od spustenia aplikácie</li>
 <li>svetlý/tmavý vzhľad podľa systému, od Androidu 12 vo farbách tapety</li>
-<li>dostupná v 10 jazykoch podľa jazyka systému</li>
+<li>dostupná v 34 jazykoch podľa jazyka systému</li>
 </ul>
 
 <p><b>Dve cesty k teplomeru</b></p>

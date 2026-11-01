@@ -8,7 +8,7 @@
 <li>działa w tle, pomiary widać w powiadomieniu</li>
 <li>wykres temperatur od uruchomienia aplikacji</li>
 <li>jasny/ciemny motyw jak w systemie, od Androida 12 w kolorach tapety</li>
-<li>dostępna w 10 językach, zgodnie z językiem systemu</li>
+<li>dostępna w 34 językach, zgodnie z językiem systemu</li>
 </ul>
 
 <p><b>Dwa sposoby połączenia z termometrem</b></p>

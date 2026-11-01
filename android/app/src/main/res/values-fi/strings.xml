@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">odotetaan mittausarvoja…</string>
+    <string name="change">Vaihda</string>
+    <string name="target">Tavoite %1$d °C</string>
+    <string name="target_none">Tavoite --</string>
+    <string name="target_dialog">Tavoite P%1$d</string>
+    <string name="set">Aseta</string>
+    <string name="cancel">Peruuta</string>
+    <string name="chart_empty">Ei mittausarvoja sovelluksen käynnistyksen jälkeen</string>
+    <string name="chart_dashed">katkoviiva: tavoite</string>
+    <string name="pair_title">Pariliitä Pi</string>
+    <string name="pair_hint">Lämpömittariin yhdistetyn\nRaspberry Pin osoite:</string>
+    <string name="pair_placeholder">esim. raspberrypi.local tai 192.168.0.10</string>
+    <string name="pair">Pariliitä</string>
+    <string name="pi_id">Pi-tunnus %1$s: täytyy vastata Pin näytöllä näkyvää.</string>
+    <string name="code_label">Koodi Pin näytöltä</string>
+    <string name="confirm">Vahvista</string>
+    <string name="direct_title">Ilman Pitä</string>
+    <string name="direct_hint">Puhelin yhdistää itse Bluetoothilla. Lämpömittariin voi olla yhdistettynä vain yksi laite: sammuta Pi tätä varten.</string>
+    <string name="scan">Etsi lämpömittari</string>
+    <string name="scanning">etsitään…</string>
+    <string name="ble_denied">Ilman Bluetooth-lupaa sovellus ei löydä lämpömittaria.</string>
+    <string name="back">Takaisin</string>
+    <string name="bad_address">Anna isäntänimi tai IP-osoite, esim. raspberrypi.local</string>
+    <string name="none_found">Lämpömittaria ei löytynyt: onko se päällä? Onko Pi sammutettu? (Android 8–11: ota myös sijainti käyttöön)</string>
+    <string name="bt_off">Bluetooth on pois päältä: kytke se päälle.</string>
+    <string name="connecting_to">yhdistetään kohteeseen %1$s…</string>
+    <string name="pi_closed">Pi katkaisi yhteyden</string>
+    <string name="code_shown">Koodi näkyy nyt Pin näytöllä (voimassa 2 minuuttia).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Väärä koodi, %d yritys jäljellä.</item>
+        <item quantity="other">Väärä koodi, %d yritystä jäljellä.</item>
+    </plurals>
+    <string name="code_expired">Koodi on vanhentunut tai syötetty väärin liian monta kertaa: pariliitä uudelleen.</string>
+    <string name="busy">Liian monta epäonnistunutta yritystä: pariliitä uudelleen 30 sekunnin kuluttua.</string>
+    <string name="not_paired">Tätä puhelinta ei ole (enää) pariliitetty Pihin: pariliitä se.</string>
+    <string name="other_cert">Pi esittää eri varmenteen kuin pariliitoksessa. Pariliitä uudelleen, jos se on asennettu uudelleen.</string>
+    <string name="ble_lost">Yhteys katkesi, yhdistetään uudelleen…</string>
+    <string name="ble_not_found">Lämpömittaria %1$s ei löytynyt (pois päältä, kantaman ulkopuolella tai yhdistetty Pihin?), etsitään edelleen…</string>
+    <string name="ble_connected">yhdistetty</string>
+    <string name="ble_revoked">Sovellus ei saa enää käyttää Bluetoothia: etsi uudelleen kohdasta ”Vaihda”.</string>
+    <string name="channel_status">Yhteys</string>
+    <string name="channel_alarm">Tavoite saavutettu</string>
+    <string name="connecting">yhdistetään…</string>
+    <string name="notify_readings">P1 %1$s (tavoite %2$d) · P2 %3$s (tavoite %4$d)</string>
+    <string name="alarm_title">P%1$d on saavuttanut %2$d °C</string>
+    <string name="alarm_text">Tavoite oli %1$d °C</string>
+    <string name="stop">Lopeta</string>
+</resources>

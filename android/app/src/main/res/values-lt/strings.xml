@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">laukiama matavimų…</string>
+    <string name="change">Keisti</string>
+    <string name="target">Tikslas %1$d °C</string>
+    <string name="target_none">Tikslas --</string>
+    <string name="target_dialog">Tikslas P%1$d</string>
+    <string name="set">Nustatyti</string>
+    <string name="cancel">Atšaukti</string>
+    <string name="chart_empty">Nuo programos paleidimo matavimų nėra</string>
+    <string name="chart_dashed">punktyras: tikslas</string>
+    <string name="pair_title">Susieti Pi</string>
+    <string name="pair_hint">Prie termometro prijungto\nRaspberry Pi adresas:</string>
+    <string name="pair_placeholder">pvz., raspberrypi.local arba 192.168.0.10</string>
+    <string name="pair">Susieti</string>
+    <string name="pi_id">Pi ID %1$s: turi sutapti su rodomu Pi ekrane.</string>
+    <string name="code_label">Kodas iš Pi ekrano</string>
+    <string name="confirm">Patvirtinti</string>
+    <string name="direct_title">Be Pi</string>
+    <string name="direct_hint">Telefonas pats prisijungia per Bluetooth. Prie termometro vienu metu gali būti prijungtas tik vienas įrenginys: tam išjunkite Pi.</string>
+    <string name="scan">Ieškoti termometro</string>
+    <string name="scanning">ieškoma…</string>
+    <string name="ble_denied">Be Bluetooth leidimo programa negali rasti termometro.</string>
+    <string name="back">Atgal</string>
+    <string name="bad_address">Įveskite pagrindinio kompiuterio pavadinimą arba IP adresą, pvz., raspberrypi.local</string>
+    <string name="none_found">Termometras nerastas: ar jis įjungtas? Ar Pi išjungtas? (Android 8–11: įjunkite ir vietovę)</string>
+    <string name="bt_off">Bluetooth išjungtas: įjunkite jį.</string>
+    <string name="connecting_to">jungiamasi prie %1$s…</string>
+    <string name="pi_closed">Pi nutraukė ryšį</string>
+    <string name="code_shown">Kodas dabar rodomas Pi ekrane (galioja 2 minutes).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Neteisingas kodas, liko %d bandymas.</item>
+        <item quantity="few">Neteisingas kodas, liko %d bandymai.</item>
+        <item quantity="many">Neteisingas kodas, liko %d bandymo.</item>
+        <item quantity="other">Neteisingas kodas, liko %d bandymų.</item>
+    </plurals>
+    <string name="code_expired">Kodo galiojimas baigėsi arba jis per daug kartų įvestas neteisingai: susiekite iš naujo.</string>
+    <string name="busy">Per daug nesėkmingų bandymų: susiekite iš naujo po 30 sekundžių.</string>
+    <string name="not_paired">Šis telefonas nėra (nebėra) susietas su Pi: susiekite jį.</string>
+    <string name="other_cert">Pi pateikia kitą sertifikatą nei susiejant. Susiekite iš naujo, jei jis buvo įdiegtas iš naujo.</string>
+    <string name="ble_lost">Ryšys nutrūko, jungiamasi iš naujo…</string>
+    <string name="ble_not_found">Termometras %1$s nerastas (išjungtas, už ryšio zonos ar prijungtas prie Pi?), ieškoma toliau…</string>
+    <string name="ble_connected">prijungta</string>
+    <string name="ble_revoked">Programai nebeleidžiama naudoti Bluetooth: ieškokite iš naujo per „Keisti“.</string>
+    <string name="channel_status">Ryšys</string>
+    <string name="channel_alarm">Tikslas pasiektas</string>
+    <string name="connecting">jungiamasi…</string>
+    <string name="notify_readings">P1 %1$s (tikslas %2$d) · P2 %3$s (tikslas %4$d)</string>
+    <string name="alarm_title">P%1$d pasiekė %2$d °C</string>
+    <string name="alarm_text">Tikslas buvo %1$d °C</string>
+    <string name="stop">Baigti</string>
+</resources>

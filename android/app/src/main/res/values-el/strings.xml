@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">αναμονή για μετρήσεις…</string>
+    <string name="change">Αλλαγή</string>
+    <string name="target">Στόχος %1$d °C</string>
+    <string name="target_none">Στόχος --</string>
+    <string name="target_dialog">Στόχος P%1$d</string>
+    <string name="set">Ορισμός</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="chart_empty">Καμία μέτρηση από την έναρξη της εφαρμογής</string>
+    <string name="chart_dashed">διακεκομμένη: στόχος</string>
+    <string name="pair_title">Σύζευξη Pi</string>
+    <string name="pair_hint">Διεύθυνση του Raspberry Pi\nπου είναι συνδεδεμένο με το θερμόμετρο:</string>
+    <string name="pair_placeholder">π.χ. raspberrypi.local ή 192.168.0.10</string>
+    <string name="pair">Σύζευξη</string>
+    <string name="pi_id">Αναγνωριστικό Pi %1$s: πρέπει να ταιριάζει με αυτό στην οθόνη του Pi.</string>
+    <string name="code_label">Κωδικός από την οθόνη του Pi</string>
+    <string name="confirm">Επιβεβαίωση</string>
+    <string name="direct_title">Χωρίς Pi</string>
+    <string name="direct_hint">Το τηλέφωνο συνδέεται μόνο του μέσω Bluetooth. Μόνο μία συσκευή μπορεί να είναι συνδεδεμένη με το θερμόμετρο: γι’ αυτό απενεργοποιήστε το Pi.</string>
+    <string name="scan">Αναζήτηση θερμομέτρου</string>
+    <string name="scanning">αναζήτηση…</string>
+    <string name="ble_denied">Χωρίς την άδεια Bluetooth η εφαρμογή δεν μπορεί να βρει το θερμόμετρο.</string>
+    <string name="back">Πίσω</string>
+    <string name="bad_address">Εισαγάγετε όνομα κεντρικού υπολογιστή ή διεύθυνση IP, π.χ. raspberrypi.local</string>
+    <string name="none_found">Δεν βρέθηκε θερμόμετρο: είναι ενεργοποιημένο; Είναι απενεργοποιημένο το Pi; (Android 8–11: ενεργοποιήστε και την τοποθεσία)</string>
+    <string name="bt_off">Το Bluetooth είναι απενεργοποιημένο: ενεργοποιήστε το.</string>
+    <string name="connecting_to">σύνδεση με %1$s…</string>
+    <string name="pi_closed">Το Pi έκλεισε τη σύνδεση</string>
+    <string name="code_shown">Ο κωδικός εμφανίζεται τώρα στην οθόνη του Pi (ισχύει για 2 λεπτά).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Λάθος κωδικός, απομένει %d προσπάθεια.</item>
+        <item quantity="other">Λάθος κωδικός, απομένουν %d προσπάθειες.</item>
+    </plurals>
+    <string name="code_expired">Ο κωδικός έληξε ή εισήχθη λάθος πάρα πολλές φορές: κάντε ξανά σύζευξη.</string>
+    <string name="busy">Πάρα πολλές αποτυχημένες προσπάθειες: κάντε ξανά σύζευξη σε 30 δευτερόλεπτα.</string>
+    <string name="not_paired">Αυτό το τηλέφωνο δεν είναι (πλέον) συζευγμένο με το Pi: κάντε σύζευξη.</string>
+    <string name="other_cert">Το Pi παρουσιάζει διαφορετικό πιστοποιητικό από αυτό της σύζευξης. Κάντε ξανά σύζευξη αν εγκαταστάθηκε από την αρχή.</string>
+    <string name="ble_lost">Η σύνδεση χάθηκε, επανασύνδεση…</string>
+    <string name="ble_not_found">Το θερμόμετρο %1$s δεν βρέθηκε (απενεργοποιημένο, εκτός εμβέλειας ή συνδεδεμένο με το Pi;), η αναζήτηση συνεχίζεται…</string>
+    <string name="ble_connected">συνδέθηκε</string>
+    <string name="ble_revoked">Η εφαρμογή δεν επιτρέπεται πλέον να χρησιμοποιεί Bluetooth: αναζητήστε ξανά από το «Αλλαγή».</string>
+    <string name="channel_status">Σύνδεση</string>
+    <string name="channel_alarm">Ο στόχος επιτεύχθηκε</string>
+    <string name="connecting">σύνδεση…</string>
+    <string name="notify_readings">P1 %1$s (στόχος %2$d) · P2 %3$s (στόχος %4$d)</string>
+    <string name="alarm_title">Το P%1$d έφτασε τους %2$d °C</string>
+    <string name="alarm_text">Ο στόχος ήταν %1$d °C</string>
+    <string name="stop">Τερματισμός</string>
+</resources>

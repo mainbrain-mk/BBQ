@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">čakam na izmerjene vrednosti…</string>
+    <string name="change">Spremeni</string>
+    <string name="target">Cilj %1$d °C</string>
+    <string name="target_none">Cilj --</string>
+    <string name="target_dialog">Cilj P%1$d</string>
+    <string name="set">Nastavi</string>
+    <string name="cancel">Prekliči</string>
+    <string name="chart_empty">Od zagona aplikacije še ni izmerjenih vrednosti</string>
+    <string name="chart_dashed">črtkano: cilj</string>
+    <string name="pair_title">Seznani Pi</string>
+    <string name="pair_hint">Naslov Raspberry Pi-ja,\nki je povezan s termometrom:</string>
+    <string name="pair_placeholder">npr. raspberrypi.local ali 192.168.0.10</string>
+    <string name="pair">Seznani</string>
+    <string name="pi_id">ID Pi-ja %1$s: se mora ujemati s tistim na zaslonu Pi-ja.</string>
+    <string name="code_label">Koda z zaslona Pi-ja</string>
+    <string name="confirm">Potrdi</string>
+    <string name="direct_title">Brez Pi-ja</string>
+    <string name="direct_hint">Telefon se sam poveže prek Bluetootha. S termometrom je lahko povezana samo ena naprava: zato izklopite Pi.</string>
+    <string name="scan">Išči termometer</string>
+    <string name="scanning">iščem…</string>
+    <string name="ble_denied">Brez dovoljenja za Bluetooth aplikacija ne najde termometra.</string>
+    <string name="back">Nazaj</string>
+    <string name="bad_address">Vnesite ime gostitelja ali naslov IP, npr. raspberrypi.local</string>
+    <string name="none_found">Termometra ni bilo mogoče najti: ali je vklopljen? Ali je Pi izklopljen? (Android 8–11: vklopite tudi lokacijo)</string>
+    <string name="bt_off">Bluetooth je izklopljen: vklopite ga.</string>
+    <string name="connecting_to">povezovanje z %1$s…</string>
+    <string name="pi_closed">Pi je prekinil povezavo</string>
+    <string name="code_shown">Koda je zdaj na zaslonu Pi-ja (velja 2 minuti).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Napačna koda, še %d poskus.</item>
+        <item quantity="two">Napačna koda, še %d poskusa.</item>
+        <item quantity="few">Napačna koda, še %d poskusi.</item>
+        <item quantity="other">Napačna koda, še %d poskusov.</item>
+    </plurals>
+    <string name="code_expired">Koda je potekla ali je bila prevečkrat napačno vnesena: znova seznanite.</string>
+    <string name="busy">Preveč neuspelih poskusov: znova seznanite čez 30 sekund.</string>
+    <string name="not_paired">Ta telefon ni (več) seznanjen s Pi-jem: seznanite ga.</string>
+    <string name="other_cert">Pi se javlja z drugim potrdilom kot pri seznanjanju. Znova seznanite, če je bil na novo nameščen.</string>
+    <string name="ble_lost">Povezava prekinjena, ponovno povezovanje…</string>
+    <string name="ble_not_found">Termometra %1$s ni bilo mogoče najti (izklopljen, izven dosega ali povezan s Pi-jem?), iščem naprej…</string>
+    <string name="ble_connected">povezano</string>
+    <string name="ble_revoked">Aplikacija ne sme več uporabljati Bluetootha: znova poiščite prek »Spremeni«.</string>
+    <string name="channel_status">Povezava</string>
+    <string name="channel_alarm">Cilj dosežen</string>
+    <string name="connecting">povezovanje…</string>
+    <string name="notify_readings">P1 %1$s (cilj %2$d) · P2 %3$s (cilj %4$d)</string>
+    <string name="alarm_title">P%1$d: doseženo %2$d °C</string>
+    <string name="alarm_text">Cilj je bil %1$d °C</string>
+    <string name="stop">Končaj</string>
+</resources>

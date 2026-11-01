@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">изчакване на измервания…</string>
+    <string name="change">Промяна</string>
+    <string name="target">Цел %1$d °C</string>
+    <string name="target_none">Цел --</string>
+    <string name="target_dialog">Цел P%1$d</string>
+    <string name="set">Задай</string>
+    <string name="cancel">Отказ</string>
+    <string name="chart_empty">Няма измервания от стартирането на приложението</string>
+    <string name="chart_dashed">пунктир: цел</string>
+    <string name="pair_title">Сдвояване с Pi</string>
+    <string name="pair_hint">Адрес на Raspberry Pi,\nсвързан с термометъра:</string>
+    <string name="pair_placeholder">напр. raspberrypi.local или 192.168.0.10</string>
+    <string name="pair">Сдвояване</string>
+    <string name="pi_id">ID на Pi %1$s: трябва да съвпада с този на дисплея на Pi.</string>
+    <string name="code_label">Код от дисплея на Pi</string>
+    <string name="confirm">Потвърди</string>
+    <string name="direct_title">Без Pi</string>
+    <string name="direct_hint">Телефонът се свързва сам чрез Bluetooth. С термометъра може да е свързано само едно устройство: за целта изключете Pi.</string>
+    <string name="scan">Търсене на термометър</string>
+    <string name="scanning">търсене…</string>
+    <string name="ble_denied">Без разрешение за Bluetooth приложението не може да намери термометъра.</string>
+    <string name="back">Назад</string>
+    <string name="bad_address">Въведете име на хост или IP адрес, напр. raspberrypi.local</string>
+    <string name="none_found">Не е намерен термометър: включен ли е? Изключен ли е Pi? (Android 8–11: включете и местоположението)</string>
+    <string name="bt_off">Bluetooth е изключен: включете го.</string>
+    <string name="connecting_to">свързване с %1$s…</string>
+    <string name="pi_closed">Pi затвори връзката</string>
+    <string name="code_shown">Кодът вече е на дисплея на Pi (валиден 2 минути).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Грешен код, остава %d опит.</item>
+        <item quantity="other">Грешен код, остават %d опита.</item>
+    </plurals>
+    <string name="code_expired">Кодът е изтекъл или е въведен грешно твърде много пъти: сдвоете отново.</string>
+    <string name="busy">Твърде много неуспешни опити: сдвоете отново след 30 секунди.</string>
+    <string name="not_paired">Този телефон не е (вече) сдвоен с Pi: сдвоете го.</string>
+    <string name="other_cert">Pi представя различен сертификат от този при сдвояването. Сдвоете отново, ако е бил инсталиран наново.</string>
+    <string name="ble_lost">Връзката е прекъсната, повторно свързване…</string>
+    <string name="ble_not_found">Термометър %1$s не е намерен (изключен, извън обхват или свързан с Pi?), търсенето продължава…</string>
+    <string name="ble_connected">свързано</string>
+    <string name="ble_revoked">Приложението вече няма право да използва Bluetooth: потърсете отново чрез „Промяна“.</string>
+    <string name="channel_status">Връзка</string>
+    <string name="channel_alarm">Целта е достигната</string>
+    <string name="connecting">свързване…</string>
+    <string name="notify_readings">P1 %1$s (цел %2$d) · P2 %3$s (цел %4$d)</string>
+    <string name="alarm_title">P%1$d достигна %2$d °C</string>
+    <string name="alarm_text">Целта беше %1$d °C</string>
+    <string name="stop">Спри</string>
+</resources>

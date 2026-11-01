@@ -8,7 +8,7 @@
 <li>continua a funzionare in background, con i valori nella notifica</li>
 <li>andamento delle temperature dall’avvio dell’app</li>
 <li>chiaro/scuro come il sistema, con i colori dello sfondo da Android 12</li>
-<li>disponibile in 10 lingue, secondo la lingua del sistema</li>
+<li>disponibile in 34 lingue, secondo la lingua del sistema</li>
 </ul>
 
 <p><b>Due modi per raggiungere il termometro</b></p>

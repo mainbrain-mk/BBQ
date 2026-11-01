@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">väntar på mätvärden…</string>
+    <string name="change">Ändra</string>
+    <string name="target">Mål %1$d °C</string>
+    <string name="target_none">Mål --</string>
+    <string name="target_dialog">Mål P%1$d</string>
+    <string name="set">Ställ in</string>
+    <string name="cancel">Avbryt</string>
+    <string name="chart_empty">Inga mätvärden sedan appen startades</string>
+    <string name="chart_dashed">streckad: mål</string>
+    <string name="pair_title">Parkoppla Pi</string>
+    <string name="pair_hint">Adress till den Raspberry Pi\nsom är ansluten till termometern:</string>
+    <string name="pair_placeholder">t.ex. raspberrypi.local eller 192.168.0.10</string>
+    <string name="pair">Parkoppla</string>
+    <string name="pi_id">Pi-ID %1$s: måste stämma med det på Pi-skärmen.</string>
+    <string name="code_label">Kod från Pi-skärmen</string>
+    <string name="confirm">Bekräfta</string>
+    <string name="direct_title">Utan Pi</string>
+    <string name="direct_hint">Telefonen ansluter själv via Bluetooth. Bara en enhet kan vara ansluten till termometern: stäng av Pi:n för detta.</string>
+    <string name="scan">Sök termometer</string>
+    <string name="scanning">söker…</string>
+    <string name="ble_denied">Utan Bluetooth-behörighet hittar appen inte termometern.</string>
+    <string name="back">Tillbaka</string>
+    <string name="bad_address">Ange ett värdnamn eller en IP-adress, t.ex. raspberrypi.local</string>
+    <string name="none_found">Ingen termometer hittades: är den påslagen? Är Pi:n avstängd? (Android 8–11: slå även på plats)</string>
+    <string name="bt_off">Bluetooth är avstängt: slå på det.</string>
+    <string name="connecting_to">ansluter till %1$s…</string>
+    <string name="pi_closed">Pi:n stängde anslutningen</string>
+    <string name="code_shown">Koden visas nu på Pi-skärmen (giltig i 2 minuter).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Fel kod, %d försök kvar.</item>
+        <item quantity="other">Fel kod, %d försök kvar.</item>
+    </plurals>
+    <string name="code_expired">Koden har gått ut eller angetts fel för många gånger: parkoppla igen.</string>
+    <string name="busy">För många misslyckade försök: parkoppla igen om 30 sekunder.</string>
+    <string name="not_paired">Den här telefonen är inte (längre) parkopplad med Pi:n: parkoppla.</string>
+    <string name="other_cert">Pi:n visar ett annat certifikat än vid parkopplingen. Parkoppla igen om den har installerats om.</string>
+    <string name="ble_lost">Anslutningen bröts, ansluter igen…</string>
+    <string name="ble_not_found">Termometer %1$s hittades inte (avstängd, utom räckhåll eller ansluten till Pi:n?), söker vidare…</string>
+    <string name="ble_connected">ansluten</string>
+    <string name="ble_revoked">Appen får inte längre använda Bluetooth: sök igen under ”Ändra”.</string>
+    <string name="channel_status">Anslutning</string>
+    <string name="channel_alarm">Mål uppnått</string>
+    <string name="connecting">ansluter…</string>
+    <string name="notify_readings">P1 %1$s (mål %2$d) · P2 %3$s (mål %4$d)</string>
+    <string name="alarm_title">P%1$d har nått %2$d °C</string>
+    <string name="alarm_text">Målet var %1$d °C</string>
+    <string name="stop">Avsluta</string>
+</resources>

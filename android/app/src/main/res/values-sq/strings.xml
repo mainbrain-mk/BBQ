@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">në pritje të matjeve…</string>
+    <string name="change">Ndrysho</string>
+    <string name="target">Objektivi %1$d °C</string>
+    <string name="target_none">Objektivi --</string>
+    <string name="target_dialog">Objektivi P%1$d</string>
+    <string name="set">Cakto</string>
+    <string name="cancel">Anulo</string>
+    <string name="chart_empty">Asnjë matje që nga nisja e aplikacionit</string>
+    <string name="chart_dashed">e ndërprerë: objektivi</string>
+    <string name="pair_title">Çifto Pi-në</string>
+    <string name="pair_hint">Adresa e Raspberry Pi-së\nqë është lidhur me termometrin:</string>
+    <string name="pair_placeholder">p.sh. raspberrypi.local ose 192.168.0.10</string>
+    <string name="pair">Çifto</string>
+    <string name="pi_id">ID-ja e Pi-së %1$s: duhet të përputhet me atë në ekranin e Pi-së.</string>
+    <string name="code_label">Kodi nga ekrani i Pi-së</string>
+    <string name="confirm">Konfirmo</string>
+    <string name="direct_title">Pa Pi</string>
+    <string name="direct_hint">Telefoni lidhet vetë me Bluetooth. Vetëm një pajisje mund të jetë e lidhur me termometrin: për këtë fikeni Pi-në.</string>
+    <string name="scan">Kërko termometrin</string>
+    <string name="scanning">po kërkon…</string>
+    <string name="ble_denied">Pa lejen e Bluetooth-it aplikacioni nuk e gjen termometrin.</string>
+    <string name="back">Prapa</string>
+    <string name="bad_address">Fut një emër hosti ose adresë IP, p.sh. raspberrypi.local</string>
+    <string name="none_found">Nuk u gjet asnjë termometër: a është i ndezur? A është Pi-ja e fikur? (Android 8–11: aktivizo edhe vendndodhjen)</string>
+    <string name="bt_off">Bluetooth-i është i fikur: aktivizoje.</string>
+    <string name="connecting_to">po lidhet me %1$s…</string>
+    <string name="pi_closed">Pi-ja e mbylli lidhjen</string>
+    <string name="code_shown">Kodi tani shfaqet në ekranin e Pi-së (i vlefshëm 2 minuta).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Kod i gabuar, ka mbetur %d përpjekje.</item>
+        <item quantity="other">Kod i gabuar, kanë mbetur %d përpjekje.</item>
+    </plurals>
+    <string name="code_expired">Kodi ka skaduar ose është futur gabim shumë herë: çifto përsëri.</string>
+    <string name="busy">Shumë përpjekje të dështuara: çifto përsëri pas 30 sekondash.</string>
+    <string name="not_paired">Ky telefon nuk është (më) i çiftuar me Pi-në: çiftoje.</string>
+    <string name="other_cert">Pi-ja paraqet një certifikatë tjetër nga ajo e çiftimit. Çifto përsëri nëse është rikonfiguruar.</string>
+    <string name="ble_lost">Lidhja humbi, po rilidhet…</string>
+    <string name="ble_not_found">Termometri %1$s nuk u gjet (i fikur, jashtë rrezes ose i lidhur me Pi-në?), kërkimi vazhdon…</string>
+    <string name="ble_connected">i lidhur</string>
+    <string name="ble_revoked">Aplikacioni nuk lejohet më të përdorë Bluetooth-in: kërko përsëri te „Ndrysho“.</string>
+    <string name="channel_status">Lidhja</string>
+    <string name="channel_alarm">Objektivi u arrit</string>
+    <string name="connecting">po lidhet…</string>
+    <string name="notify_readings">P1 %1$s (objektivi %2$d) · P2 %3$s (objektivi %4$d)</string>
+    <string name="alarm_title">P%1$d arriti %2$d °C</string>
+    <string name="alarm_text">Objektivi ishte %1$d °C</string>
+    <string name="stop">Mbyll</string>
+</resources>

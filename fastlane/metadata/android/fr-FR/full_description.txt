@@ -8,7 +8,7 @@
 <li>continue en arrière-plan, les mesures s’affichent dans la notification</li>
 <li>courbe des températures depuis le démarrage de l’app</li>
 <li>clair/sombre selon le système, couleurs du fond d’écran à partir d’Android 12</li>
-<li>disponible en 10 langues, selon la langue du système</li>
+<li>disponible en 34 langues, selon la langue du système</li>
 </ul>
 
 <p><b>Deux façons de rejoindre le thermomètre</b></p>

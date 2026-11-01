@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">gaida mērījumus…</string>
+    <string name="change">Mainīt</string>
+    <string name="target">Mērķis %1$d °C</string>
+    <string name="target_none">Mērķis --</string>
+    <string name="target_dialog">Mērķis P%1$d</string>
+    <string name="set">Iestatīt</string>
+    <string name="cancel">Atcelt</string>
+    <string name="chart_empty">Kopš lietotnes palaišanas nav mērījumu</string>
+    <string name="chart_dashed">raustīta līnija: mērķis</string>
+    <string name="pair_title">Savienot pārī Pi</string>
+    <string name="pair_hint">Ar termometru savienotā\nRaspberry Pi adrese:</string>
+    <string name="pair_placeholder">piem., raspberrypi.local vai 192.168.0.10</string>
+    <string name="pair">Savienot pārī</string>
+    <string name="pi_id">Pi ID %1$s: jāsakrīt ar to, kas redzams Pi displejā.</string>
+    <string name="code_label">Kods no Pi displeja</string>
+    <string name="confirm">Apstiprināt</string>
+    <string name="direct_title">Bez Pi</string>
+    <string name="direct_hint">Tālrunis pats savienojas, izmantojot Bluetooth. Ar termometru vienlaikus var būt savienota tikai viena ierīce: šim nolūkam izslēdziet Pi.</string>
+    <string name="scan">Meklēt termometru</string>
+    <string name="scanning">meklē…</string>
+    <string name="ble_denied">Bez Bluetooth atļaujas lietotne nevar atrast termometru.</string>
+    <string name="back">Atpakaļ</string>
+    <string name="bad_address">Ievadiet resursdatora nosaukumu vai IP adresi, piem., raspberrypi.local</string>
+    <string name="none_found">Termometrs nav atrasts: vai tas ir ieslēgts? Vai Pi ir izslēgts? (Android 8–11: ieslēdziet arī atrašanās vietu)</string>
+    <string name="bt_off">Bluetooth ir izslēgts: ieslēdziet to.</string>
+    <string name="connecting_to">savienojas ar %1$s…</string>
+    <string name="pi_closed">Pi pārtrauca savienojumu</string>
+    <string name="code_shown">Kods tagad redzams Pi displejā (derīgs 2 minūtes).</string>
+    <plurals name="wrong_code">
+        <item quantity="zero">Nepareizs kods, atlikuši %d mēģinājumi.</item>
+        <item quantity="one">Nepareizs kods, atlicis %d mēģinājums.</item>
+        <item quantity="other">Nepareizs kods, atlikuši %d mēģinājumi.</item>
+    </plurals>
+    <string name="code_expired">Kodam beidzies derīgums vai tas pārāk daudz reižu ievadīts nepareizi: savienojiet pārī vēlreiz.</string>
+    <string name="busy">Pārāk daudz neveiksmīgu mēģinājumu: savienojiet pārī vēlreiz pēc 30 sekundēm.</string>
+    <string name="not_paired">Šis tālrunis nav (vairs) savienots pārī ar Pi: savienojiet to pārī.</string>
+    <string name="other_cert">Pi uzrāda citu sertifikātu nekā savienošanas laikā. Savienojiet pārī vēlreiz, ja tas ir iestatīts no jauna.</string>
+    <string name="ble_lost">Savienojums zaudēts, notiek atkārtota savienošana…</string>
+    <string name="ble_not_found">Termometrs %1$s nav atrasts (izslēgts, ārpus darbības zonas vai savienots ar Pi?), meklēšana turpinās…</string>
+    <string name="ble_connected">savienots</string>
+    <string name="ble_revoked">Lietotnei vairs nav atļauts izmantot Bluetooth: meklējiet vēlreiz, izmantojot “Mainīt”.</string>
+    <string name="channel_status">Savienojums</string>
+    <string name="channel_alarm">Mērķis sasniegts</string>
+    <string name="connecting">savienojas…</string>
+    <string name="notify_readings">P1 %1$s (mērķis %2$d) · P2 %3$s (mērķis %4$d)</string>
+    <string name="alarm_title">P%1$d sasniedza %2$d °C</string>
+    <string name="alarm_text">Mērķis bija %1$d °C</string>
+    <string name="stop">Beigt</string>
+</resources>

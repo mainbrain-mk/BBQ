@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">venter på måleværdier…</string>
+    <string name="change">Skift</string>
+    <string name="target">Mål %1$d °C</string>
+    <string name="target_none">Mål --</string>
+    <string name="target_dialog">Mål P%1$d</string>
+    <string name="set">Indstil</string>
+    <string name="cancel">Annuller</string>
+    <string name="chart_empty">Ingen måleværdier siden appen blev startet</string>
+    <string name="chart_dashed">stiplet: mål</string>
+    <string name="pair_title">Par Pi</string>
+    <string name="pair_hint">Adressen på den Raspberry Pi,\nder er forbundet med termometeret:</string>
+    <string name="pair_placeholder">f.eks. raspberrypi.local eller 192.168.0.10</string>
+    <string name="pair">Par</string>
+    <string name="pi_id">Pi-ID %1$s: skal stemme overens med den på Pi-skærmen.</string>
+    <string name="code_label">Kode fra Pi-skærmen</string>
+    <string name="confirm">Bekræft</string>
+    <string name="direct_title">Uden Pi</string>
+    <string name="direct_hint">Telefonen forbinder selv via Bluetooth. Kun én enhed kan være forbundet med termometeret: sluk Pi’en til dette.</string>
+    <string name="scan">Søg efter termometer</string>
+    <string name="scanning">søger…</string>
+    <string name="ble_denied">Uden Bluetooth-tilladelse kan appen ikke finde termometeret.</string>
+    <string name="back">Tilbage</string>
+    <string name="bad_address">Indtast et værtsnavn eller en IP-adresse, f.eks. raspberrypi.local</string>
+    <string name="none_found">Intet termometer fundet: er det tændt? Er Pi’en slukket? (Android 8–11: slå også placering til)</string>
+    <string name="bt_off">Bluetooth er slået fra: slå det til.</string>
+    <string name="connecting_to">forbinder til %1$s…</string>
+    <string name="pi_closed">Pi’en lukkede forbindelsen</string>
+    <string name="code_shown">Koden vises nu på Pi-skærmen (gyldig i 2 minutter).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Forkert kode, %d forsøg tilbage.</item>
+        <item quantity="other">Forkert kode, %d forsøg tilbage.</item>
+    </plurals>
+    <string name="code_expired">Koden er udløbet eller indtastet forkert for mange gange: par igen.</string>
+    <string name="busy">For mange mislykkede forsøg: par igen om 30 sekunder.</string>
+    <string name="not_paired">Denne telefon er ikke (længere) parret med Pi’en: par den.</string>
+    <string name="other_cert">Pi’en viser et andet certifikat end ved parringen. Par igen, hvis den er blevet geninstalleret.</string>
+    <string name="ble_lost">Forbindelsen blev afbrudt, forbinder igen…</string>
+    <string name="ble_not_found">Termometer %1$s ikke fundet (slukket, uden for rækkevidde eller forbundet med Pi’en?), søger videre…</string>
+    <string name="ble_connected">forbundet</string>
+    <string name="ble_revoked">Appen må ikke længere bruge Bluetooth: søg igen under »Skift«.</string>
+    <string name="channel_status">Forbindelse</string>
+    <string name="channel_alarm">Mål nået</string>
+    <string name="connecting">forbinder…</string>
+    <string name="notify_readings">P1 %1$s (mål %2$d) · P2 %3$s (mål %4$d)</string>
+    <string name="alarm_title">P%1$d har nået %2$d °C</string>
+    <string name="alarm_text">Målet var %1$d °C</string>
+    <string name="stop">Afslut</string>
+</resources>

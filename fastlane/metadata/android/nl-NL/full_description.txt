@@ -8,7 +8,7 @@
 <li>blijft op de achtergrond actief, de meetwaarden staan in de melding</li>
 <li>temperatuurverloop sinds de start van de app</li>
 <li>licht/donker zoals het systeem, vanaf Android 12 in de kleuren van de achtergrond</li>
-<li>beschikbaar in 10 talen, afhankelijk van de systeemtaal</li>
+<li>beschikbaar in 34 talen, afhankelijk van de systeemtaal</li>
 </ul>
 
 <p><b>Twee manieren om bij de thermometer te komen</b></p>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">ölçüm değerleri bekleniyor…</string>
+    <string name="change">Değiştir</string>
+    <string name="target">Hedef %1$d °C</string>
+    <string name="target_none">Hedef --</string>
+    <string name="target_dialog">Hedef P%1$d</string>
+    <string name="set">Ayarla</string>
+    <string name="cancel">İptal</string>
+    <string name="chart_empty">Uygulama başlatıldığından beri ölçüm yok</string>
+    <string name="chart_dashed">kesikli: hedef</string>
+    <string name="pair_title">Pi ile eşle</string>
+    <string name="pair_hint">Termometreye bağlı\nRaspberry Pi’nin adresi:</string>
+    <string name="pair_placeholder">örn. raspberrypi.local veya 192.168.0.10</string>
+    <string name="pair">Eşle</string>
+    <string name="pi_id">Pi kimliği %1$s: Pi ekranındakiyle aynı olmalıdır.</string>
+    <string name="code_label">Pi ekranındaki kod</string>
+    <string name="confirm">Onayla</string>
+    <string name="direct_title">Pi olmadan</string>
+    <string name="direct_hint">Telefon Bluetooth üzerinden kendisi bağlanır. Termometreye yalnızca bir cihaz bağlı olabilir: bunun için Pi’yi kapatın.</string>
+    <string name="scan">Termometre ara</string>
+    <string name="scanning">aranıyor…</string>
+    <string name="ble_denied">Bluetooth izni olmadan uygulama termometreyi bulamaz.</string>
+    <string name="back">Geri</string>
+    <string name="bad_address">Bir ana makine adı veya IP adresi girin, örn. raspberrypi.local</string>
+    <string name="none_found">Termometre bulunamadı: açık mı? Pi kapalı mı? (Android 8–11: konumu da açın)</string>
+    <string name="bt_off">Bluetooth kapalı: lütfen açın.</string>
+    <string name="connecting_to">%1$s adresine bağlanılıyor…</string>
+    <string name="pi_closed">Pi bağlantıyı kapattı</string>
+    <string name="code_shown">Kod şimdi Pi ekranında (2 dakika geçerli).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Yanlış kod, %d deneme hakkı kaldı.</item>
+        <item quantity="other">Yanlış kod, %d deneme hakkı kaldı.</item>
+    </plurals>
+    <string name="code_expired">Kodun süresi doldu veya çok fazla yanlış girildi: yeniden eşleyin.</string>
+    <string name="busy">Çok fazla başarısız deneme: 30 saniye sonra yeniden eşleyin.</string>
+    <string name="not_paired">Bu telefon Pi ile eşli değil (veya artık değil): eşleyin.</string>
+    <string name="other_cert">Pi, eşleme sırasındakinden farklı bir sertifika sunuyor. Yeniden kurulduysa yeniden eşleyin.</string>
+    <string name="ble_lost">Bağlantı koptu, yeniden bağlanılıyor…</string>
+    <string name="ble_not_found">%1$s termometresi bulunamadı (kapalı, menzil dışında veya Pi’ye bağlı mı?), aramaya devam ediliyor…</string>
+    <string name="ble_connected">bağlandı</string>
+    <string name="ble_revoked">Uygulamanın artık Bluetooth kullanma izni yok: “Değiştir” ile yeniden arayın.</string>
+    <string name="channel_status">Bağlantı</string>
+    <string name="channel_alarm">Hedefe ulaşıldı</string>
+    <string name="connecting">bağlanılıyor…</string>
+    <string name="notify_readings">P1 %1$s (hedef %2$d) · P2 %3$s (hedef %4$d)</string>
+    <string name="alarm_title">P%1$d hedefe ulaştı: %2$d °C</string>
+    <string name="alarm_text">Hedef %1$d °C idi</string>
+    <string name="stop">Durdur</string>
+</resources>

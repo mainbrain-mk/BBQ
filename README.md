@@ -85,8 +85,9 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
 Die App folgt der Systemsprache (ab Android 13 auch pro App unter Einstellungen → Apps → BBQ → Sprache):
-Englisch (Standard, `app/src/main/res/values/strings.xml`), Deutsch, Französisch, Spanisch, Italienisch,
-Niederländisch, Polnisch, Portugiesisch, Tschechisch und Slowakisch (`values-<code>/`). Eine weitere Sprache:
+Englisch (Standard, `app/src/main/res/values/strings.xml`) und 33 weitere europäische Sprachen in
+`values-<code>/`: alle EU-Amtssprachen (bg, cs, da, de, el, es, et, fi, fr, ga, hr, hu, it, lt, lv, mt, nl, pl, pt,
+ro, sk, sl, sv) sowie bs, ca, is, mk, nb, ru, sq, sr, tr und uk. Eine weitere Sprache:
 `values-<code>/strings.xml` mit denselben Namen anlegen, Store-Texte unter `fastlane/metadata/android/<locale>/`.
 
 Koppeln wie am Rechner (Adresse, **Koppeln**, Pi-Kennung vergleichen, Code). Danach hält ein Dienst die Verbindung

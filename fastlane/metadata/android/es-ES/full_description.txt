@@ -8,7 +8,7 @@
 <li>sigue funcionando en segundo plano, con las mediciones en la notificación</li>
 <li>historial de temperaturas desde que se inició la app</li>
 <li>claro/oscuro según el sistema, con los colores del fondo de pantalla desde Android 12</li>
-<li>disponible en 10 idiomas, según el idioma del sistema</li>
+<li>disponible en 34 idiomas, según el idioma del sistema</li>
 </ul>
 
 <p><b>Dos formas de llegar al termómetro</b></p>
