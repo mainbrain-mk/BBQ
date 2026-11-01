@@ -1,0 +1,1 @@
+Mėsos termometras Day_BBQ: matavimai, tikslai ir signalas per Bluetooth ar Pi

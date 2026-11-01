@@ -1,0 +1,22 @@
+<p>Bluetooth-kjöthitamælirinn „Day_BBQ“ (auglýsir sig í Bluetooth sem <i>Day_BBQ</i> eða <i>Day_BQQ</i>) er ekki lengur með virkt forrit frá framleiðanda. Þetta forrit kemur í staðinn.</p>
+
+<p><b>Eiginleikar</b></p>
+<ul>
+<li>báðir nemar (P1, P2) í stóru letri, með núverandi hita og markmiði</li>
+<li>markmið stillt með hjóli (1 … 249 °C), það er skrifað í hitamælinn</li>
+<li>viðvörun með hljóði og titringi um leið og nemi nær markmiði sínu</li>
+<li>heldur áfram í bakgrunni, mæligildin birtast í tilkynningunni</li>
+<li>hitaferill frá því forritið var ræst</li>
+<li>ljóst/dökkt eins og kerfið, frá Android 12 í litum bakgrunnsmyndarinnar</li>
+<li>fáanlegt á 34 tungumálum, eftir tungumáli kerfisins</li>
+</ul>
+
+<p><b>Tvær leiðir að hitamælinum</b></p>
+<ul>
+<li><b>Beint:</b> síminn tengist sjálfur hitamælinum með Bluetooth LE.</li>
+<li><b>Í gegnum Raspberry Pi:</b> Pi heldur Bluetooth-tengingunni og sendir mæligildin dulkóðuð (TLS) á staðarnetinu. Pörun fer fram einu sinni með kóða af skjá Pi. Gáttin (<i>bbq.py</i>) er í sömu frumkóðageymslu.</li>
+</ul>
+
+<p>Engar auglýsingar, engin rakning, engin gögn send á netið: forritið talar aðeins við hitamælinn eða þína eigin Pi.</p>
+
+<p>Ekki opinber vara frá framleiðanda.</p>

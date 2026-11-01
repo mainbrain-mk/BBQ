@@ -1,0 +1,22 @@
+<p>Për termometrin e mishit me Bluetooth „Day_BBQ“ (shfaqet në Bluetooth si <i>Day_BBQ</i> ose <i>Day_BQQ</i>) nuk ka më aplikacion funksional nga prodhuesi. Ky aplikacion e zëvendëson.</p>
+
+<p><b>Funksionet</b></p>
+<ul>
+<li>të dyja sondat (P1, P2) të mëdha, me temperaturën aktuale dhe objektivin</li>
+<li>caktimi i objektivit me rrotë (1 … 249 °C), shkruhet në termometër</li>
+<li>alarm me zë dhe dridhje sapo një sondë arrin objektivin</li>
+<li>vazhdon në sfond, matjet shfaqen në njoftim</li>
+<li>ecuria e temperaturës që nga nisja e aplikacionit</li>
+<li>e çelët/e errët si sistemi, nga Android 12 me ngjyrat e sfondit</li>
+<li>në 34 gjuhë, sipas gjuhës së sistemit</li>
+</ul>
+
+<p><b>Dy rrugë drejt termometrit</b></p>
+<ul>
+<li><b>Drejtpërdrejt:</b> telefoni lidhet vetë me termometrin me Bluetooth LE.</li>
+<li><b>Përmes një Raspberry Pi:</b> Pi-ja mban lidhjen Bluetooth dhe dërgon matjet të enkriptuara (TLS) në rrjetin lokal. Çiftimi bëhet një herë, me një kod nga ekrani i Pi-së. Porta (<i>bbq.py</i>) ndodhet në të njëjtin depo të kodit burimor.</li>
+</ul>
+
+<p>Pa reklama, pa gjurmim, pa dërgim të dhënash në internet: aplikacioni flet vetëm me termometrin ose me Pi-në tuaj.</p>
+
+<p>Nuk është produkt zyrtar i prodhuesit.</p>

@@ -1,0 +1,22 @@
+<p>„Bluetooth“ mėsos termometrui „Day_BBQ“ (per Bluetooth skelbiasi kaip <i>Day_BBQ</i> arba <i>Day_BQQ</i>) nebėra veikiančios gamintojo programos. Ši programa ją pakeičia.</p>
+
+<p><b>Funkcijos</b></p>
+<ul>
+<li>abu zondai (P1, P2) dideliu šriftu, su esama ir tiksline temperatūra</li>
+<li>tikslo nustatymas ratuku (1 … 249 °C), jis įrašomas į termometrą</li>
+<li>signalas su garsu ir vibracija, kai tik zondas pasiekia tikslą</li>
+<li>veikia ir fone, matavimai rodomi pranešime</li>
+<li>temperatūros kreivė nuo programos paleidimo</li>
+<li>šviesi/tamsi tema pagal sistemą, nuo Android 12 – ekrano fono spalvomis</li>
+<li>34 kalbomis, pagal sistemos kalbą</li>
+</ul>
+
+<p><b>Du būdai prisijungti prie termometro</b></p>
+<ul>
+<li><b>Tiesiogiai:</b> telefonas pats prisijungia prie termometro per Bluetooth LE.</li>
+<li><b>Per Raspberry Pi:</b> Pi palaiko Bluetooth ryšį ir perduoda matavimus užšifruotus (TLS) vietiniame tinkle. Susiejama vieną kartą kodu iš Pi ekrano. Tinklų sietuvas (<i>bbq.py</i>) yra toje pačioje išeitinio kodo saugykloje.</li>
+</ul>
+
+<p>Jokių reklamų, jokio sekimo, jokie duomenys nesiunčiami į internetą: programa bendrauja tik su termometru arba jūsų Pi.</p>
+
+<p>Tai nėra oficialus gamintojo produktas.</p>

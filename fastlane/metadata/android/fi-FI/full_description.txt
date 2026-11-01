@@ -1,0 +1,22 @@
+<p>Bluetooth-paistolämpömittarille ”Day_BBQ” (ilmoittaa itsensä Bluetoothissa nimellä <i>Day_BBQ</i> tai <i>Day_BQQ</i>) ei ole enää toimivaa valmistajan sovellusta. Tämä sovellus korvaa sen.</p>
+
+<p><b>Ominaisuudet</b></p>
+<ul>
+<li>molemmat anturit (P1, P2) suurena, nykyinen lämpötila ja tavoitelämpötila</li>
+<li>tavoitteen asetus rullalla (1 … 249 °C), se kirjoitetaan lämpömittariin</li>
+<li>hälytys äänellä ja värinällä heti, kun anturi saavuttaa tavoitteensa</li>
+<li>toimii taustalla, lukemat näkyvät ilmoituksessa</li>
+<li>lämpötilakäyrä sovelluksen käynnistyksestä lähtien</li>
+<li>vaalea/tumma järjestelmän mukaan, Android 12:sta alkaen taustakuvan väreissä</li>
+<li>saatavilla 34 kielellä järjestelmän kielen mukaan</li>
+</ul>
+
+<p><b>Kaksi tapaa yhdistää lämpömittariin</b></p>
+<ul>
+<li><b>Suoraan:</b> puhelin yhdistää itse lämpömittariin Bluetooth LE:llä.</li>
+<li><b>Raspberry Pin kautta:</b> Pi ylläpitää Bluetooth-yhteyttä ja välittää lukemat salattuina (TLS) lähiverkossa. Pariliitos tehdään kerran Pin näytöllä näkyvällä koodilla. Yhdyskäytävä (<i>bbq.py</i>) on samassa lähdekoodivarastossa.</li>
+</ul>
+
+<p>Ei mainoksia, ei seurantaa, ei tietoja internetiin: sovellus keskustelee vain lämpömittarin tai oman Pisi kanssa.</p>
+
+<p>Ei valmistajan virallinen tuote.</p>

@@ -1,0 +1,1 @@
+Steketermometer Day_BBQ: måleverdier, mål og alarm via Bluetooth eller Pi

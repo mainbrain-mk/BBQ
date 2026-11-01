@@ -1,0 +1,22 @@
+<p>Níl aip oibre ag an déantóir a thuilleadh don teirmiméadar feola Bluetooth “Day_BBQ” (fógraíonn sé é féin trí Bluetooth mar <i>Day_BBQ</i> nó <i>Day_BQQ</i>). Cuireann an aip seo ina háit í.</p>
+
+<p><b>Gnéithe</b></p>
+<ul>
+<li>an dá thóireadóir (P1, P2) go mór, leis an teocht reatha agus an sprioc</li>
+<li>socraigh an sprioc le roth (1 … 249 °C), scríobhtar chuig an teirmiméadar é</li>
+<li>aláram le fuaim agus creathadh chomh luath agus a shroicheann tóireadóir a sprioc</li>
+<li>leanann sé ar aghaidh sa chúlra, taispeántar na tomhais san fhógra</li>
+<li>cuar teochta ó tosaíodh an aip</li>
+<li>geal/dorcha de réir an chórais, ó Android 12 i ndathanna an chúlbhrait</li>
+<li>ar fáil i 34 teanga, de réir theanga an chórais</li>
+</ul>
+
+<p><b>Dhá bhealach chuig an teirmiméadar</b></p>
+<ul>
+<li><b>Go díreach:</b> ceanglaíonn an fón é féin leis an teirmiméadar trí Bluetooth LE.</li>
+<li><b>Trí Raspberry Pi:</b> coinníonn an Pi an ceangal Bluetooth agus seolann sé na tomhais criptithe (TLS) ar an líonra áitiúil. Déantar an phéireáil uair amháin le cód ó scáileán an Pi. Tá an t-ionad ríomhaire (<i>bbq.py</i>) sa stór cóid foinse céanna.</li>
+</ul>
+
+<p>Gan fógraí, gan rianú, gan sonraí chuig an idirlíon: ní labhraíonn an aip ach leis an teirmiméadar nó le do Pi féin.</p>
+
+<p>Ní táirge oifigiúil de chuid an déantóra é.</p>

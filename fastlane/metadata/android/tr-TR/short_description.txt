@@ -1,0 +1,1 @@
+Day_BBQ et termometresi: Bluetooth veya Pi ile ölçüm, hedef ve alarm

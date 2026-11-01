@@ -1,0 +1,22 @@
+<p>Bluetooth-steketermometeret «Day_BBQ» (melder seg via Bluetooth som <i>Day_BBQ</i> eller <i>Day_BQQ</i>) har ikke lenger en fungerende app fra produsenten. Denne appen erstatter den.</p>
+
+<p><b>Funksjoner</b></p>
+<ul>
+<li>begge følerne (P1, P2) i stort format med nåværende temperatur og måltemperatur</li>
+<li>angi målet med et hjul (1 … 249 °C), det skrives til termometeret</li>
+<li>alarm med lyd og vibrasjon så snart en føler når målet sitt</li>
+<li>fortsetter i bakgrunnen, måleverdiene vises i varselet</li>
+<li>temperaturforløp siden appen ble startet</li>
+<li>lyst/mørkt som systemet, fra Android 12 i bakgrunnsbildets farger</li>
+<li>tilgjengelig på 34 språk, etter systemspråket</li>
+</ul>
+
+<p><b>To veier til termometeret</b></p>
+<ul>
+<li><b>Direkte:</b> telefonen kobler seg selv til termometeret via Bluetooth LE.</li>
+<li><b>Via en Raspberry Pi:</b> Pi-en holder Bluetooth-tilkoblingen og sender måleverdiene kryptert (TLS) i det lokale nettverket. Sammenkoblingen gjøres én gang med en kode fra Pi-skjermen. Gatewayen (<i>bbq.py</i>) ligger i samme kildekodelager.</li>
+</ul>
+
+<p>Ingen reklame, ingen sporing, ingen data til internett: appen snakker bare med termometeret eller din egen Pi.</p>
+
+<p>Ikke et offisielt produkt fra produsenten.</p>

@@ -1,1 +1,0 @@
-Prima versione: valori e obiettivi di entrambe le sonde, rotella per l’obiettivo, allarme, servizio in background, andamento; direttamente via Bluetooth o tramite un Raspberry Pi.

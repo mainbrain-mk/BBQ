@@ -1,0 +1,22 @@
+<p>Bluetooth-liha-termomeetril „Day_BBQ“ (annab end Bluetoothis teada kui <i>Day_BBQ</i> või <i>Day_BQQ</i>) pole enam töötavat tootja rakendust. See rakendus asendab selle.</p>
+
+<p><b>Funktsioonid</b></p>
+<ul>
+<li>mõlemad andurid (P1, P2) suurelt, praeguse ja sihttemperatuuriga</li>
+<li>sihi määramine kerimisrattaga (1 … 249 °C), see kirjutatakse termomeetrisse</li>
+<li>heli ja vibratsiooniga häire, kui andur jõuab sihini</li>
+<li>töötab taustal edasi, näidud on teavituses</li>
+<li>temperatuurikõver rakenduse käivitamisest saadik</li>
+<li>hele/tume vastavalt süsteemile, alates Android 12-st taustapildi värvides</li>
+<li>saadaval 34 keeles, vastavalt süsteemi keelele</li>
+</ul>
+
+<p><b>Kaks teed termomeetrini</b></p>
+<ul>
+<li><b>Otse:</b> telefon ühendub ise termomeetriga Bluetooth LE kaudu.</li>
+<li><b>Raspberry Pi kaudu:</b> Pi hoiab Bluetoothi ühendust ja edastab näidud krüpteeritult (TLS) kohtvõrgus. Sidumine tehakse üks kord Pi ekraanil kuvatava koodiga. Lüüs (<i>bbq.py</i>) asub samas lähtekoodihoidlas.</li>
+</ul>
+
+<p>Ei reklaame, ei jälgimist, andmeid internetti ei saadeta: rakendus suhtleb ainult termomeetri või sinu enda Pi-ga.</p>
+
+<p>Ei ole tootja ametlik toode.</p>

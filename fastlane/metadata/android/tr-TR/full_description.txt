@@ -1,0 +1,22 @@
+<p>Bluetooth et termometresi “Day_BBQ” (Bluetooth’ta <i>Day_BBQ</i> veya <i>Day_BQQ</i> olarak görünür) için artık çalışan bir üretici uygulaması yok. Bu uygulama onun yerini alır.</p>
+
+<p><b>Özellikler</b></p>
+<ul>
+<li>iki prob (P1, P2) büyük yazıyla, güncel ve hedef sıcaklıkla</li>
+<li>hedefi bir tekerlekle ayarlama (1 … 249 °C), termometreye yazılır</li>
+<li>bir prob hedefine ulaştığında sesli ve titreşimli alarm</li>
+<li>arka planda çalışmaya devam eder, ölçümler bildirimde görünür</li>
+<li>uygulama başladığından beri sıcaklık grafiği</li>
+<li>sisteme göre açık/koyu tema, Android 12’den itibaren duvar kâğıdı renklerinde</li>
+<li>sistem diline göre 34 dilde kullanılabilir</li>
+</ul>
+
+<p><b>Termometreye iki yol</b></p>
+<ul>
+<li><b>Doğrudan:</b> telefon Bluetooth LE ile termometreye kendisi bağlanır.</li>
+<li><b>Raspberry Pi üzerinden:</b> Pi, Bluetooth bağlantısını tutar ve ölçümleri yerel ağda şifreli (TLS) olarak iletir. Eşleme, Pi ekranındaki bir kodla bir kez yapılır. Ağ geçidi (<i>bbq.py</i>) aynı kaynak kod deposundadır.</li>
+</ul>
+
+<p>Reklam yok, izleme yok, internete veri gönderilmez: uygulama yalnızca termometreyle veya kendi Pi’nizle konuşur.</p>
+
+<p>Üreticinin resmî bir ürünü değildir.</p>

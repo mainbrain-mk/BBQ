@@ -1,1 +1,0 @@
-Prvá verzia: hodnoty a ciele oboch sond, koliesko na cieľ, alarm, služba na pozadí, priebeh; priamo cez Bluetooth alebo cez Raspberry Pi.

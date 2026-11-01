@@ -1,0 +1,22 @@
+<p>Bluetooth gaļas termometram “Day_BBQ” (Bluetooth tīklā redzams kā <i>Day_BBQ</i> vai <i>Day_BQQ</i>) vairs nav strādājošas ražotāja lietotnes. Šī lietotne to aizstāj.</p>
+
+<p><b>Funkcijas</b></p>
+<ul>
+<li>abas zondes (P1, P2) lielā izmērā ar pašreizējo un mērķa temperatūru</li>
+<li>mērķa iestatīšana ar ritenīti (1 … 249 °C), tas tiek ierakstīts termometrā</li>
+<li>trauksme ar skaņu un vibrāciju, tiklīdz zonde sasniedz mērķi</li>
+<li>darbojas arī fonā, mērījumi redzami paziņojumā</li>
+<li>temperatūras līkne kopš lietotnes palaišanas</li>
+<li>gaišs/tumšs atbilstoši sistēmai, no Android 12 – fona attēla krāsās</li>
+<li>pieejama 34 valodās atbilstoši sistēmas valodai</li>
+</ul>
+
+<p><b>Divi ceļi līdz termometram</b></p>
+<ul>
+<li><b>Tieši:</b> tālrunis pats savienojas ar termometru, izmantojot Bluetooth LE.</li>
+<li><b>Ar Raspberry Pi starpniecību:</b> Pi uztur Bluetooth savienojumu un pārsūta mērījumus šifrētā veidā (TLS) lokālajā tīklā. Savienošana pārī notiek vienreiz ar kodu no Pi displeja. Vārteja (<i>bbq.py</i>) atrodas tajā pašā pirmkoda repozitorijā.</li>
+</ul>
+
+<p>Bez reklāmām, bez izsekošanas, bez datu sūtīšanas internetā: lietotne sazinās tikai ar termometru vai jūsu Pi.</p>
+
+<p>Nav ražotāja oficiāls produkts.</p>

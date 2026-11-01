@@ -1,1 +1,0 @@
-Pierwsza wersja: pomiary i cele obu sond, pokrętło do ustawiania celu, alarm, usługa w tle, wykres; bezpośrednio przez Bluetooth lub przez Raspberry Pi.
