@@ -129,8 +129,7 @@ Funktions-Update springt auf das nächste Zehntel (1.02 → 1.1, dann 1.11, 1.12
 ebenso das nächste Zehntel (1.09 → 1.1). `versionCode` ist immer `versionName` × 100 (1.0 → 100, 1.01 → 101,
 1.1 → 110, 1.12 → 112), so steigt er mit jeder Version. Für ein Release beide Werte in
 `android/app/build.gradle.kts` setzen, ab 1.01 `fastlane/metadata/android/*/changelogs/<versionCode>.txt` (was neu ist)
-anlegen und den
-Stand als `v<versionName>` taggen (z. B. `git tag v1.01 && git push origin v1.01`).
+anlegen und den Stand als `v<versionName>` taggen (z. B. `git tag v1.01 && git push origin v1.01`).
 
 Store-Texte, Icon und Screenshot liegen im Fastlane-Format unter [`fastlane/metadata/android`](fastlane/metadata/android).
 Die lesen F-Droid und IzzyOnDroid von selbst.
