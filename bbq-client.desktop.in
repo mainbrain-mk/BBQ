@@ -2,7 +2,7 @@
 Type=Application
 Name=BBQ
 Comment=Fleischthermometer: Temperaturen vom Pi, Ziel per Klick setzen
-Exec=python3 @DIR@/bbq_client.py @HOST@
+Exec=python3 @DIR@/bbq_client.py
 Icon=@DIR@/assets/bbq-logo.png
 Categories=Utility;
 StartupWMClass=bbq-client

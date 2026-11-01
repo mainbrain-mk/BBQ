@@ -53,10 +53,15 @@ nc raspberrypi.local 51235      # Live-Zeile; "p1 80" + Enter setzt Ziel P1 auf 
 Fenster-App auf dem Rechner (braucht PyQt6, z. B. `sudo apt install python3-pyqt6`):
 
 ```bash
-python3 bbq_client.py <pi-hostname>          # oder BBQ_HOST setzen; Standard raspberrypi.local
-sed "s|@DIR@|$PWD|g; s|@HOST@|<pi-hostname>|" bbq-client.desktop.in > ~/.local/share/applications/bbq-client.desktop
+python3 bbq_client.py                        # fragt beim ersten Start nach der Adresse des Pi
+sed "s|@DIR@|$PWD|g" bbq-client.desktop.in > ~/.local/share/applications/bbq-client.desktop
 kbuildsycoca6                                # nur KDE: sonst startet das Menü noch den alten Eintrag
 ```
+
+Beim ersten Start zeigt das Fenster das Logo und ein Feld für die Adresse des Pi (z. B. `raspberrypi.local`,
+`192.168.0.10` oder mit Port `host:51235`). Nach der ersten erfolgreichen Verbindung steht sie in
+`~/.config/bbq/bbq.env` (`BBQ_HOST=…`) und wird beim nächsten Start benutzt. Andere Adresse: Zeile dort
+löschen, oder einmalig `python3 bbq_client.py <adresse>` bzw. `BBQ_HOST=<adresse>` (wird dann auch gemerkt).
 
 Klick auf eine Karte öffnet das Ziel: Enter oder Klick daneben übernimmt, Esc verwirft.
 
