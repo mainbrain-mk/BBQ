@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">ootan mõõtmistulemusi…</string>
+    <string name="change">Ühendus</string>
+    <string name="target">Siht %1$d °C</string>
+    <string name="target_none">Siht --</string>
+    <string name="target_dialog">Siht P%1$d</string>
+    <string name="set">Määra</string>
+    <string name="cancel">Tühista</string>
+    <string name="chart_empty">Rakenduse käivitamisest saadik pole mõõtmistulemusi</string>
+    <string name="chart_dashed">katkendjoon: siht</string>
+    <string name="pair_title">Seo Pi</string>
+    <string name="pair_hint">Termomeetriga ühendatud\nRaspberry Pi aadress:</string>
+    <string name="pair_placeholder">nt raspberrypi.local või 192.168.0.10</string>
+    <string name="pair">Seo</string>
+    <string name="pi_id">Pi ID %1$s: peab ühtima Pi ekraanil olevaga.</string>
+    <string name="code_label">Kood Pi ekraanilt</string>
+    <string name="confirm">Kinnita</string>
+    <string name="direct_title">Ilma Pita</string>
+    <string name="direct_hint">Telefon ühendub ise Bluetoothi kaudu. Termomeetriga saab olla ühendatud ainult üks seade: lülita selleks Pi välja.</string>
+    <string name="scan">Otsi termomeetrit</string>
+    <string name="scanning">otsin…</string>
+    <string name="ble_denied">Ilma Bluetoothi loata ei leia rakendus termomeetrit.</string>
+    <string name="back">Tagasi</string>
+    <string name="bad_address">Sisesta hostinimi või IP-aadress, nt raspberrypi.local</string>
+    <string name="none_found">Termomeetrit ei leitud: kas see on sisse lülitatud? Kas Pi on välja lülitatud? (Android 8–11: lülita sisse ka asukoht)</string>
+    <string name="bt_off">Bluetooth on välja lülitatud: lülita see sisse.</string>
+    <string name="connecting_to">ühendan: %1$s…</string>
+    <string name="pi_closed">Pi sulges ühenduse</string>
+    <string name="code_shown">Kood on nüüd Pi ekraanil (kehtib 2 minutit).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Vale kood, jäänud %d katse.</item>
+        <item quantity="other">Vale kood, jäänud %d katset.</item>
+    </plurals>
+    <string name="code_expired">Kood on aegunud või sisestati liiga palju kordi valesti: seo uuesti.</string>
+    <string name="busy">Liiga palju ebaõnnestunud katseid: seo uuesti 30 sekundi pärast.</string>
+    <string name="not_paired">See telefon pole (enam) Pi-ga seotud: seo see.</string>
+    <string name="other_cert">Pi esitab teistsuguse sertifikaadi kui sidumisel. Seo uuesti, kui see on uuesti seadistatud.</string>
+    <string name="ble_lost">Ühendus katkes, ühendan uuesti…</string>
+    <string name="ble_not_found">Termomeetrit %1$s ei leitud (väljas, levialast väljas või Pi-ga ühendatud?), otsin edasi…</string>
+    <string name="ble_connected">ühendatud</string>
+    <string name="ble_revoked">Rakendus ei tohi enam Bluetoothi kasutada: otsi uuesti valikust „Ühendus“.</string>
+    <string name="channel_status">Ühendus</string>
+    <string name="channel_alarm">Siht saavutatud</string>
+    <string name="connecting">ühendan…</string>
+    <string name="notify_readings">P1 %1$s (siht %2$d) · P2 %3$s (siht %4$d)</string>
+    <string name="alarm_title">P%1$d jõudis %2$d °C-ni</string>
+    <string name="alarm_text">Siht oli %1$d °C</string>
+    <string name="stop">Lõpeta</string>
+</resources>

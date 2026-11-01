@@ -1,0 +1,22 @@
+<p>Pre Bluetooth teplomer na mäso „Day_BBQ“ (hlási sa cez Bluetooth ako <i>Day_BBQ</i> alebo <i>Day_BQQ</i>) už neexistuje funkčná aplikácia výrobcu. Táto aplikácia ju nahrádza.</p>
+
+<p><b>Funkcie</b></p>
+<ul>
+<li>obe sondy (P1, P2) veľkým písmom s aktuálnou a cieľovou teplotou</li>
+<li>nastavenie cieľa otočným kolieskom (1 … 249 °C), zapíše sa do teplomera</li>
+<li>alarm so zvukom a vibráciou, hneď ako sonda dosiahne cieľ</li>
+<li>beží ďalej na pozadí, hodnoty sú v upozornení</li>
+<li>priebeh teplôt od spustenia aplikácie</li>
+<li>svetlý/tmavý vzhľad podľa systému, od Androidu 12 vo farbách tapety</li>
+<li>dostupná v 34 jazykoch podľa jazyka systému</li>
+</ul>
+
+<p><b>Dve cesty k teplomeru</b></p>
+<ul>
+<li><b>Priamo:</b> telefón sa k teplomeru pripojí sám cez Bluetooth LE.</li>
+<li><b>Cez Raspberry Pi:</b> Pi drží spojenie Bluetooth a posiela hodnoty šifrovane (TLS) v lokálnej sieti. Párovanie prebehne raz pomocou kódu z displeja Pi. Brána (<i>bbq.py</i>) je v rovnakom repozitári zdrojového kódu.</li>
+</ul>
+
+<p>Žiadne reklamy, žiadne sledovanie, žiadne dáta na internet: aplikácia komunikuje len s teplomerom alebo s vaším vlastným Pi.</p>
+
+<p>Nejde o oficiálny produkt výrobcu.</p>

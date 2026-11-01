@@ -1,0 +1,1 @@
+Day_BBQ maghőmérő: mérések, célok és riasztás Bluetooth-on vagy Pi-n át

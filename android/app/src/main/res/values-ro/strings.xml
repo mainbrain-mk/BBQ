@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">se așteaptă valori măsurate…</string>
+    <string name="change">Conexiune</string>
+    <string name="target">Țintă %1$d °C</string>
+    <string name="target_none">Țintă --</string>
+    <string name="target_dialog">Țintă P%1$d</string>
+    <string name="set">Setează</string>
+    <string name="cancel">Anulează</string>
+    <string name="chart_empty">Nicio valoare măsurată de la pornirea aplicației</string>
+    <string name="chart_dashed">punctat: țintă</string>
+    <string name="pair_title">Asociază Pi</string>
+    <string name="pair_hint">Adresa Raspberry Pi\nconectat la termometru:</string>
+    <string name="pair_placeholder">de ex. raspberrypi.local sau 192.168.0.10</string>
+    <string name="pair">Asociază</string>
+    <string name="pi_id">ID Pi %1$s: trebuie să coincidă cu cel de pe ecranul Pi.</string>
+    <string name="code_label">Codul de pe ecranul Pi</string>
+    <string name="confirm">Confirmă</string>
+    <string name="direct_title">Fără Pi</string>
+    <string name="direct_hint">Telefonul se conectează singur prin Bluetooth. La termometru poate fi conectat un singur dispozitiv: pentru asta, oprește Pi-ul.</string>
+    <string name="scan">Caută termometrul</string>
+    <string name="scanning">se caută…</string>
+    <string name="ble_denied">Fără permisiunea Bluetooth, aplicația nu poate găsi termometrul.</string>
+    <string name="back">Înapoi</string>
+    <string name="bad_address">Introdu un nume de gazdă sau o adresă IP, de ex. raspberrypi.local</string>
+    <string name="none_found">Niciun termometru găsit: este pornit? Este Pi-ul oprit? (Android 8–11: activează și locația)</string>
+    <string name="bt_off">Bluetooth este dezactivat: activează-l.</string>
+    <string name="connecting_to">conectare la %1$s…</string>
+    <string name="pi_closed">Pi-ul a închis conexiunea</string>
+    <string name="code_shown">Codul apare acum pe ecranul Pi (valabil 2 minute).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Cod greșit, mai rămâne %d încercare.</item>
+        <item quantity="few">Cod greșit, mai rămân %d încercări.</item>
+        <item quantity="other">Cod greșit, mai rămân %d de încercări.</item>
+    </plurals>
+    <string name="code_expired">Codul a expirat sau a fost introdus greșit de prea multe ori: asociază din nou.</string>
+    <string name="busy">Prea multe încercări eșuate: asociază din nou peste 30 de secunde.</string>
+    <string name="not_paired">Acest telefon nu este (sau nu mai este) asociat cu Pi-ul: asociază-l.</string>
+    <string name="other_cert">Pi-ul prezintă alt certificat decât la asociere. Asociază din nou dacă a fost reinstalat.</string>
+    <string name="ble_lost">Conexiune pierdută, se reconectează…</string>
+    <string name="ble_not_found">Termometrul %1$s nu a fost găsit (oprit, în afara razei sau conectat la Pi?), se caută în continuare…</string>
+    <string name="ble_connected">conectat</string>
+    <string name="ble_revoked">Aplicația nu mai are voie să folosească Bluetooth: caută din nou din „Conexiune”.</string>
+    <string name="channel_status">Conexiune</string>
+    <string name="channel_alarm">Țintă atinsă</string>
+    <string name="connecting">conectare…</string>
+    <string name="notify_readings">P1 %1$s (țintă %2$d) · P2 %3$s (țintă %4$d)</string>
+    <string name="alarm_title">P%1$d a atins %2$d °C</string>
+    <string name="alarm_text">Ținta era %1$d °C</string>
+    <string name="stop">Oprește</string>
+</resources>

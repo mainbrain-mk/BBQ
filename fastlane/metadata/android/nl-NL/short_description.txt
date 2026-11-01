@@ -1,0 +1,1 @@
+Vleesthermometer Day_BBQ: meetwaarden, doelen en alarm via Bluetooth of Pi

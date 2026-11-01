@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">чекам измерене вредности…</string>
+    <string name="change">Веза</string>
+    <string name="target">Циљ %1$d °C</string>
+    <string name="target_none">Циљ --</string>
+    <string name="target_dialog">Циљ P%1$d</string>
+    <string name="set">Постави</string>
+    <string name="cancel">Откажи</string>
+    <string name="chart_empty">Нема измерених вредности од покретања апликације</string>
+    <string name="chart_dashed">испрекидано: циљ</string>
+    <string name="pair_title">Упари Pi</string>
+    <string name="pair_hint">Адреса Raspberry Pi уређаја\nкоји је повезан са термометром:</string>
+    <string name="pair_placeholder">нпр. raspberrypi.local или 192.168.0.10</string>
+    <string name="pair">Упари</string>
+    <string name="pi_id">ID Pi уређаја %1$s: мора да се поклапа са оним на екрану Pi уређаја.</string>
+    <string name="code_label">Код са екрана Pi уређаја</string>
+    <string name="confirm">Потврди</string>
+    <string name="direct_title">Без Pi уређаја</string>
+    <string name="direct_hint">Телефон се сам повезује преко Bluetooth-а. Са термометром може бити повезан само један уређај: за то искључите Pi.</string>
+    <string name="scan">Тражи термометар</string>
+    <string name="scanning">тражим…</string>
+    <string name="ble_denied">Без дозволе за Bluetooth апликација не може да пронађе термометар.</string>
+    <string name="back">Назад</string>
+    <string name="bad_address">Унесите назив хоста или IP адресу, нпр. raspberrypi.local</string>
+    <string name="none_found">Термометар није пронађен: да ли је укључен? Да ли је Pi искључен? (Android 8–11: укључите и локацију)</string>
+    <string name="bt_off">Bluetooth је искључен: укључите га.</string>
+    <string name="connecting_to">повезивање са %1$s…</string>
+    <string name="pi_closed">Pi је прекинуо везу</string>
+    <string name="code_shown">Код је сада на екрану Pi уређаја (важи 2 минута).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Погрешан код, преостао је још %d покушај.</item>
+        <item quantity="few">Погрешан код, преостала су још %d покушаја.</item>
+        <item quantity="other">Погрешан код, преостало је још %d покушаја.</item>
+    </plurals>
+    <string name="code_expired">Код је истекао или је превише пута погрешно унет: поново упарите.</string>
+    <string name="busy">Превише неуспелих покушаја: поново упарите за 30 секунди.</string>
+    <string name="not_paired">Овај телефон није (више) упарен са Pi уређајем: упарите га.</string>
+    <string name="other_cert">Pi се јавља другим сертификатом него приликом упаривања. Поново упарите ако је поново подешен.</string>
+    <string name="ble_lost">Веза је прекинута, поновно повезивање…</string>
+    <string name="ble_not_found">Термометар %1$s није пронађен (искључен, ван домета или повезан са Pi уређајем?), тражим даље…</string>
+    <string name="ble_connected">повезано</string>
+    <string name="ble_revoked">Апликација више не сме да користи Bluetooth: поново претражите преко „Веза”.</string>
+    <string name="channel_status">Веза</string>
+    <string name="channel_alarm">Циљ достигнут</string>
+    <string name="connecting">повезивање…</string>
+    <string name="notify_readings">P1 %1$s (циљ %2$d) · P2 %3$s (циљ %4$d)</string>
+    <string name="alarm_title">P%1$d: достигнуто %2$d °C</string>
+    <string name="alarm_text">Циљ је био %1$d °C</string>
+    <string name="stop">Заврши</string>
+</resources>

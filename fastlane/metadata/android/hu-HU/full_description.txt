@@ -1,0 +1,22 @@
+<p>A „Day_BBQ” Bluetooth-os maghőmérőhöz (Bluetooth-on <i>Day_BBQ</i> vagy <i>Day_BQQ</i> néven jelentkezik) már nincs működő gyártói alkalmazás. Ez az alkalmazás pótolja.</p>
+
+<p><b>Funkciók</b></p>
+<ul>
+<li>mindkét szonda (P1, P2) nagy méretben, aktuális és célhőmérséklettel</li>
+<li>a cél beállítása görgővel (1 … 249 °C), amely a hőmérőbe íródik</li>
+<li>riasztás hanggal és rezgéssel, amint egy szonda eléri a célját</li>
+<li>a háttérben is fut, a mért értékek az értesítésben láthatók</li>
+<li>hőmérsékletgörbe az alkalmazás indítása óta</li>
+<li>világos/sötét a rendszer szerint, Android 12-től a háttérkép színeiben</li>
+<li>34 nyelven, a rendszer nyelve szerint</li>
+</ul>
+
+<p><b>Két út a hőmérőhöz</b></p>
+<ul>
+<li><b>Közvetlenül:</b> a telefon maga csatlakozik a hőmérőhöz Bluetooth LE-n.</li>
+<li><b>Raspberry Pi-n keresztül:</b> a Pi tartja a Bluetooth-kapcsolatot, és titkosítva (TLS) továbbítja a mért értékeket a helyi hálózaton. A párosítás egyszer történik, a Pi kijelzőjén megjelenő kóddal. Az átjáró (<i>bbq.py</i>) ugyanabban a forráskód-tárolóban található.</li>
+</ul>
+
+<p>Nincs reklám, nincs nyomkövetés, nem megy adat az internetre: az alkalmazás csak a hőmérővel vagy a saját Pi-ddel kommunikál.</p>
+
+<p>Nem a gyártó hivatalos terméke.</p>

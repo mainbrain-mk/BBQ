@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">ag fanacht ar thomhais…</string>
+    <string name="change">Ceangal</string>
+    <string name="target">Sprioc %1$d °C</string>
+    <string name="target_none">Sprioc --</string>
+    <string name="target_dialog">Sprioc P%1$d</string>
+    <string name="set">Socraigh</string>
+    <string name="cancel">Cealaigh</string>
+    <string name="chart_empty">Níl aon tomhas ann ó tosaíodh an aip</string>
+    <string name="chart_dashed">líne bhriste: sprioc</string>
+    <string name="pair_title">Péireáil Pi</string>
+    <string name="pair_hint">Seoladh an Raspberry Pi\natá ceangailte leis an teirmiméadar:</string>
+    <string name="pair_placeholder">m.sh. raspberrypi.local nó 192.168.0.10</string>
+    <string name="pair">Péireáil</string>
+    <string name="pi_id">Aitheantas Pi %1$s: caithfidh sé a bheith mar an gcéanna leis an gceann ar scáileán an Pi.</string>
+    <string name="code_label">Cód ó scáileán an Pi</string>
+    <string name="confirm">Deimhnigh</string>
+    <string name="direct_title">Gan Pi</string>
+    <string name="direct_hint">Ceanglaíonn an fón é féin trí Bluetooth. Ní féidir ach gléas amháin a bheith ceangailte leis an teirmiméadar: múch an Pi chuige sin.</string>
+    <string name="scan">Cuardaigh teirmiméadar</string>
+    <string name="scanning">ag cuardach…</string>
+    <string name="ble_denied">Gan cead Bluetooth ní féidir leis an aip an teirmiméadar a aimsiú.</string>
+    <string name="back">Siar</string>
+    <string name="bad_address">Cuir isteach ainm óstríomhaire nó seoladh IP, m.sh. raspberrypi.local</string>
+    <string name="none_found">Níor aimsíodh teirmiméadar: an bhfuil sé ar siúl? An bhfuil an Pi múchta? (Android 8–11: cuir an suíomh ar siúl freisin)</string>
+    <string name="bt_off">Tá Bluetooth múchta: cuir ar siúl é.</string>
+    <string name="connecting_to">ag ceangal le %1$s…</string>
+    <string name="pi_closed">Dhún an Pi an ceangal</string>
+    <string name="code_shown">Tá an cód ar scáileán an Pi anois (bailí ar feadh 2 nóiméad).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Cód mícheart, %d iarracht fágtha.</item>
+        <item quantity="two">Cód mícheart, %d iarracht fágtha.</item>
+        <item quantity="few">Cód mícheart, %d iarracht fágtha.</item>
+        <item quantity="many">Cód mícheart, %d n-iarracht fágtha.</item>
+        <item quantity="other">Cód mícheart, %d iarracht fágtha.</item>
+    </plurals>
+    <string name="code_expired">Tá an cód imithe in éag nó iontráladh go mícheart é an iomarca uaireanta: péireáil arís.</string>
+    <string name="busy">An iomarca iarrachtaí teipthe: péireáil arís i gceann 30 soicind.</string>
+    <string name="not_paired">Níl an fón seo péireáilte leis an Pi (a thuilleadh): péireáil é.</string>
+    <string name="other_cert">Tá teastas difriúil ag an Pi seachas an ceann a bhí aige le linn na péireála. Péireáil arís má socraíodh as an nua é.</string>
+    <string name="ble_lost">Cailleadh an ceangal, ag athcheangal…</string>
+    <string name="ble_not_found">Níor aimsíodh teirmiméadar %1$s (múchta, as raon nó ceangailte leis an Pi?), ag leanúint den chuardach…</string>
+    <string name="ble_connected">ceangailte</string>
+    <string name="ble_revoked">Níl cead ag an aip Bluetooth a úsáid a thuilleadh: cuardaigh arís faoi “Ceangal”.</string>
+    <string name="channel_status">Ceangal</string>
+    <string name="channel_alarm">Sprioc bainte amach</string>
+    <string name="connecting">ag ceangal…</string>
+    <string name="notify_readings">P1 %1$s (sprioc %2$d) · P2 %3$s (sprioc %4$d)</string>
+    <string name="alarm_title">Shroich P%1$d %2$d °C</string>
+    <string name="alarm_text">Ba é %1$d °C an sprioc</string>
+    <string name="stop">Stop</string>
+</resources>

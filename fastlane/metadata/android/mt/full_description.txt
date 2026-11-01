@@ -1,0 +1,22 @@
+<p>It-termometru tal-laħam Bluetooth “Day_BBQ” (jidher fuq il-Bluetooth bħala <i>Day_BBQ</i> jew <i>Day_BQQ</i>) m’għadx għandu app tal-manifattur li taħdem. Din l-app tissostitwiha.</p>
+
+<p><b>Funzjonijiet</b></p>
+<ul>
+<li>iż-żewġ sondi (P1, P2) kbar, bit-temperatura attwali u l-mira</li>
+<li>issettja l-mira b’rota (1 … 249 °C), tinkiteb fit-termometru</li>
+<li>allarm b’ħoss u vibrazzjoni hekk kif sonda tilħaq il-mira tagħha</li>
+<li>tibqa’ taħdem fl-isfond, il-qisien jidhru fin-notifika</li>
+<li>kurva tat-temperatura minn meta nbdiet l-app</li>
+<li>ċar/skur bħas-sistema, minn Android 12 bil-kuluri tal-isfond</li>
+<li>disponibbli f’34 lingwa, skont il-lingwa tas-sistema</li>
+</ul>
+
+<p><b>Żewġ modi biex tilħaq it-termometru</b></p>
+<ul>
+<li><b>Direttament:</b> it-telefon jaqbad waħdu mat-termometru permezz tal-Bluetooth LE.</li>
+<li><b>Permezz ta’ Raspberry Pi:</b> il-Pi jżomm il-konnessjoni Bluetooth u jibgħat il-qisien kriptati (TLS) fin-netwerk lokali. Il-qabda ssir darba biss b’kodiċi mill-iskrin tal-Pi. Il-gateway (<i>bbq.py</i>) jinsab fl-istess repożitorju tal-kodiċi sors.</li>
+</ul>
+
+<p>L-ebda reklamar, l-ebda traċċar, l-ebda data ma tintbagħat fuq l-internet: l-app titkellem biss mat-termometru jew mal-Pi tiegħek.</p>
+
+<p>Mhuwiex prodott uffiċjali tal-manifattur.</p>

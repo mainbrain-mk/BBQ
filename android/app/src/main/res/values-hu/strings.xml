@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">várakozás mérési értékekre…</string>
+    <string name="change">Kapcsolat</string>
+    <string name="target">Cél %1$d °C</string>
+    <string name="target_none">Cél --</string>
+    <string name="target_dialog">Cél P%1$d</string>
+    <string name="set">Beállítás</string>
+    <string name="cancel">Mégse</string>
+    <string name="chart_empty">Az alkalmazás indítása óta nincs mérési érték</string>
+    <string name="chart_dashed">szaggatott: cél</string>
+    <string name="pair_title">Pi párosítása</string>
+    <string name="pair_hint">A hőmérőhöz csatlakoztatott\nRaspberry Pi címe:</string>
+    <string name="pair_placeholder">pl. raspberrypi.local vagy 192.168.0.10</string>
+    <string name="pair">Párosítás</string>
+    <string name="pi_id">Pi-azonosító %1$s: egyeznie kell a Pi kijelzőjén láthatóval.</string>
+    <string name="code_label">Kód a Pi kijelzőjéről</string>
+    <string name="confirm">Megerősítés</string>
+    <string name="direct_title">Pi nélkül</string>
+    <string name="direct_hint">A telefon maga csatlakozik Bluetooth-on. A hőmérőhöz egyszerre csak egy eszköz csatlakozhat: ehhez kapcsold ki a Pi-t.</string>
+    <string name="scan">Hőmérő keresése</string>
+    <string name="scanning">keresés…</string>
+    <string name="ble_denied">Bluetooth-engedély nélkül az alkalmazás nem találja a hőmérőt.</string>
+    <string name="back">Vissza</string>
+    <string name="bad_address">Adj meg egy gépnevet vagy IP-címet, pl. raspberrypi.local</string>
+    <string name="none_found">Nem található hőmérő: be van kapcsolva? Ki van kapcsolva a Pi? (Android 8–11: a helymeghatározást is kapcsold be)</string>
+    <string name="bt_off">A Bluetooth ki van kapcsolva: kapcsold be.</string>
+    <string name="connecting_to">csatlakozás ide: %1$s…</string>
+    <string name="pi_closed">A Pi bontotta a kapcsolatot</string>
+    <string name="code_shown">A kód most megjelent a Pi kijelzőjén (2 percig érvényes).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Hibás kód, még %d próbálkozás.</item>
+        <item quantity="other">Hibás kód, még %d próbálkozás.</item>
+    </plurals>
+    <string name="code_expired">A kód lejárt, vagy túl sokszor adtad meg hibásan: párosíts újra.</string>
+    <string name="busy">Túl sok sikertelen próbálkozás: 30 másodperc múlva párosíts újra.</string>
+    <string name="not_paired">Ez a telefon nincs (már) párosítva a Pi-vel: párosítsd.</string>
+    <string name="other_cert">A Pi más tanúsítvánnyal jelentkezik, mint a párosításkor. Párosíts újra, ha újratelepítették.</string>
+    <string name="ble_lost">A kapcsolat megszakadt, újracsatlakozás…</string>
+    <string name="ble_not_found">A(z) %1$s hőmérő nem található (kikapcsolva, hatótávon kívül vagy a Pi-hez csatlakozik?), a keresés folytatódik…</string>
+    <string name="ble_connected">csatlakoztatva</string>
+    <string name="ble_revoked">Az alkalmazás már nem használhatja a Bluetooth-t: keress újra a „Kapcsolat” gombbal.</string>
+    <string name="channel_status">Kapcsolat</string>
+    <string name="channel_alarm">Cél elérve</string>
+    <string name="connecting">csatlakozás…</string>
+    <string name="notify_readings">P1 %1$s (cél %2$d) · P2 %3$s (cél %4$d)</string>
+    <string name="alarm_title">P%1$d elérte ezt: %2$d °C</string>
+    <string name="alarm_text">A cél %1$d °C volt</string>
+    <string name="stop">Leállítás</string>
+</resources>

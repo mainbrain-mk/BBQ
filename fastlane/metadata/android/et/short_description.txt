@@ -1,0 +1,1 @@
+Liha-termomeeter Day_BBQ: näidud, sihid ja häire Bluetoothi või Pi kaudu

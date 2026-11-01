@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Hauptseite -->
+    <string name="waiting">warte auf Messwerte …</string>
+    <string name="change">Verbindung</string>
+    <string name="target">Ziel %1$d °C</string>
+    <string name="target_none">Ziel --</string>
+    <string name="target_dialog">Ziel P%1$d</string>
+    <string name="set">Setzen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="chart_empty">Noch keine Messwerte seit dem Start der App</string>
+    <string name="chart_dashed">gestrichelt: Ziel</string>
+
+    <!-- Einrichtung -->
+    <string name="pair_title">Pi koppeln</string>
+    <string name="pair_hint">Adresse des Raspberry Pi,\nder mit dem Thermometer verbunden ist:</string>
+    <string name="pair_placeholder">z. B. raspberrypi.local oder 192.168.0.10</string>
+    <string name="pair">Koppeln</string>
+    <string name="pi_id">Pi-Kennung %1$s: muss mit der auf dem Pi-Display übereinstimmen.</string>
+    <string name="code_label">Code vom Pi-Display</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="direct_title">Ohne Pi</string>
+    <string name="direct_hint">Das Handy verbindet sich selbst per Bluetooth. Nur ein Gerät kann mit dem Thermometer verbunden sein: den Pi dafür ausschalten.</string>
+    <string name="scan">Thermometer suchen</string>
+    <string name="scanning">suche …</string>
+    <string name="ble_denied">Ohne Bluetooth-Recht findet die App das Thermometer nicht.</string>
+    <string name="back">Zurück</string>
+
+    <!-- Statuszeile -->
+    <string name="bad_address">Bitte Hostname oder IP-Adresse eingeben, z. B. raspberrypi.local</string>
+    <string name="none_found">Kein Thermometer gefunden: eingeschaltet? Pi aus? (Android 8 bis 11: auch Standort einschalten)</string>
+    <string name="bt_off">Bluetooth ist aus: bitte einschalten.</string>
+    <string name="connecting_to">verbinde mit %1$s …</string>
+    <string name="pi_closed">Pi hat die Verbindung beendet</string>
+    <string name="code_shown">Der Code steht jetzt auf dem Pi-Display (2 Minuten gültig).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Falscher Code, noch %d Versuch.</item>
+        <item quantity="other">Falscher Code, noch %d Versuche.</item>
+    </plurals>
+    <string name="code_expired">Code abgelaufen oder zu oft falsch: bitte erneut koppeln.</string>
+    <string name="busy">Zu viele Fehlversuche: in 30 Sekunden erneut koppeln.</string>
+    <string name="not_paired">Dieses Handy ist auf dem Pi nicht (mehr) gekoppelt: bitte koppeln.</string>
+    <string name="other_cert">Der Pi meldet sich mit einem anderen Zertifikat als beim Koppeln. Neu koppeln, wenn er neu eingerichtet wurde.</string>
+    <string name="ble_lost">Verbindung verloren, verbinde neu …</string>
+    <string name="ble_not_found">Thermometer %1$s nicht gefunden (aus, außer Reichweite oder Pi verbunden?), suche weiter …</string>
+    <string name="ble_connected">verbunden</string>
+    <string name="ble_revoked">Die App darf Bluetooth nicht mehr nutzen: unter „Verbindung“ neu suchen.</string>
+
+    <!-- Benachrichtigungen -->
+    <string name="channel_status">Verbindung</string>
+    <string name="channel_alarm">Ziel erreicht</string>
+    <string name="connecting">verbinde …</string>
+    <string name="notify_readings">P1 %1$s (Ziel %2$d) · P2 %3$s (Ziel %4$d)</string>
+    <string name="alarm_title">P%1$d hat %2$d °C erreicht</string>
+    <string name="alarm_text">Ziel war %1$d °C</string>
+    <string name="stop">Beenden</string>
+</resources>

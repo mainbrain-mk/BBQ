@@ -1,0 +1,26 @@
+# Vorlage fuer den Antrag bei F-Droid: als metadata/io.github.mainbrain_mk.bbq.yml in fdroiddata einreichen
+# (https://gitlab.com/fdroid/fdroiddata). Texte, Icon und Screenshots holt F-Droid aus fastlane/ im Repo.
+Categories:
+  - Connectivity
+License: MIT
+AuthorName: mainbrain-mk
+SourceCode: https://github.com/mainbrain-mk/BBQ
+IssueTracker: https://github.com/mainbrain-mk/BBQ/issues
+
+AutoName: BBQ
+
+RepoType: git
+Repo: https://github.com/mainbrain-mk/BBQ.git
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 100
+    commit: v1.0
+    subdir: android/app
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.0'
+CurrentVersionCode: 100

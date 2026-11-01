@@ -1,0 +1,22 @@
+<p>Il termometro per carne Bluetooth «Day_BBQ» (si annuncia via Bluetooth come <i>Day_BBQ</i> o <i>Day_BQQ</i>) non ha più un’app del produttore funzionante. Questa app la sostituisce.</p>
+
+<p><b>Funzioni</b></p>
+<ul>
+<li>entrambe le sonde (P1, P2) in grande, con temperatura attuale e obiettivo</li>
+<li>obiettivo impostabile con una rotella (1 … 249 °C), scritto nel termometro</li>
+<li>allarme con suono e vibrazione appena una sonda raggiunge l’obiettivo</li>
+<li>continua a funzionare in background, con i valori nella notifica</li>
+<li>andamento delle temperature dall’avvio dell’app</li>
+<li>chiaro/scuro come il sistema, con i colori dello sfondo da Android 12</li>
+<li>disponibile in 34 lingue, secondo la lingua del sistema</li>
+</ul>
+
+<p><b>Due modi per raggiungere il termometro</b></p>
+<ul>
+<li><b>Diretto:</b> il telefono si collega da solo al termometro via Bluetooth LE.</li>
+<li><b>Tramite un Raspberry Pi:</b> il Pi mantiene la connessione Bluetooth e trasmette i valori cifrati (TLS) nella rete locale. L’associazione si fa una sola volta con un codice mostrato sul display del Pi. Il gateway (<i>bbq.py</i>) si trova nello stesso repository del codice sorgente.</li>
+</ul>
+
+<p>Niente pubblicità, niente tracciamento, nessun dato inviato a Internet: l’app parla solo con il termometro o con il tuo Pi.</p>
+
+<p>Non è un prodotto ufficiale del produttore.</p>

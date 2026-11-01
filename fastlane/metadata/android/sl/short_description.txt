@@ -1,0 +1,1 @@
+Termometer za meso Day_BBQ: vrednosti, cilji in alarm prek Bluetootha ali Pi-ja

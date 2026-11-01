@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">qed nistenna l-qisien…</string>
+    <string name="change">Konnessjoni</string>
+    <string name="target">Mira %1$d °C</string>
+    <string name="target_none">Mira --</string>
+    <string name="target_dialog">Mira P%1$d</string>
+    <string name="set">Issettja</string>
+    <string name="cancel">Ikkanċella</string>
+    <string name="chart_empty">L-ebda qisien minn meta nbdiet l-app</string>
+    <string name="chart_dashed">linja maqsuma: mira</string>
+    <string name="pair_title">Qabbad il-Pi</string>
+    <string name="pair_hint">L-indirizz tar-Raspberry Pi\nli huwa mqabbad mat-termometru:</string>
+    <string name="pair_placeholder">eż. raspberrypi.local jew 192.168.0.10</string>
+    <string name="pair">Qabbad</string>
+    <string name="pi_id">ID tal-Pi %1$s: irid ikun l-istess bħal dak fuq l-iskrin tal-Pi.</string>
+    <string name="code_label">Kodiċi mill-iskrin tal-Pi</string>
+    <string name="confirm">Ikkonferma</string>
+    <string name="direct_title">Mingħajr Pi</string>
+    <string name="direct_hint">It-telefon jaqbad waħdu permezz tal-Bluetooth. Apparat wieħed biss jista’ jkun imqabbad mat-termometru: għalhekk itfi l-Pi.</string>
+    <string name="scan">Fittex it-termometru</string>
+    <string name="scanning">qed infittex…</string>
+    <string name="ble_denied">Mingħajr il-permess tal-Bluetooth l-app ma tistax issib it-termometru.</string>
+    <string name="back">Lura</string>
+    <string name="bad_address">Daħħal isem tal-host jew indirizz IP, eż. raspberrypi.local</string>
+    <string name="none_found">Ma nstab l-ebda termometru: mixgħul? Il-Pi mitfi? (Android 8–11: ixgħel ukoll il-post)</string>
+    <string name="bt_off">Il-Bluetooth mitfi: ixgħlu.</string>
+    <string name="connecting_to">qed nikkonnettja ma’ %1$s…</string>
+    <string name="pi_closed">Il-Pi għalaq il-konnessjoni</string>
+    <string name="code_shown">Il-kodiċi issa jidher fuq l-iskrin tal-Pi (validu għal 2 minuti).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Kodiċi ħażin, fadal %d tentattiv.</item>
+        <item quantity="two">Kodiċi ħażin, fadal %d tentattivi.</item>
+        <item quantity="few">Kodiċi ħażin, fadal %d tentattivi.</item>
+        <item quantity="many">Kodiċi ħażin, fadal %d-il tentattiv.</item>
+        <item quantity="other">Kodiċi ħażin, fadal %d tentattiv.</item>
+    </plurals>
+    <string name="code_expired">Il-kodiċi skada jew iddaħħal ħażin wisq drabi: erġa’ qabbad.</string>
+    <string name="busy">Wisq tentattivi falluti: erġa’ qabbad fi 30 sekonda.</string>
+    <string name="not_paired">Dan it-telefon mhuwiex (aktar) imqabbad mal-Pi: qabbdu.</string>
+    <string name="other_cert">Il-Pi qed juri ċertifikat differenti minn dak tal-qabda. Erġa’ qabbad jekk ġie installat mill-ġdid.</string>
+    <string name="ble_lost">Il-konnessjoni ntilfet, qed nerġa’ nikkonnettja…</string>
+    <string name="ble_not_found">It-termometru %1$s ma nstabx (mitfi, barra mill-firxa jew imqabbad mal-Pi?), qed nibqa’ nfittex…</string>
+    <string name="ble_connected">konness</string>
+    <string name="ble_revoked">L-app m’għadhiex tista’ tuża l-Bluetooth: erġa’ fittex minn “Konnessjoni”.</string>
+    <string name="channel_status">Konnessjoni</string>
+    <string name="channel_alarm">Il-mira ntlaħqet</string>
+    <string name="connecting">qed nikkonnettja…</string>
+    <string name="notify_readings">P1 %1$s (mira %2$d) · P2 %3$s (mira %4$d)</string>
+    <string name="alarm_title">P%1$d laħaq %2$d °C</string>
+    <string name="alarm_text">Il-mira kienet %1$d °C</string>
+    <string name="stop">Waqqaf</string>
+</resources>

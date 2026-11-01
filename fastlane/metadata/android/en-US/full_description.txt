@@ -1,0 +1,22 @@
+<p>The Bluetooth meat thermometer "Day_BBQ" (advertises as <i>Day_BBQ</i> or <i>Day_BQQ</i>) no longer has a working vendor app. This app replaces it.</p>
+
+<p><b>Features</b></p>
+<ul>
+<li>both probes (P1, P2) shown large with current and target temperature</li>
+<li>set the target with a number wheel (1 … 249 °C); it is written to the thermometer</li>
+<li>alarm with sound and vibration as soon as a probe reaches its target</li>
+<li>keeps running in the background, readings shown in the notification</li>
+<li>temperature history since the app was started</li>
+<li>follows the system light/dark theme, Material You colors on Android 12+</li>
+<li>available in 34 languages, following the system language</li>
+</ul>
+
+<p><b>Two ways to the thermometer</b></p>
+<ul>
+<li><b>Direct:</b> the phone connects to the thermometer via Bluetooth LE itself.</li>
+<li><b>Via a Raspberry Pi:</b> the Pi holds the Bluetooth connection and serves the readings encrypted (TLS) on the local network. Pairing is done once with a code shown on the Pi's display. The gateway (<i>bbq.py</i>) lives in the same source repository.</li>
+</ul>
+
+<p>No ads, no tracking, no data sent to the internet: the app only talks to the thermometer or your own Pi.</p>
+
+<p>Not an official product of the manufacturer.</p>

@@ -31,6 +31,7 @@ data class UiState(
     val running: Boolean = false, // Verbindung soll stehen (Dienst laeuft)
     val found: Map<String, String> = emptyMap(), // beim Suchen gefundene Thermometer: Adresse -> "Name · RSSI"
     val scanning: Boolean = false,
+    val wrongCodes: Int = 0, // zaehlt falsche Codes: das Eingabefeld leert sich dann
 )
 
 /** Verbindung zum Pi oder direkt zum Thermometer (Ble) und Zustand der App, geteilt von Oberflaeche und Dienst.
@@ -48,7 +49,7 @@ object Bbq {
     @Volatile private var note = "" // Grund, warum es zur Kopplung zurueckging
     @Volatile private var seenFp = ""
     @Volatile private var viaBle = false // laufende Verbindung geht direkt zum Thermometer
-    @Volatile var choosing = false // "Ändern" gedrueckt: in der Einrichtung bleiben, nicht von selbst verbinden
+    @Volatile var choosing = false // "Verbindung" gedrueckt: in der Einrichtung bleiben, nicht von selbst verbinden
         private set
     private var host: Host? = null
     private var token = ""
@@ -87,7 +88,7 @@ object Bbq {
         state.update { it.copy(running = false) }
     }
 
-    /** Knopf "Ändern": trennen und zur Einrichtung, um Pi oder Thermometer zu wechseln. */
+    /** Knopf "Verbindung": trennen und zur Einrichtung, um Pi oder Thermometer zu wechseln. */
     fun change() {
         stop()
         choosing = true
@@ -98,7 +99,7 @@ object Bbq {
     fun pair(address: String) {
         val h = parseHost(address)
         if (h == null) {
-            state.update { it.copy(status = "Bitte Hostname oder IP-Adresse eingeben, z. B. raspberrypi.local") }
+            state.update { it.copy(status = ctx.getString(R.string.bad_address)) }
             return
         }
         if (h == host && token.isNotEmpty()) { // schon gekoppelt, z. B. zurueck vom Direktbetrieb: kein neuer Code
@@ -119,10 +120,10 @@ object Bbq {
         val ok = Ble.scan(ctx, { addr, name, rssi -> state.update { it.copy(found = it.found + (addr to "$name · $rssi dBm")) } }) {
             state.update {
                 it.copy(scanning = false, status = if (it.found.isNotEmpty()) "" else
-                    "Kein Thermometer gefunden: eingeschaltet? Pi aus? (Android 8 bis 11: auch Standort einschalten)")
+                    ctx.getString(R.string.none_found))
             }
         }
-        if (!ok) state.update { it.copy(scanning = false, status = "Bluetooth ist aus: bitte einschalten.") }
+        if (!ok) state.update { it.copy(scanning = false, status = ctx.getString(R.string.bt_off)) }
     }
 
     /** Gefundenes Thermometer angetippt: ab jetzt direkt mit ihm verbinden. */
@@ -163,7 +164,7 @@ object Bbq {
         Ble.close()
         val s = socket ?: return
         socket = null
-        out.execute { // TLS schickt beim Schliessen noch etwas: nie auf dem UI-Thread ("Ändern", "Beenden")
+        out.execute { // TLS schickt beim Schliessen noch etwas: nie auf dem UI-Thread ("Verbindung", "Beenden")
             try {
                 s.close()
             } catch (_: IOException) {
@@ -174,10 +175,10 @@ object Bbq {
     private fun run(gen: Int) {
         while (gen == generation) {
             val h = host ?: return
-            state.update { it.copy(status = "verbinde mit $h …") }
+            state.update { it.copy(status = ctx.getString(R.string.connecting_to, h.toString())) }
             try {
-                val ctx = SSLContext.getInstance("TLS").apply { init(null, arrayOf(trust), null) }
-                val s = ctx.socketFactory.createSocket() as SSLSocket
+                val tls = SSLContext.getInstance("TLS").apply { init(null, arrayOf(trust), null) }
+                val s = tls.socketFactory.createSocket() as SSLSocket
                 socket = s
                 s.connect(InetSocketAddress(h.name, h.port), 5000)
                 s.soTimeout = 60_000 // eine Minute gar nichts vom Pi (Pi aus, WLAN weg): neu verbinden
@@ -187,7 +188,7 @@ object Bbq {
                 var buf = ""
                 while (gen == generation) {
                     val n = input.read(chunk) // Messzeilen enden mit \r, nicht \n: daher stueckweise lesen
-                    if (n < 0) throw IOException("Pi hat die Verbindung beendet")
+                    if (n < 0) throw IOException(ctx.getString(R.string.pi_closed))
                     buf = onData(buf + String(chunk, 0, n))
                 }
             } catch (e: Exception) {
@@ -229,11 +230,14 @@ object Bbq {
             "BBQ/2" -> write(if (mode == "pair") "pair Handy ${Build.MODEL}" else "auth $token")
             "code" -> state.update {
                 it.copy(codeAsked = true, piId = "${seenFp.take(4)} ${seenFp.drop(4).take(4)}",
-                    status = "Der Code steht jetzt auf dem Pi-Display (2 Minuten gültig).")
+                    status = ctx.getString(R.string.code_shown))
             }
-            "wrong" -> state.update { it.copy(status = "Falscher Code, noch $arg Versuch(e).") }
-            "expired" -> state.update { it.copy(codeAsked = false, status = "Code abgelaufen oder zu oft falsch: bitte erneut koppeln.") }
-            "busy" -> state.update { it.copy(status = "Zu viele Fehlversuche: in 30 Sekunden erneut koppeln.") }
+            "wrong" -> {
+                val n = arg.toIntOrNull() ?: 0
+                state.update { it.copy(status = ctx.resources.getQuantityString(R.plurals.wrong_code, n, n), wrongCodes = it.wrongCodes + 1) }
+            }
+            "expired" -> state.update { it.copy(codeAsked = false, status = ctx.getString(R.string.code_expired)) }
+            "busy" -> state.update { it.copy(status = ctx.getString(R.string.busy)) }
             "paired" -> {
                 token = arg
                 pin = seenFp
@@ -246,7 +250,7 @@ object Bbq {
                 state.update { it.copy(status = "", codeAsked = false, page = it.view, running = true) }
             }
             "denied" -> {
-                toSetup("Dieses Handy ist auf dem Pi nicht (mehr) gekoppelt: bitte koppeln.")
+                toSetup(ctx.getString(R.string.not_paired))
                 close()
             }
         }
@@ -275,7 +279,7 @@ object Bbq {
         override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
             seenFp = MessageDigest.getInstance("SHA-256").digest(chain[0].encoded).joinToString("") { "%02X".format(it) }
             if (mode != "pair" && seenFp != pin) {
-                toSetup("Der Pi meldet sich mit einem anderen Zertifikat als beim Koppeln. Neu koppeln, wenn er neu eingerichtet wurde.")
+                toSetup(ctx.getString(R.string.other_cert))
                 throw CertificateException("Zertifikat passt nicht zum gekoppelten Pi")
             }
         }

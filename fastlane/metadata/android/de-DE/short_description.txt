@@ -1,0 +1,1 @@
+Day_BBQ-Fleischthermometer: Werte, Ziele und Alarm per Bluetooth oder Pi

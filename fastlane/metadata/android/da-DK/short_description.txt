@@ -1,0 +1,1 @@
+Stegetermometer Day_BBQ: målinger, mål og alarm via Bluetooth eller Pi

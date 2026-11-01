@@ -84,6 +84,12 @@ cd android && ANDROID_HOME=~/Android/Sdk ./gradlew assembleDebug testDebugUnitTe
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
+Die App folgt der Systemsprache (ab Android 13 auch pro App unter Einstellungen → Apps → BBQ → Sprache):
+Englisch (Standard, `app/src/main/res/values/strings.xml`) und 33 weitere europäische Sprachen in
+`values-<code>/`: alle EU-Amtssprachen (bg, cs, da, de, el, es, et, fi, fr, ga, hr, hu, it, lt, lv, mt, nl, pl, pt,
+ro, sk, sl, sv) sowie bs, ca, is, mk, nb, ru, sq, sr, tr und uk. Eine weitere Sprache:
+`values-<code>/strings.xml` mit denselben Namen anlegen, Store-Texte unter `fastlane/metadata/android/<locale>/`.
+
 Koppeln wie am Rechner (Adresse, **Koppeln**, Pi-Kennung vergleichen, Code). Danach hält ein Dienst die Verbindung
 auch bei ausgeschaltetem Bildschirm: Die Benachrichtigung zeigt beide Werte, erreicht ein Fühler sein Ziel, kommt
 ein Alarm mit Ton und Vibration (erneut erst, wenn er 2 °C darunter war). Dafür bleiben CPU und WLAN wach, solange
@@ -94,8 +100,46 @@ Handy nicht, die IP-Adresse des Pi eintragen.
 bis Android 11 nach dem Standort, der dann auch eingeschaltet sein muss) und den gefundenen Eintrag antippen. Das Handy
 hält dann selbst die BLE-Verbindung, alles andere (Verlauf, Ziele, Alarm) bleibt gleich; das WLAN muss dafür nicht
 wach bleiben. Der Pi muss dazu aus sein (oder ruhen), sonst ist das Thermometer schon verbunden. Kommen keine Messwerte,
-führt **Ändern** neben der Statuszeile zurück zur Einrichtung: dort mit derselben Pi-Adresse wieder auf **Koppeln**
+führt **Verbindung** neben der Statuszeile zurück zur Einrichtung: dort mit derselben Pi-Adresse wieder auf **Koppeln**
 (ein gekoppelter Pi braucht keinen neuen Code) oder **Zurück** zur bisherigen Verbindung.
+
+### Signierte APK und F-Droid
+
+Einmalig einen Release-Schlüssel anlegen, **außerhalb des Repos** aufheben und sichern: Updates müssen immer mit
+demselben Schlüssel signiert sein, sonst lassen sie sich nicht über die installierte App spielen.
+
+```bash
+keytool -genkeypair -v -keystore ~/schluessel/bbq-release.jks -alias bbq -keyalg RSA -keysize 4096 -validity 10000
+```
+
+`android/keystore.properties.example` als `android/keystore.properties` kopieren (steht in `.gitignore`) und Pfad
+und Passwörter eintragen. Dann:
+
+```bash
+cd android && ./gradlew clean assembleRelease
+apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk
+```
+
+(`apksigner` liegt in `$ANDROID_HOME/build-tools/<version>/`.)
+
+Ohne `keystore.properties` entsteht `app-release-unsigned.apk`.
+
+**Versionen:** Start ist 1.0. Ein Fehlerbehebungs-Update zählt +0.01 (1.0 → 1.01 → 1.02), ein kleines
+Funktions-Update springt auf das nächste Zehntel (1.02 → 1.1, dann 1.11, 1.12 …); zehn Fixes in Folge ergeben
+ebenso das nächste Zehntel (1.09 → 1.1). `versionCode` ist immer `versionName` × 100 (1.0 → 100, 1.01 → 101,
+1.1 → 110, 1.12 → 112), so steigt er mit jeder Version. Für ein Release beide Werte in
+`android/app/build.gradle.kts` setzen, ab 1.01 `fastlane/metadata/android/*/changelogs/<versionCode>.txt` (was neu ist)
+anlegen und den Stand als `v<versionName>` taggen (z. B. `git tag v1.01 && git push origin v1.01`).
+
+Store-Texte, Icon und Screenshot liegen im Fastlane-Format unter [`fastlane/metadata/android`](fastlane/metadata/android).
+Die lesen F-Droid und IzzyOnDroid von selbst.
+
+- **IzzyOnDroid** (schnell): die signierte APK als Asset an ein GitHub-Release zum Tag hängen, dann die Aufnahme
+  beantragen (Anleitung auf apt.izzysoft.de/fdroid). Izzy übernimmt künftige Releases automatisch.
+- **F-Droid** (offizielles Repo): F-Droid baut selbst aus dem Quellcode und signiert mit eigenem Schlüssel. Die
+  Vorlage [`android/fdroid/io.github.mainbrain_mk.bbq.yml`](android/fdroid/io.github.mainbrain_mk.bbq.yml) als
+  Merge Request in [fdroiddata](https://gitlab.com/fdroid/fdroiddata) einreichen. Neue Tags erkennt F-Droid dann
+  selbst.
 
 ## Protokoll
 

@@ -1,0 +1,1 @@
+Day_BBQ meat thermometer: readings, targets and alarm via Bluetooth or a Pi

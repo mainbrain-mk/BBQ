@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">čekám na naměřené hodnoty…</string>
+    <string name="change">Připojení</string>
+    <string name="target">Cíl %1$d °C</string>
+    <string name="target_none">Cíl --</string>
+    <string name="target_dialog">Cíl P%1$d</string>
+    <string name="set">Nastavit</string>
+    <string name="cancel">Zrušit</string>
+    <string name="chart_empty">Od spuštění aplikace zatím žádné hodnoty</string>
+    <string name="chart_dashed">čárkovaně: cíl</string>
+    <string name="pair_title">Spárovat Pi</string>
+    <string name="pair_hint">Adresa Raspberry Pi,\nkteré je připojené k teploměru:</string>
+    <string name="pair_placeholder">např. raspberrypi.local nebo 192.168.0.10</string>
+    <string name="pair">Spárovat</string>
+    <string name="pi_id">ID Pi %1$s: musí odpovídat údaji na displeji Pi.</string>
+    <string name="code_label">Kód z displeje Pi</string>
+    <string name="confirm">Potvrdit</string>
+    <string name="direct_title">Bez Pi</string>
+    <string name="direct_hint">Telefon se připojí sám přes Bluetooth. K teploměru může být připojeno jen jedno zařízení: Pi proto vypněte.</string>
+    <string name="scan">Hledat teploměr</string>
+    <string name="scanning">hledám…</string>
+    <string name="ble_denied">Bez oprávnění Bluetooth aplikace teploměr nenajde.</string>
+    <string name="back">Zpět</string>
+    <string name="bad_address">Zadejte název hostitele nebo IP adresu, např. raspberrypi.local</string>
+    <string name="none_found">Teploměr nenalezen: je zapnutý? Je Pi vypnuté? (Android 8 až 11: zapněte také polohu)</string>
+    <string name="bt_off">Bluetooth je vypnutý: zapněte ho.</string>
+    <string name="connecting_to">připojuji k %1$s…</string>
+    <string name="pi_closed">Pi ukončilo spojení</string>
+    <string name="code_shown">Kód je nyní na displeji Pi (platí 2 minuty).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Chybný kód, zbývá %d pokus.</item>
+        <item quantity="few">Chybný kód, zbývají %d pokusy.</item>
+        <item quantity="many">Chybný kód, zbývá %d pokusu.</item>
+        <item quantity="other">Chybný kód, zbývá %d pokusů.</item>
+    </plurals>
+    <string name="code_expired">Kód vypršel nebo byl příliš často zadán špatně: spárujte znovu.</string>
+    <string name="busy">Příliš mnoho neúspěšných pokusů: spárujte znovu za 30 sekund.</string>
+    <string name="not_paired">Tento telefon není (už) spárován s Pi: spárujte ho.</string>
+    <string name="other_cert">Pi se hlásí jiným certifikátem než při párování. Pokud bylo nastaveno znovu, spárujte ho znovu.</string>
+    <string name="ble_lost">Spojení ztraceno, připojuji znovu…</string>
+    <string name="ble_not_found">Teploměr %1$s nenalezen (vypnutý, mimo dosah nebo připojený k Pi?), hledám dál…</string>
+    <string name="ble_connected">připojeno</string>
+    <string name="ble_revoked">Aplikace už nesmí používat Bluetooth: vyhledejte znovu přes „Připojení“.</string>
+    <string name="channel_status">Připojení</string>
+    <string name="channel_alarm">Cíl dosažen</string>
+    <string name="connecting">připojuji…</string>
+    <string name="notify_readings">P1 %1$s (cíl %2$d) · P2 %3$s (cíl %4$d)</string>
+    <string name="alarm_title">P%1$d: dosaženo %2$d °C</string>
+    <string name="alarm_text">Cíl byl %1$d °C</string>
+    <string name="stop">Ukončit</string>
+</resources>

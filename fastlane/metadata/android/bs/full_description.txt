@@ -1,0 +1,22 @@
+<p>Za Bluetooth termometar za meso „Day_BBQ” (javlja se putem Bluetootha kao <i>Day_BBQ</i> ili <i>Day_BQQ</i>) više ne postoji ispravna aplikacija proizvođača. Ova aplikacija je zamjenjuje.</p>
+
+<p><b>Funkcije</b></p>
+<ul>
+<li>obje sonde (P1, P2) prikazane krupno, s trenutnom i ciljnom temperaturom</li>
+<li>postavljanje cilja točkićem (1 … 249 °C), upisuje se u termometar</li>
+<li>alarm sa zvukom i vibracijom čim sonda dostigne cilj</li>
+<li>radi i u pozadini, vrijednosti su u obavještenju</li>
+<li>tok temperature od pokretanja aplikacije</li>
+<li>svijetlo/tamno prema sistemu, od Androida 12 u bojama pozadine</li>
+<li>dostupna na 34 jezika, prema jeziku sistema</li>
+</ul>
+
+<p><b>Dva puta do termometra</b></p>
+<ul>
+<li><b>Direktno:</b> telefon se sam povezuje s termometrom putem Bluetooth LE.</li>
+<li><b>Preko Raspberry Pija:</b> Pi drži Bluetooth vezu i šalje vrijednosti šifrovano (TLS) u lokalnoj mreži. Uparivanje se obavlja jednom, kodom s ekrana Pija. Gateway (<i>bbq.py</i>) nalazi se u istom repozitoriju izvornog koda.</li>
+</ul>
+
+<p>Bez reklama, bez praćenja, bez slanja podataka na internet: aplikacija komunicira samo s termometrom ili s vašim Pijem.</p>
+
+<p>Nije zvanični proizvod proizvođača.</p>

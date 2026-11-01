@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">s’estan esperant mesures…</string>
+    <string name="change">Connexió</string>
+    <string name="target">Objectiu %1$d °C</string>
+    <string name="target_none">Objectiu --</string>
+    <string name="target_dialog">Objectiu P%1$d</string>
+    <string name="set">Estableix</string>
+    <string name="cancel">Cancel·la</string>
+    <string name="chart_empty">Cap mesura des que s’ha iniciat l’app</string>
+    <string name="chart_dashed">discontínua: objectiu</string>
+    <string name="pair_title">Vincula la Pi</string>
+    <string name="pair_hint">Adreça de la Raspberry Pi\nconnectada al termòmetre:</string>
+    <string name="pair_placeholder">p. ex. raspberrypi.local o 192.168.0.10</string>
+    <string name="pair">Vincula</string>
+    <string name="pi_id">ID de la Pi %1$s: ha de coincidir amb el de la pantalla de la Pi.</string>
+    <string name="code_label">Codi de la pantalla de la Pi</string>
+    <string name="confirm">Confirma</string>
+    <string name="direct_title">Sense Pi</string>
+    <string name="direct_hint">El mòbil es connecta directament per Bluetooth. Només un dispositiu pot estar connectat al termòmetre: per això, apaga la Pi.</string>
+    <string name="scan">Cerca el termòmetre</string>
+    <string name="scanning">s’està cercant…</string>
+    <string name="ble_denied">Sense el permís de Bluetooth, l’app no pot trobar el termòmetre.</string>
+    <string name="back">Enrere</string>
+    <string name="bad_address">Introdueix un nom d’amfitrió o una adreça IP, p. ex. raspberrypi.local</string>
+    <string name="none_found">No s’ha trobat cap termòmetre: està engegat? La Pi està apagada? (Android 8–11: activa també la ubicació)</string>
+    <string name="bt_off">El Bluetooth està desactivat: activa’l.</string>
+    <string name="connecting_to">s’està connectant a %1$s…</string>
+    <string name="pi_closed">La Pi ha tancat la connexió</string>
+    <string name="code_shown">El codi apareix ara a la pantalla de la Pi (vàlid 2 minuts).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Codi incorrecte, queda %d intent.</item>
+        <item quantity="many">Codi incorrecte, queden %d intents.</item>
+        <item quantity="other">Codi incorrecte, queden %d intents.</item>
+    </plurals>
+    <string name="code_expired">El codi ha caducat o s’ha introduït malament massa vegades: torna a vincular.</string>
+    <string name="busy">Massa intents fallits: torna a vincular d’aquí a 30 segons.</string>
+    <string name="not_paired">Aquest mòbil no està (o ja no està) vinculat amb la Pi: vincula’l.</string>
+    <string name="other_cert">La Pi presenta un certificat diferent del de la vinculació. Torna a vincular si s’ha reinstal·lat.</string>
+    <string name="ble_lost">S’ha perdut la connexió, s’està reconnectant…</string>
+    <string name="ble_not_found">No s’ha trobat el termòmetre %1$s (apagat, fora d’abast o connectat a la Pi?), se segueix cercant…</string>
+    <string name="ble_connected">connectat</string>
+    <string name="ble_revoked">L’app ja no pot fer servir el Bluetooth: torna a cercar a «Connexió».</string>
+    <string name="channel_status">Connexió</string>
+    <string name="channel_alarm">Objectiu assolit</string>
+    <string name="connecting">s’està connectant…</string>
+    <string name="notify_readings">P1 %1$s (objectiu %2$d) · P2 %3$s (objectiu %4$d)</string>
+    <string name="alarm_title">P%1$d ha arribat a %2$d °C</string>
+    <string name="alarm_text">L’objectiu era %1$d °C</string>
+    <string name="stop">Atura</string>
+</resources>
