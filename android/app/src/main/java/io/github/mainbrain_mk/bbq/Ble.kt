@@ -77,8 +77,7 @@ object Ble {
         lateinit var attempt: Runnable
         fun again() {
             if (my != gen) return
-            status(if (was) "Verbindung verloren, verbinde neu …"
-            else "Thermometer $mac nicht gefunden (aus, außer Reichweite oder Pi verbunden?), suche weiter …")
+            status(if (was) ctx.getString(R.string.ble_lost) else ctx.getString(R.string.ble_not_found, mac))
             main.postDelayed(attempt, 3000)
         }
         val cb = object : BluetoothGattCallback() {
@@ -87,7 +86,7 @@ object Ble {
                 if (my != gen) return g.close()
                 if (state == BluetoothProfile.STATE_CONNECTED) {
                     was = true
-                    status("verbunden")
+                    status(ctx.getString(R.string.ble_connected))
                     g.discoverServices()
                 } else {
                     g.close()
@@ -129,7 +128,7 @@ object Ble {
             if (my != gen) return@Runnable
             val a = adapter(ctx)
             if (a == null) {
-                status("Bluetooth ist aus: bitte einschalten.")
+                status(ctx.getString(R.string.bt_off))
                 main.postDelayed(attempt, 3000)
                 return@Runnable
             }
@@ -137,7 +136,7 @@ object Ble {
             try {
                 gatt = a.getRemoteDevice(mac).connectGatt(ctx, false, cb, BluetoothDevice.TRANSPORT_LE) ?: return@Runnable again()
             } catch (_: SecurityException) { // Recht in den Einstellungen entzogen
-                status("Die App darf Bluetooth nicht mehr nutzen: unter „Ändern“ neu suchen.")
+                status(ctx.getString(R.string.ble_revoked))
             }
         }
         retry = attempt

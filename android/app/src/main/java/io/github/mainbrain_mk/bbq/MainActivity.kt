@@ -78,6 +78,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
@@ -157,13 +158,14 @@ fun App(startService: () -> Unit) {
                     Page.CHART -> Chart(s.historySize)
                 }
             }
-            val info = s.status.ifEmpty { if (!fresh && s.page != Page.SETUP) "warte auf Messwerte …" else "" }
+            val waiting = stringResource(R.string.waiting)
+            val info = s.status.ifEmpty { if (!fresh && s.page != Page.SETUP) waiting else "" }
             if (info.isNotEmpty()) {
                 Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(info, Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodySmall)
                     // ohne Messwerte (Pi oder Thermometer weg): wechseln zwischen Pi und direkt
-                    if (!fresh && s.page != Page.SETUP) TextButton(Bbq::change) { Text("Ändern") }
+                    if (!fresh && s.page != Page.SETUP) TextButton(Bbq::change) { Text(stringResource(R.string.change)) }
                 }
             }
         }
@@ -202,7 +204,7 @@ fun Setup(s: UiState) {
     val cs = MaterialTheme.colorScheme
     var addr by rememberSaveable { mutableStateOf(s.address) }
     var code by rememberSaveable { mutableStateOf("") }
-    LaunchedEffect(s.status) { if (s.status.startsWith("Falscher Code")) code = "" }
+    LaunchedEffect(s.wrongCodes) { if (s.wrongCodes > 0) code = "" }
     var denied by remember { mutableStateOf(false) }
     val askBle = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { r ->
         denied = !r.values.all { it }
@@ -216,33 +218,32 @@ fun Setup(s: UiState) {
         Tile(m) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text("Pi koppeln", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-                Text("Adresse des Raspberry Pi,\nder mit dem Thermometer verbunden ist:", color = cs.onSurfaceVariant)
+                Text(stringResource(R.string.pair_title), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.pair_hint), color = cs.onSurfaceVariant)
                 OutlinedTextField(addr, { addr = it }, Modifier.fillMaxWidth(), singleLine = true,
-                    placeholder = { Text("z. B. raspberrypi.local oder 192.168.0.10") },
+                    placeholder = { Text(stringResource(R.string.pair_placeholder)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Go),
                     keyboardActions = KeyboardActions(onGo = { Bbq.pair(addr) }))
-                Button({ code = ""; Bbq.pair(addr) }, Modifier.fillMaxWidth()) { Text("Koppeln") }
+                Button({ code = ""; Bbq.pair(addr) }, Modifier.fillMaxWidth()) { Text(stringResource(R.string.pair)) }
                 if (s.codeAsked) {
-                    Text("Pi-Kennung ${s.piId}: muss mit der auf dem Pi-Display übereinstimmen.", fontWeight = FontWeight.SemiBold)
+                    Text(stringResource(R.string.pi_id, s.piId), fontWeight = FontWeight.SemiBold)
                     OutlinedTextField(code, { if (it.length <= 6 && it.all(Char::isDigit)) code = it }, Modifier.fillMaxWidth(),
-                        singleLine = true, label = { Text("Code vom Pi-Display") },
+                        singleLine = true, label = { Text(stringResource(R.string.code_label)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword, imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(onDone = { Bbq.sendCode(code) }))
-                    Button({ Bbq.sendCode(code) }, Modifier.fillMaxWidth(), enabled = code.length == 6) { Text("Bestätigen") }
+                    Button({ Bbq.sendCode(code) }, Modifier.fillMaxWidth(), enabled = code.length == 6) { Text(stringResource(R.string.confirm)) }
                 }
-                Text("Ohne Pi", Modifier.padding(top = 14.dp), style = MaterialTheme.typography.titleLarge,
+                Text(stringResource(R.string.direct_title), Modifier.padding(top = 14.dp), style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold)
-                Text("Das Handy verbindet sich selbst per Bluetooth. Nur ein Gerät kann mit dem Thermometer verbunden sein: "
-                    + "den Pi dafür ausschalten.", color = cs.onSurfaceVariant)
+                Text(stringResource(R.string.direct_hint), color = cs.onSurfaceVariant)
                 OutlinedButton({ askBle.launch(BLE_PERMISSIONS) }, Modifier.fillMaxWidth(), enabled = !s.scanning) {
-                    Text(if (s.scanning) "suche …" else "Thermometer suchen")
+                    Text(stringResource(if (s.scanning) R.string.scanning else R.string.scan))
                 }
-                if (denied) Text("Ohne Bluetooth-Recht findet die App das Thermometer nicht.", color = cs.error)
+                if (denied) Text(stringResource(R.string.ble_denied), color = cs.error)
                 for ((addr, label) in s.found) {
                     Button({ Bbq.useThermometer(addr) }, Modifier.fillMaxWidth()) { Text("$label\n$addr", textAlign = TextAlign.Center) }
                 }
-                if (Bbq.paired) TextButton(Bbq::start, Modifier.fillMaxWidth()) { Text("Zurück") }
+                if (Bbq.paired) TextButton(Bbq::start, Modifier.fillMaxWidth()) { Text(stringResource(R.string.back)) }
             }
         }
     })
@@ -265,7 +266,7 @@ fun ProbeCard(probe: Int, r: Reading?, modifier: Modifier) {
                 .requiredHeight(maxHeight * 1.2f).rotate(angle),
                 contentScale = ContentScale.FillHeight, alpha = 0.08f, colorFilter = ColorFilter.tint(cs.onSurface))
             Column(Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 16.dp)) {
-                Text("TEMP P$probe", color = cs.onSurfaceVariant, fontWeight = FontWeight.SemiBold,
+                Text(stringResource(R.string.probe_title, probe), color = cs.onSurfaceVariant, fontWeight = FontWeight.SemiBold,
                     style = MaterialTheme.typography.titleMedium)
                 BoxWithConstraints(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
                     val size = with(LocalDensity.current) { minOf(maxHeight * 0.6f, maxWidth / 3.4f).toSp() }
@@ -276,7 +277,7 @@ fun ProbeCard(probe: Int, r: Reading?, modifier: Modifier) {
                 LinearProgressIndicator(
                     progress = { if (p == null || t == null || t <= 0) 0f else (p.toFloat() / t).coerceIn(0f, 1f) },
                     Modifier.fillMaxWidth(), color = if (probe == 2) P2_COLOR else cs.primary)
-                Text(if (t == null) "Ziel --" else "Ziel $t °C", Modifier.fillMaxWidth().padding(top = 8.dp),
+                Text(if (t == null) stringResource(R.string.target_none) else stringResource(R.string.target, t), Modifier.fillMaxWidth().padding(top = 8.dp),
                     color = cs.onSurfaceVariant, style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
             }
             if (probe == 2) CornerButton(chart = true, Modifier.align(Alignment.BottomEnd).padding(12.dp)) { Bbq.toggleView() }
@@ -291,7 +292,7 @@ fun TargetDialog(probe: Int, current: Int, onDismiss: () -> Unit) {
     var v by rememberSaveable { mutableIntStateOf(current.coerceIn(1, 249)) }
     val dark = isSystemInDarkTheme()
     val ink = MaterialTheme.colorScheme.onSurface.toArgb()
-    AlertDialog(onDismissRequest = onDismiss, title = { Text("Ziel P$probe") },
+    AlertDialog(onDismissRequest = onDismiss, title = { Text(stringResource(R.string.target_dialog, probe)) },
         text = {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
                 AndroidView(factory = { ctx ->
@@ -315,9 +316,9 @@ fun TargetDialog(probe: Int, current: Int, onDismiss: () -> Unit) {
             TextButton({
                 Bbq.setTarget(probe, v)
                 onDismiss()
-            }) { Text("Setzen") }
+            }) { Text(stringResource(R.string.set)) }
         },
-        dismissButton = { TextButton(onDismiss) { Text("Abbrechen") } })
+        dismissButton = { TextButton(onDismiss) { Text(stringResource(R.string.cancel)) } })
 }
 
 /** Kleiner Eck-Knopf im Stil der Schatten: Achse mit Kurve (zum Verlauf) oder zwei Kacheln (zurueck). */
@@ -352,11 +353,12 @@ fun Chart(historySize: Int) {
     val label = TextStyle(color = cs.onSurfaceVariant, fontSize = 12.sp)
     val legend = TextStyle(color = cs.onSurface, fontSize = 13.sp)
     val clock = remember { SimpleDateFormat("HH:mm", Locale.getDefault()) }
+    val dashed = stringResource(R.string.chart_dashed)
     val lines = remember(history) { (1..4).associateWith { series(history, it) } }
     val vals = lines.values.flatten().flatten().map { it.second }
     Tile(Modifier.fillMaxSize()) {
         if (vals.isEmpty()) {
-            Text("Noch keine Messwerte seit dem Start der App", Modifier.align(Alignment.Center), color = cs.onSurfaceVariant)
+            Text(stringResource(R.string.chart_empty), Modifier.align(Alignment.Center), color = cs.onSurfaceVariant)
         } else {
             Canvas(Modifier.fillMaxSize()) {
                 val left = 52.dp.toPx()
@@ -400,7 +402,7 @@ fun Chart(historySize: Int) {
                     drawText(m, topLeft = Offset(lx + 24.dp.toPx(), 22.dp.toPx() - m.size.height / 2))
                     lx += 70.dp.toPx()
                 }
-                val m = measurer.measure("gestrichelt: Ziel", label)
+                val m = measurer.measure(dashed, label)
                 drawText(m, topLeft = Offset(lx, 22.dp.toPx() - m.size.height / 2))
             }
         }

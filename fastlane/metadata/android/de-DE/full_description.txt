@@ -8,6 +8,7 @@
 <li>läuft im Hintergrund weiter, die Werte stehen in der Benachrichtigung</li>
 <li>Temperaturverlauf seit dem Start der App</li>
 <li>hell/dunkel wie das System, ab Android 12 in den Farben des Hintergrundbilds</li>
+<li>auf Deutsch und Englisch, je nach Systemsprache</li>
 </ul>
 
 <p><b>Zwei Wege zum Thermometer</b></p>

@@ -84,6 +84,10 @@ cd android && ANDROID_HOME=~/Android/Sdk ./gradlew assembleDebug testDebugUnitTe
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
+Die App spricht Deutsch und Englisch (Systemsprache, ab Android 13 auch pro App unter Einstellungen → Apps → BBQ →
+Sprache); Texte in `app/src/main/res/values/strings.xml` (Englisch, Standard) und `values-de/`. Eine weitere Sprache:
+`values-<code>/strings.xml` mit denselben Namen anlegen.
+
 Koppeln wie am Rechner (Adresse, **Koppeln**, Pi-Kennung vergleichen, Code). Danach hält ein Dienst die Verbindung
 auch bei ausgeschaltetem Bildschirm: Die Benachrichtigung zeigt beide Werte, erreicht ein Fühler sein Ziel, kommt
 ein Alarm mit Ton und Vibration (erneut erst, wenn er 2 °C darunter war). Dafür bleiben CPU und WLAN wach, solange

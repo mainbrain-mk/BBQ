@@ -42,6 +42,8 @@ android {
         includeInApk = false
         includeInBundle = false
     }
+    // Sprachliste fuer "App-Sprache" in den Android-Einstellungen (ab Android 13), aus den values-*-Ordnern
+    androidResources { generateLocaleConfig = true }
     buildFeatures { compose = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

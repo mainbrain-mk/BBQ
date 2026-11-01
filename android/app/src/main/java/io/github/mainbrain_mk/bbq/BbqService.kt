@@ -41,10 +41,10 @@ class BbqService : Service() {
         }
         Bbq.init(applicationContext)
         nm = getSystemService(NotificationManager::class.java)
-        nm.createNotificationChannel(NotificationChannel(CH_STATUS, "Verbindung", NotificationManager.IMPORTANCE_LOW))
-        nm.createNotificationChannel(NotificationChannel(CH_ALARM, "Ziel erreicht", NotificationManager.IMPORTANCE_HIGH)
+        nm.createNotificationChannel(NotificationChannel(CH_STATUS, getString(R.string.channel_status), NotificationManager.IMPORTANCE_LOW))
+        nm.createNotificationChannel(NotificationChannel(CH_ALARM, getString(R.string.channel_alarm), NotificationManager.IMPORTANCE_HIGH)
             .apply { enableVibration(true) })
-        ServiceCompat.startForeground(this, ID_STATUS, status("verbinde …"), ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE)
+        ServiceCompat.startForeground(this, ID_STATUS, status(getString(R.string.connecting)), ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE)
         if (!Bbq.paired) {
             stopSelf()
             return START_NOT_STICKY
@@ -77,8 +77,8 @@ class BbqService : Service() {
         }
         val r = s.reading
         val fresh = r != null && SystemClock.elapsedRealtime() - s.readingAt < STALE_MS
-        val text = if (fresh) "P1 ${temp(r!!.p1)} (Ziel ${r.t1}) · P2 ${temp(r.p2)} (Ziel ${r.t2})"
-        else s.status.ifEmpty { "warte auf Messwerte …" }
+        val text = if (fresh) getString(R.string.notify_readings, temp(r!!.p1), r.t1, temp(r.p2), r.t2)
+        else s.status.ifEmpty { getString(R.string.waiting) }
         if (text != shown) {
             shown = text
             nm.notify(ID_STATUS, status(text))
@@ -91,8 +91,8 @@ class BbqService : Service() {
             if (!reached[i] && p >= t) {
                 reached[i] = true
                 nm.notify(ID_ALARM + i, NotificationCompat.Builder(this, CH_ALARM)
-                    .setSmallIcon(R.drawable.ic_stat).setContentTitle("P$i hat ${p} °C erreicht")
-                    .setContentText("Ziel war $t °C").setCategory(NotificationCompat.CATEGORY_ALARM)
+                    .setSmallIcon(R.drawable.ic_stat).setContentTitle(getString(R.string.alarm_title, i, p))
+                    .setContentText(getString(R.string.alarm_text, t)).setCategory(NotificationCompat.CATEGORY_ALARM)
                     .setPriority(NotificationCompat.PRIORITY_HIGH).setContentIntent(openApp()).setAutoCancel(true).build())
             } else if (reached[i] && p < t - 2) {
                 reached[i] = false // 2 °C Abstand: an der Schwelle nicht staendig neu Alarm geben
@@ -105,9 +105,9 @@ class BbqService : Service() {
     private fun status(text: String): Notification {
         val stop = PendingIntent.getService(this, 1, Intent(this, BbqService::class.java).setAction(ACTION_STOP),
             PendingIntent.FLAG_IMMUTABLE)
-        return NotificationCompat.Builder(this, CH_STATUS).setSmallIcon(R.drawable.ic_stat).setContentTitle("BBQ")
+        return NotificationCompat.Builder(this, CH_STATUS).setSmallIcon(R.drawable.ic_stat).setContentTitle(getString(R.string.app_name))
             .setContentText(text).setOngoing(true).setOnlyAlertOnce(true).setSilent(true).setContentIntent(openApp())
-            .addAction(0, "Beenden", stop).build()
+            .addAction(0, getString(R.string.stop), stop).build()
     }
 
     private fun openApp() = PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java)

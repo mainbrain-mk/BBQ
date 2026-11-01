@@ -1,4 +1,4 @@
-<p>The Bluetooth meat thermometer "Day_BBQ" (advertises as <i>Day_BBQ</i> or <i>Day_BQQ</i>) no longer has a working vendor app. This app replaces it. The user interface is in German.</p>
+<p>The Bluetooth meat thermometer "Day_BBQ" (advertises as <i>Day_BBQ</i> or <i>Day_BQQ</i>) no longer has a working vendor app. This app replaces it.</p>
 
 <p><b>Features</b></p>
 <ul>
@@ -8,6 +8,7 @@
 <li>keeps running in the background, readings shown in the notification</li>
 <li>temperature history since the app was started</li>
 <li>follows the system light/dark theme, Material You colors on Android 12+</li>
+<li>in English and German, following the system language</li>
 </ul>
 
 <p><b>Two ways to the thermometer</b></p>

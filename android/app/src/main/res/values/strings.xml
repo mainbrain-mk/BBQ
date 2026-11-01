@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Englisch: Standard fuer alle Sprachen ohne eigene Uebersetzung. Deutsch in values-de. -->
+<resources>
+    <string name="app_name" translatable="false">BBQ</string>
+
+    <!-- Hauptseite -->
+    <string name="waiting">waiting for readings …</string>
+    <string name="change">Change</string>
+    <string name="probe_title" translatable="false">TEMP P%1$d</string>
+    <string name="target">Target %1$d °C</string>
+    <string name="target_none">Target --</string>
+    <string name="target_dialog">Target P%1$d</string>
+    <string name="set">Set</string>
+    <string name="cancel">Cancel</string>
+    <string name="chart_empty">No readings since the app was started</string>
+    <string name="chart_dashed">dashed: target</string>
+
+    <!-- Einrichtung -->
+    <string name="pair_title">Pair Pi</string>
+    <string name="pair_hint">Address of the Raspberry Pi\nthat is connected to the thermometer:</string>
+    <string name="pair_placeholder">e.g. raspberrypi.local or 192.168.0.10</string>
+    <string name="pair">Pair</string>
+    <string name="pi_id">Pi ID %1$s: must match the one on the Pi display.</string>
+    <string name="code_label">Code from the Pi display</string>
+    <string name="confirm">Confirm</string>
+    <string name="direct_title">Without Pi</string>
+    <string name="direct_hint">The phone connects via Bluetooth itself. Only one device can be connected to the thermometer: switch the Pi off for this.</string>
+    <string name="scan">Search for thermometer</string>
+    <string name="scanning">searching …</string>
+    <string name="ble_denied">Without the Bluetooth permission the app cannot find the thermometer.</string>
+    <string name="back">Back</string>
+
+    <!-- Statuszeile -->
+    <string name="bad_address">Please enter a hostname or IP address, e.g. raspberrypi.local</string>
+    <string name="none_found">No thermometer found: switched on? Pi off? (Android 8 to 11: also turn on location)</string>
+    <string name="bt_off">Bluetooth is off: please turn it on.</string>
+    <string name="connecting_to">connecting to %1$s …</string>
+    <string name="pi_closed">Pi closed the connection</string>
+    <string name="code_shown">The code is now shown on the Pi display (valid for 2 minutes).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Wrong code, %d attempt left.</item>
+        <item quantity="other">Wrong code, %d attempts left.</item>
+    </plurals>
+    <string name="code_expired">Code expired or entered wrong too often: please pair again.</string>
+    <string name="busy">Too many failed attempts: pair again in 30 seconds.</string>
+    <string name="not_paired">This phone is not (or no longer) paired with the Pi: please pair.</string>
+    <string name="other_cert">The Pi presents a different certificate than when it was paired. Pair again if it was set up anew.</string>
+    <string name="ble_lost">Connection lost, reconnecting …</string>
+    <string name="ble_not_found">Thermometer %1$s not found (off, out of range or connected to the Pi?), still searching …</string>
+    <string name="ble_connected">connected</string>
+    <string name="ble_revoked">The app may no longer use Bluetooth: search again under “Change”.</string>
+
+    <!-- Benachrichtigungen -->
+    <string name="channel_status">Connection</string>
+    <string name="channel_alarm">Target reached</string>
+    <string name="connecting">connecting …</string>
+    <string name="notify_readings">P1 %1$s (target %2$d) · P2 %3$s (target %4$d)</string>
+    <string name="alarm_title">P%1$d has reached %2$d °C</string>
+    <string name="alarm_text">Target was %1$d °C</string>
+    <string name="stop">Stop</string>
+</resources>
