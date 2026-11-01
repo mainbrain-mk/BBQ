@@ -1,18 +1,22 @@
 """Fenster fuer den Rechner: zeigt die Temperaturen vom Pi, Klick auf eine Karte setzt das Ziel.
 
 Qt (PyQt6) uebernimmt Farben und Stil vom System, hell wie dunkel, auch beim Umschalten.
-Spricht dasselbe TCP-Protokoll wie `nc <pi>.local 51235`:
+Spricht mit bbq.py per TLS (Protokoll siehe README):
 
     python3 bbq_client.py [host[:port]]
 
-Adresse: Argument, sonst BBQ_HOST, sonst die gemerkte aus ~/.config/bbq/bbq.env. Fehlt alles,
-fragt das Fenster danach; nach der ersten erfolgreichen Verbindung wird sie dort gemerkt.
+Adresse: Argument, sonst BBQ_HOST, sonst die gemerkte aus ~/.config/bbq/bbq.env. Ohne Kopplung
+zeigt das Fenster links das Logo, rechts "Koppeln": Der Pi zeigt dann einen 6-stelligen Code auf
+seinem Display, der hier eingegeben wird. Danach stehen Adresse, Token und Zertifikat-Fingerabdruck
+des Pi in ~/.config/bbq/bbq.env (nur fuer den Besitzer lesbar); verbunden wird per TLS nur mit genau
+diesem Pi.
 """
-import os, re, signal, sys, time
+import os, re, signal, socket, sys, time
 from pathlib import Path
-from PyQt6.QtCore import QEvent, QPointF, QRectF, Qt, QTimer, pyqtSignal
-from PyQt6.QtGui import QColor, QFont, QIcon, QImage, QPainter, QPainterPath, QPalette
-from PyQt6.QtNetwork import QAbstractSocket, QTcpSocket
+from PyQt6.QtCore import QCryptographicHash, QEvent, QPointF, QRectF, QRegularExpression, Qt, QTimer, pyqtSignal
+from PyQt6.QtGui import (QColor, QFont, QIcon, QImage, QPainter, QPainterPath, QPalette,
+                         QRegularExpressionValidator)
+from PyQt6.QtNetwork import QAbstractSocket, QSslSocket
 from PyQt6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel, QLineEdit, QProgressBar,
                              QPushButton, QSpinBox, QStackedWidget, QVBoxLayout, QWidget)
 
@@ -234,9 +238,9 @@ class Window(QWidget):
         self.resize(640, 380)
         self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)  # Klick neben die Karten schliesst ein offenes Feld
 
-        # Seite 0: Einrichtung (Logo links, Adresse rechts), Seite 1: die beiden Temperaturkarten
+        # Seite 0: Kopplung (Logo links, Adresse und Code rechts), Seite 1: die beiden Temperaturkarten
         form = Panel()
-        title = QLabel("Pi verbinden")
+        title = QLabel("Pi koppeln")
         f = title.font()
         f.setPixelSize(22)
         f.setWeight(QFont.Weight.Bold)
@@ -244,15 +248,28 @@ class Window(QWidget):
         hint = QLabel("Adresse des Raspberry Pi,\nder mit dem Thermometer verbunden ist:", wordWrap=True)
         hint.setForegroundRole(QPalette.ColorRole.PlaceholderText)
         self.addr = QLineEdit(placeholderText="z. B. raspberrypi.local oder 192.168.0.10")
-        self.recolor_addr()
-        self.addr.returnPressed.connect(self.submit)
-        go = QPushButton("Verbinden")
-        go.clicked.connect(self.submit)
+        self.addr.returnPressed.connect(self.pair)
+        go = QPushButton("Koppeln")
+        go.clicked.connect(self.pair)
+        self.code_row = QWidget()  # erscheint, sobald der Pi seinen Code anzeigt
+        cl = QVBoxLayout(self.code_row)
+        cl.setContentsMargins(0, 14, 0, 0)
+        self.code_hint = QLabel(wordWrap=True)
+        self.code = QLineEdit(placeholderText="6-stelliger Code vom Pi-Display", maxLength=6)
+        self.code.setValidator(QRegularExpressionValidator(QRegularExpression(r"\d{0,6}")))
+        self.code.returnPressed.connect(self.send_code)
+        ok = QPushButton("Bestätigen")
+        ok.clicked.connect(self.send_code)
+        for w in (self.code_hint, self.code, ok):
+            cl.addWidget(w)
+        self.code_row.hide()
+        self.fields = (self.addr, self.code)
+        self.recolor_fields()
         fl = QVBoxLayout(form)
         fl.setContentsMargins(24, 20, 24, 24)
         fl.addWidget(title)
         fl.addStretch(1)
-        for w in (hint, self.addr, go):
+        for w in (hint, self.addr, go, self.code_row):
             fl.addWidget(w)
         fl.addStretch(2)
         setup = QWidget()
@@ -281,63 +298,128 @@ class Window(QWidget):
         lay.addWidget(self.pages, 1)
         lay.addWidget(self.info)
 
-        self.buf, self.reading, self.status, self.last_rx = "", None, "", time.monotonic()
-        self.retry = False
-        self.sock = QTcpSocket(self)
+        self.buf, self.reading, self.status, self.note, self.last_rx = "", None, "", "", time.monotonic()
+        self.retry, self.authed, self.mode = False, False, "auth"  # mode: "auth" (Token) oder "pair" (Code)
+        self.sock = QSslSocket(self)
         self.sock.readyRead.connect(self.read)
-        self.sock.connected.connect(self.on_connected)
+        self.sock.sslErrors.connect(self.check_cert)
         self.sock.errorOccurred.connect(self.lost)  # auch "Pi hat getrennt"
         timer = QTimer(self, interval=500, timeout=self.tick)
         timer.start()
         self.host = start_host()  # (host, port) oder None
+        cfg = read_env(CONFIG)
+        paired = bool(self.host and cfg.get("BBQ_TOKEN") and cfg.get("BBQ_HOST") == self.label())
+        self.token, self.pin = (cfg["BBQ_TOKEN"], cfg.get("BBQ_PIN", "")) if paired else ("", "")
         if self.host:
+            self.addr.setText(self.label())
+        if paired:
             self.pages.setCurrentIndex(1)
             self.connect_pi()
         else:
             self.addr.setFocus()
 
-    def recolor_addr(self):
-        """Das Feld liegt auf einer Kachel, die schon die Base-Farbe hat: Fensterfarbe nehmen, sonst
-        verschwindet es. Nur Base setzen, alle anderen Farben erbt es weiter vom System."""
+    def recolor_fields(self):
+        """Die Felder liegen auf einer Kachel, die schon die Base-Farbe hat: Fensterfarbe nehmen, sonst
+        verschwinden sie. Nur Base setzen, alle anderen Farben erben sie weiter vom System."""
         pal = QPalette()
         pal.setColor(QPalette.ColorRole.Base, self.palette().color(QPalette.ColorRole.Window))
-        self.addr.setPalette(pal)
+        for f in self.fields:
+            f.setPalette(pal)
 
     def changeEvent(self, e):
         if e.type() == QEvent.Type.PaletteChange:  # Farbschema gewechselt
-            self.recolor_addr()
+            self.recolor_fields()
         super().changeEvent(e)
 
     def label(self):
         host, port = self.host
         return host if port == PORT else f"{host}:{port}"
 
-    def submit(self):
+    def pair(self):
+        """Knopf "Koppeln": verbinden und um einen Code bitten, den der Pi auf seinem Display zeigt."""
         self.host = parse_host(self.addr.text())
         if not self.host:
             self.status = "Bitte Hostname oder IP-Adresse eingeben, z. B. raspberrypi.local"
             return
+        self.mode = "pair"
+        self.code_row.hide()
         self.connect_pi()
 
+    def send_code(self):
+        if len(self.code.text()) == 6 and self.sock.state() == QAbstractSocket.SocketState.ConnectedState:
+            self.sock.write(f"code {self.code.text()}\n".encode())
+
     def connect_pi(self):
-        self.retry = False
+        self.retry, self.authed, self.buf, self.note = False, False, "", ""
         self.status = f"verbinde mit {self.label()} …"
         self.last_rx = time.monotonic()
         self.sock.abort()
-        self.sock.connectToHost(*self.host)
+        self.sock.connectToHostEncrypted(*self.host)
 
-    def on_connected(self):
-        self.status = ""
-        if read_env(CONFIG).get("BBQ_HOST") != self.label():
-            try:
-                save_env(CONFIG, "BBQ_HOST", self.label())  # gemerkt fuer den naechsten Start
-            except OSError as e:
-                print(f"{CONFIG}: {e}", file=sys.stderr)
-        self.pages.setCurrentIndex(1)
+    def fingerprint(self):
+        digest = self.sock.peerCertificate().digest(QCryptographicHash.Algorithm.Sha256)
+        return bytes(digest.toHex()).decode().upper()
+
+    def check_cert(self, _errors):
+        """Der Pi hat ein selbstsigniertes Zertifikat: Statt einer Zertifizierungsstelle zaehlt der beim
+        Koppeln gemerkte Fingerabdruck. Beim Koppeln selbst schuetzt der Vergleich der Pi-Kennung."""
+        if self.mode == "pair" or (self.pin and self.fingerprint() == self.pin):
+            self.sock.ignoreSslErrors()
+        else:  # ohne ignoreSslErrors bricht Qt den Handshake ab, lost() zeigt dann den Hinweis
+            self.to_setup("Der Pi meldet sich mit einem anderen Zertifikat als beim Koppeln. "
+                          "Neu koppeln, wenn er neu eingerichtet wurde.")
+
+    def to_setup(self, note):
+        self.note = self.status = note
+        self.code_row.hide()
+        self.pages.setCurrentIndex(0)
+
+    def remember(self, **values):
+        try:
+            for k, v in values.items():
+                save_env(CONFIG, k, v)
+            CONFIG.chmod(0o600)  # das Token ist ein Geheimnis
+        except OSError as e:
+            print(f"{CONFIG}: {e}", file=sys.stderr)
+
+    def on_reply(self, line):
+        """Antworten des Pi bis zur Anmeldung; danach kommen nur noch Messwerte und Meldungen."""
+        word, _, arg = line.partition(" ")
+        if word == "BBQ/2":
+            hello = f"pair {socket.gethostname()}" if self.mode == "pair" else f"auth {self.token}"
+            self.sock.write(f"{hello}\n".encode())
+        elif word == "code":
+            fp = self.fingerprint()
+            self.code_hint.setText(f"Pi-Kennung {fp[:4]} {fp[4:8]}: muss mit der auf dem Pi-Display "
+                                   "übereinstimmen.\nCode vom Pi-Display:")
+            self.code.clear()
+            self.code_row.show()
+            self.code.setFocus()
+            self.status = "Der Code steht jetzt auf dem Pi-Display (2 Minuten gültig)."
+        elif word == "wrong":
+            self.code.clear()
+            self.status = f"Falscher Code, noch {arg} Versuch(e)."
+        elif word == "expired":
+            self.code_row.hide()
+            self.status = "Code abgelaufen oder zu oft falsch: bitte erneut koppeln."
+        elif word == "busy":
+            self.status = "Zu viele Fehlversuche: in 30 Sekunden erneut koppeln."
+        elif word == "paired":
+            self.token, self.pin, self.mode = arg, self.fingerprint(), "auth"
+            self.remember(BBQ_HOST=self.label(), BBQ_TOKEN=self.token, BBQ_PIN=self.pin)
+        elif word == "ok":
+            self.authed, self.status = True, ""
+            self.code_row.hide()
+            self.pages.setCurrentIndex(1)
+        elif word == "denied":
+            self.to_setup("Dieser Rechner ist auf dem Pi nicht (mehr) gekoppelt: bitte koppeln.")
+            self.sock.abort()
 
     def lost(self, *_):
-        if self.pages.currentIndex() == 0:  # Einrichtung: nicht endlos probieren, Fehler zeigen
-            self.status = f"{self.label()}: {self.sock.errorString()}"
+        self.authed = False
+        if self.pages.currentIndex() == 0:  # Kopplung: nicht endlos probieren, Fehler zeigen
+            self.status = self.note or f"{self.label()}: {self.sock.errorString()}"
+            self.code_row.hide()
         elif not self.retry:  # Pi weg oder neu gestartet: in 3 s neu verbinden
             self.retry = True
             self.status = f"{self.label()}: {self.sock.errorString()}"
@@ -345,18 +427,22 @@ class Window(QWidget):
 
     def read(self):
         self.last_rx = time.monotonic()
-        r, self.buf = parse((self.buf + bytes(self.sock.readAll()).decode(errors="replace"))[-500:])
-        if r:
-            self.reading = (r, time.monotonic())
+        self.buf += bytes(self.sock.readAll()).decode(errors="replace")
+        while not self.authed and "\n" in self.buf:
+            line, self.buf = self.buf.split("\n", 1)
+            self.on_reply(line.strip())
+        if self.authed:
+            r, self.buf = parse(self.buf[-500:])
+            if r:
+                self.reading = (r, time.monotonic())
 
     def send(self, probe, t):
-        if self.sock.state() == QAbstractSocket.SocketState.ConnectedState:
+        if self.authed:
             self.sock.write(f"p{probe} {t}\n".encode())
 
     def tick(self):
         now = time.monotonic()
-        connected = self.sock.state() == QAbstractSocket.SocketState.ConnectedState
-        if connected and now - self.last_rx > SILENT_S:
+        if self.authed and now - self.last_rx > SILENT_S:  # beim Code-Eintippen schweigt der Pi zu Recht
             self.lost()
         fresh = self.reading is not None and now - self.reading[1] < STALE_S
         for i, c in enumerate(self.cards):

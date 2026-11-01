@@ -1,15 +1,18 @@
-"""Day_BBQ-Fleischthermometer: BLE -> WLAN (TCP) + Vollbildfenster auf dem Pi-Display.
+"""Day_BBQ-Fleischthermometer: BLE -> WLAN (TLS) + Vollbildfenster auf dem Pi-Display.
 
-Haelt die BLE-Verbindung zum Thermometer, schickt die Live-Zeile an jeden TCP-Client und legt ein
-Vollbildfenster ueber das Display, solange frische Werte kommen. Vom Rechner aus:
+Haelt die BLE-Verbindung zum Thermometer, schickt die Live-Zeile an jeden gekoppelten Rechner
+(bbq_client.py) und legt ein Vollbildfenster ueber das Display, solange frische Werte kommen.
 
-    nc <pi>.local 51235    # dort "p1 80" + Enter setzt Ziel P1 auf 80 °C
+Netz: TLS mit selbstsigniertem Zertifikat (bbq.crt/bbq.key, beim ersten Start erzeugt). Daten und
+Befehle nur nach "auth <token>"; ein Token gibt es per Kopplung: "pair <name>" zeigt einen 6-stelligen
+Code auf dem Display (und im Journal), "code <123456>" liefert "paired <token>". Gekoppelte Rechner
+stehen in bbq.clients (Hash, Datum, Name); Zeile loeschen = entkoppeln.
 
 Beim ersten Start (kein BBQ_MAC) zeigt das Display "Thermometer koppeln": gefundene Thermometer
 antippen, die Adresse landet in `bbq.env`. Einstellungen als Umgebungsvariablen oder in `bbq.env`
 neben diesem Skript: BBQ_NAME, BBQ_MAC, BBQ_PORT, BBQ_IDLE_IF (siehe README).
 """
-import asyncio, os, re, struct, threading, time
+import asyncio, hashlib, hmac, os, re, secrets, ssl, struct, subprocess, threading, time
 import tkinter as tk
 from bleak import BleakClient, BleakScanner
 
@@ -37,7 +40,10 @@ def save_env(path, key, value):
         f.write("\n".join(lines + [f"{key}={value}"]) + "\n")
 
 
-ENV_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bbq.env")
+HERE = os.path.dirname(os.path.abspath(__file__))
+ENV_FILE = os.path.join(HERE, "bbq.env")
+CERT, KEY, CLIENTS = (os.path.join(HERE, n) for n in ("bbq.crt", "bbq.key", "bbq.clients"))
+CODE_S, CODE_TRIES, LOCK_S = 120, 3, 30  # Kopplungscode: gueltig 2 min, 3 Versuche, danach 30 s Sperre
 load_env(ENV_FILE)
 # Werbung sagt "Day_BBQ", nach dem Verbinden heisst es "Day_BQQ" (GAP-Name): beide gelten
 NAMES = os.environ.get("BBQ_NAME", "Day_BBQ,Day_BQQ").split(",")
@@ -53,6 +59,55 @@ last = ""  # letzte Temperaturzeile, bekommt jeder neue TCP-Client sofort
 reading = None  # (p1, p2, t1, t2, time.monotonic())
 ble = None  # verbundener BleakClient, solange die Verbindung steht
 candidates = {}  # beim Koppeln gefundene Thermometer: Adresse -> (Name, RSSI)
+pending = None  # laufende Rechner-Kopplung: [Code, Ablauf, Versuche uebrig, Name, writer]; nur eine zur Zeit
+paired_shown = None  # (Name, bis wann) fuer "Gekoppelt: …" auf dem Display
+locked_until = 0.0  # nach 3 falschen Codes keine neue Kopplung bis dahin
+FPR = ""  # Fingerabdruck des Zertifikats (SHA-256, hex); die ersten 8 Zeichen zeigen Display und App beim Koppeln
+
+
+def ensure_cert():
+    """TLS-Kontext; das selbstsignierte Zertifikat entsteht beim ersten Start. Die App merkt sich beim
+    Koppeln seinen Fingerabdruck und spricht danach nur mit genau diesem Pi."""
+    if not (os.path.exists(CERT) and os.path.exists(KEY)):
+        subprocess.run(["openssl", "req", "-x509", "-newkey", "ec", "-pkeyopt", "ec_paramgen_curve:prime256v1",
+                        "-nodes", "-keyout", KEY, "-out", CERT, "-days", "36500", "-subj", "/CN=bbq"],
+                       check=True, capture_output=True)
+        os.chmod(KEY, 0o600)
+    global FPR
+    with open(CERT) as f:
+        FPR = hashlib.sha256(ssl.PEM_cert_to_DER_cert(f.read())).hexdigest().upper()
+    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+    ctx.load_cert_chain(CERT, KEY)
+    return ctx
+
+
+def clean(name):
+    """Rechnername aus dem Netz: nur druckbare Zeichen, kurz, nie leer (landet auf Display und in Datei)."""
+    return "".join(c for c in name if c.isprintable()).strip()[:40] or "unbekannt"
+
+
+def known(token, path=CLIENTS):
+    """Name des gekoppelten Rechners zu diesem Token, sonst None. Gespeichert ist nur der Hash."""
+    h = hashlib.sha256(token.encode()).hexdigest()
+    try:
+        with open(path) as f:
+            for line in f:
+                parts = line.rstrip("\n").split(" ", 2)  # "<sha256> <datum> <name>"
+                if len(parts) == 3 and hmac.compare_digest(parts[0], h):
+                    return parts[2]
+    except FileNotFoundError:
+        pass
+    return None
+
+
+def add_client(name, path=CLIENTS):
+    """Neuen Rechner eintragen, liefert sein Token (256 Bit, verlaesst den Pi nur einmal, per TLS)."""
+    token = secrets.token_urlsafe(32)
+    with open(path, "a") as f:
+        f.write(f"{hashlib.sha256(token.encode()).hexdigest()} {time.strftime('%F')} {clean(name)}\n")
+    os.chmod(path, 0o600)
+    return token
 
 
 def send(text: str, log=False):
@@ -84,23 +139,72 @@ def command(line: bytes):
 
 
 async def on_client(reader, writer):
-    clients.add(writer)
-    if fresh(reading, time.monotonic(), False):  # alte Werte nicht als aktuelle ausgeben (Thermometer aus)
-        writer.write(last.encode())
+    """Vor "auth" oder erfolgreicher Kopplung gibt es nur Protokoll-Antworten, keine Daten, keine Befehle."""
+    global pending, paired_shown, locked_until
+    who = None  # Name des angemeldeten Rechners
+
+    def reply(text):
+        writer.write(f"{text}\n".encode())
+
+    def welcome(name):
+        nonlocal who
+        who = name
+        clients.add(writer)
+        reply("ok")
+        if fresh(reading, time.monotonic(), False):  # alte Werte nicht als aktuelle ausgeben (Thermometer aus)
+            writer.write(last.encode())
+
+    reply("BBQ/2")
     try:
         while line := await reader.readline():  # bis der Client trennt
-            cmd = command(line)
-            if not cmd:
-                writer.write("\nBefehl: p1 80 oder p2 80 (1 … 249 °C)\n".encode())
-            elif not ble:
-                writer.write("\nThermometer nicht verbunden\n".encode())
+            word, _, arg = line.decode(errors="replace").strip().partition(" ")
+            now = time.monotonic()
+            if who:
+                cmd = command(line)
+                if not cmd:
+                    reply("\nBefehl: p1 80 oder p2 80 (1 … 249 °C)")
+                elif not ble:
+                    reply("\nThermometer nicht verbunden")
+                else:
+                    await ble.write_gatt_char(WRITE, cmd, response=False)
+                    send(f"\nZiel {line.decode().strip()} °C gesetzt ({who})\n", log=True)
+            elif word == "auth":
+                name = known(arg)
+                if name:
+                    welcome(name)
+                else:
+                    reply("denied")
+            elif word == "pair":
+                if now < locked_until:
+                    reply("busy")
+                    continue
+                pending = [f"{secrets.randbelow(10 ** 6):06d}", now + CODE_S, CODE_TRIES, clean(arg), writer]
+                print(f"{time.strftime('%F %T')} Kopplungscode fuer {pending[3]}: {pending[0]} (2 min gueltig)", flush=True)
+                reply("code")
+            elif word == "code" and pending and pending[4] is writer and now < pending[1]:
+                if hmac.compare_digest(arg, pending[0]):
+                    name, pending = pending[3], None
+                    reply(f"paired {add_client(name)}")
+                    paired_shown = (name, now + 8)
+                    print(f"{time.strftime('%F %T')} Rechner gekoppelt: {name}", flush=True)
+                    welcome(name)
+                else:
+                    pending[2] -= 1
+                    if pending[2]:
+                        reply(f"wrong {pending[2]}")
+                    else:  # Code verbraucht, kurz Ruhe: so laesst sich der Code nicht durchprobieren
+                        pending, locked_until = None, now + LOCK_S
+                        reply("expired")
+            elif word == "code":
+                reply("expired")
             else:
-                await ble.write_gatt_char(WRITE, cmd, response=False)
-                send(f"\nZiel {line.decode().strip()} °C gesetzt\n", log=True)
-    except Exception as e:  # Client weg oder BLE-Abbruch mitten im Schreiben
+                reply("denied")
+    except Exception as e:  # Client weg, TLS-Abbruch oder BLE-Abbruch mitten im Schreiben
         print(f"{time.strftime('%F %T')} Client: {e!r}", flush=True)
     finally:
         clients.discard(writer)
+        if pending and pending[4] is writer:  # Rechner weg: Code vom Display nehmen
+            pending = None
         writer.close()
 
 
@@ -126,9 +230,9 @@ async def drop_orphans():
         await p.wait()
 
 
-async def ble_main():
+async def ble_main(tls):
     global ble, candidates
-    await asyncio.start_server(on_client, port=PORT)
+    await asyncio.start_server(on_client, port=PORT, ssl=tls)
     while True:  # Signal ist schwach: bei Abbruch einfach neu verbinden
         if idle():
             await asyncio.sleep(30)
@@ -168,7 +272,8 @@ def fresh(r, now, idle_now):
 
 
 def main():
-    threading.Thread(target=lambda: asyncio.run(ble_main()), daemon=True).start()
+    tls = ensure_cert()  # hier im Hauptthread: scheitert openssl, steht es im Journal und der Dienst startet neu
+    threading.Thread(target=lambda: asyncio.run(ble_main(tls)), daemon=True).start()
     root = tk.Tk()
     root.title("BBQ")
     root.configure(bg=BG)
@@ -222,10 +327,39 @@ def main():
     root.bind("<ButtonRelease-1>", on_tap)
     if MAC:  # schon gekoppelt: Dialog gar nicht erst zeigen, er laege sonst ueber den Karten
         pair.destroy()
+
+    # Rechner-Kopplung: Code gross ueber allem, danach kurz "Gekoppelt: …"
+    codeview = tk.Frame(root, bg=BG)
+    code_head = tk.Label(codeview, font=("DejaVu Sans", 34, "bold"), fg=TEXT, bg=BG)
+    code_head.pack(pady=(60, 10))
+    code_big = tk.Label(codeview, font=("DejaVu Sans", 160, "bold"), fg=TEXT, bg=BG)
+    code_big.pack(expand=True)
+    code_foot = tk.Label(codeview, font=("DejaVu Sans", 20), fg=DIM, bg=BG)
+    code_foot.pack(pady=40)
     root.withdraw()
+
+    def overlay(now):
+        """Zeigt Kopplungscode bzw. Bestaetigung; True, solange etwas davon sichtbar sein soll."""
+        p, done = pending, paired_shown
+        if p and now < p[1]:
+            code_head.config(text=f"Kopplung mit „{p[3]}“", fg=TEXT)
+            code_big.config(text=f"{p[0][:3]} {p[0][3:]}", fg=TEXT)
+            code_foot.config(text=f"Diesen Code in der BBQ-App eingeben · Pi-Kennung {FPR[:4]} {FPR[4:8]}"
+                                  f" (muss in der App gleich sein) · noch {int(p[1] - now)} s")
+        elif done and now < done[1]:
+            code_head.config(text="Gekoppelt", fg=GREEN)
+            code_big.config(text="✓", fg=GREEN)
+            code_foot.config(text=done[0])
+        else:
+            codeview.place_forget()
+            return False
+        codeview.place(relx=0, rely=0, relwidth=1, relheight=1)
+        codeview.lift()
+        return True
 
     def tick():
         r, pairing = reading, not MAC
+        showing_code = overlay(time.monotonic())
         if pairing:
             c = candidates
             if sorted(c) != sorted(buttons):
@@ -251,7 +385,7 @@ def main():
                 ist.config(text=f"{p}", fg=GREEN if t and p >= t else TEXT)
                 unit.config(fg=GREEN if t and p >= t else TEXT)
                 ziel.config(text=f"Ziel {t} °C")
-        if pairing or fresh(r, time.monotonic(), idle()):
+        if pairing or showing_code or fresh(r, time.monotonic(), idle()):
             if root.state() == "withdrawn":
                 root.deiconify()
                 root.attributes("-fullscreen", True)
@@ -289,6 +423,15 @@ if __name__ == "__main__":
         with open(f.name) as g:
             assert g.read() == "BBQ_IDLE_IF=/x\nBBQ_MAC=11:22:33:44:55:66\n"
         os.unlink(f.name)
+        clients_file = f.name + ".clients"
+        assert known("x", clients_file) is None  # Datei fehlt
+        token = add_client("Rechner\nmit Umbruch", clients_file)
+        assert known(token, clients_file) == "Rechnermit Umbruch" and known(token + "x", clients_file) is None
+        with open(clients_file) as g:
+            assert token not in g.read()  # nur der Hash liegt auf dem Pi
+        assert os.stat(clients_file).st_mode & 0o077 == 0
+        os.unlink(clients_file)
+        assert clean("") == "unbekannt" and len(clean("x" * 99)) == 40
         assert command(b"p1 75\n") == bytes.fromhex("4b00fa000045")  # am Geraet geprueft
         assert command(b"P2 80\r\n") == bytes.fromhex("fa005000004a")
         assert command(b"p1 250") is None and command(b"p3 80") is None and command(b"p1 0") is None

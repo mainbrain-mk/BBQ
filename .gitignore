@@ -2,3 +2,6 @@ venv/
 __pycache__/
 bbq.env
 *.local.md
+bbq.crt
+bbq.key
+bbq.clients

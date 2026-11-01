@@ -6,8 +6,8 @@ Für das Bluetooth-Fleischthermometer „Day_BBQ“ (Boomex, Artikel 57675, meld
 gibt es keine funktionierende Android-App mehr. Dieses Projekt ersetzt sie:
 
 - **`bbq.py`** läuft auf einem Raspberry Pi (oder jedem Linux mit Bluetooth), hält die BLE-Verbindung,
-  gibt die Werte auf TCP-Port 51235 aus und nimmt dort neue Zieltemperaturen an. Mit Display zeigt es
-  ein Vollbildfenster, solange Messwerte kommen.
+  gibt die Werte verschlüsselt (TLS, Port 51235) an gekoppelte Rechner aus und nimmt von ihnen neue
+  Zieltemperaturen an. Mit Display zeigt es ein Vollbildfenster, solange Messwerte kommen.
 - **`bbq_client.py`** ist das Fenster für den Rechner: beide Temperaturen, Klick auf eine Karte setzt das Ziel.
   Qt (PyQt6), folgt den Systemfarben hell/dunkel.
 
@@ -41,29 +41,36 @@ Alle optional, als Umgebungsvariable oder als `KEY=VALUE` in `bbq.env` neben `bb
 |---|---|---|
 | `BBQ_NAME` | `Day_BBQ,Day_BQQ` | BLE-Namen, an denen das Thermometer erkannt wird (Werbung / nach dem Verbinden) |
 | `BBQ_MAC` | – | Das gekoppelte Thermometer (z. B. `AA:BB:CC:DD:EE:FF`); setzt der Kopplungsdialog |
-| `BBQ_PORT` | `51235` | TCP-Port |
+| `BBQ_PORT` | `51235` | TCP-Port (TLS) |
 | `BBQ_IDLE_IF` | – | Existiert dieser Pfad, ruht das Gateway (z. B. `/sys/class/net/can0`, wenn der Pi woanders gebraucht wird) |
 
 ## Bedienen
 
-```bash
-nc raspberrypi.local 51235      # Live-Zeile; "p1 80" + Enter setzt Ziel P1 auf 80 °C (1 … 249)
-```
-
 Fenster-App auf dem Rechner (braucht PyQt6, z. B. `sudo apt install python3-pyqt6`):
 
 ```bash
-python3 bbq_client.py                        # fragt beim ersten Start nach der Adresse des Pi
+python3 bbq_client.py                        # beim ersten Start: Pi koppeln
 sed "s|@DIR@|$PWD|g" bbq-client.desktop.in > ~/.local/share/applications/bbq-client.desktop
 kbuildsycoca6                                # nur KDE: sonst startet das Menü noch den alten Eintrag
 ```
 
-Beim ersten Start zeigt das Fenster das Logo und ein Feld für die Adresse des Pi (z. B. `raspberrypi.local`,
-`192.168.0.10` oder mit Port `host:51235`). Nach der ersten erfolgreichen Verbindung steht sie in
-`~/.config/bbq/bbq.env` (`BBQ_HOST=…`) und wird beim nächsten Start benutzt. Andere Adresse: Zeile dort
-löschen, oder einmalig `python3 bbq_client.py <adresse>` bzw. `BBQ_HOST=<adresse>` (wird dann auch gemerkt).
-
 Klick auf eine Karte öffnet das Ziel: Enter oder Klick daneben übernimmt, Esc verwirft.
+
+### Rechner koppeln
+
+Nur gekoppelte Rechner bekommen Messwerte und dürfen Ziele setzen.
+
+1. In der App die Adresse des Pi eintragen (z. B. `raspberrypi.local`, `192.168.0.10` oder `host:51235`)
+   und **Koppeln** klicken.
+2. Der Pi zeigt einen 6-stelligen Code auf dem Display (ohne Display: `journalctl -u bbq`), 2 Minuten
+   gültig, 3 Versuche, danach 30 Sekunden Sperre.
+3. Die **Pi-Kennung** in der App muss mit der auf dem Display übereinstimmen, dann den Code eingeben.
+
+Danach stehen Adresse, Token und Zertifikat-Fingerabdruck des Pi in `~/.config/bbq/bbq.env` (nur für den
+Besitzer lesbar), und die App verbindet sich beim nächsten Start von selbst, nur mit genau diesem Pi.
+Auf dem Pi stehen gekoppelte Rechner in `bbq.clients` (nur ein Hash des Tokens, Datum, Name): Zeile löschen
+entkoppelt den Rechner. `bbq.crt`/`bbq.key` entstehen beim ersten Start; werden sie gelöscht, müssen alle
+Rechner neu koppeln.
 
 ## Protokoll
 
@@ -73,6 +80,11 @@ Herausgefunden aus der Android-App „lazy BBQ“ (`com.bbq.dc`) und am Gerät g
   (immer `a0 a0`, auch während das Gerät Alarm piept: Der Alarm wird nicht übertragen). Fühler ab: `0x7fff`.
 - **`…1581` (Write without response):** `[Ziel P1, 0, Ziel P2, 0, 0, Summe der Bytes & 0xFF]`, ganze °C;
   `0xFA` heißt „diesen Fühler nicht ändern“. Beispiel Ziel P1 = 75 °C: `4b 00 fa 00 00 45`.
+
+Zwischen Pi und App: TLS, zeilenweise. Der Pi grüßt mit `BBQ/2`; dann `auth <token>` → `ok`/`denied`,
+oder `pair <name>` → `code`, `code <123456>` → `paired <token>` + `ok` (sonst `wrong <n>`, `expired`, `busy`).
+Angemeldet kommen Live-Zeilen (`\rHH:MM:SS P1 … °C (Ziel …) P2 …`) und Meldungen; `p1 80` setzt ein Ziel.
+Zum Ausprobieren: `openssl s_client -quiet -connect <pi>:51235`.
 
 Das Logo liegt als PhotoCraft-Datei mit Ebenen in `assets/bbq-logo.pcraft`.
 
