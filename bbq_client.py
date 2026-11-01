@@ -17,8 +17,8 @@ from PyQt6.QtCore import QCryptographicHash, QEvent, QPointF, QRectF, QRegularEx
 from PyQt6.QtGui import (QColor, QFont, QIcon, QImage, QPainter, QPainterPath, QPalette, QPen, QPolygonF,
                          QRegularExpressionValidator)
 from PyQt6.QtNetwork import QAbstractSocket, QSslSocket
-from PyQt6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel, QLineEdit, QProgressBar,
-                             QPushButton, QSpinBox, QStackedWidget, QVBoxLayout, QWidget)
+from PyQt6.QtWidgets import (QAbstractButton, QApplication, QFrame, QHBoxLayout, QLabel, QLineEdit,
+                             QProgressBar, QPushButton, QSpinBox, QStackedWidget, QVBoxLayout, QWidget)
 
 PORT = int(os.environ.get("BBQ_PORT", "51235"))
 CONFIG = Path(os.environ.get("XDG_CONFIG_HOME") or Path.home() / ".config") / "bbq" / "bbq.env"
@@ -132,8 +132,54 @@ class TargetBox(QSpinBox):
             QTimer.singleShot(0, self.accepted.emit)
 
 
+class CornerButton(QAbstractButton):
+    """Kleiner Eck-Knopf im Stil der Schatten: Rahmen und Piktogramm in der Textfarbe, mit der Maus kraeftiger.
+    icon: "chart" (Achse mit Kurve: zum Verlauf) oder "cards" (zwei Kacheln: zurueck zu den Werten)."""
+    SIZE, INSET = 32, 14
+
+    def __init__(self, icon, tip, parent):
+        super().__init__(parent)
+        self.icon = icon
+        self.setFixedSize(self.SIZE, self.SIZE)
+        self.setToolTip(tip)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.setAttribute(Qt.WidgetAttribute.WA_Hover)  # neu zeichnen, wenn die Maus kommt oder geht
+        parent.corner = self
+
+    def paintEvent(self, _):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.RenderHint.Antialiasing)
+        hot = self.underMouse()
+        c = self.palette().color(QPalette.ColorRole.Text)
+        frame, ink, fill = QColor(c), QColor(c), QColor(c)
+        frame.setAlphaF(0.45 if hot else 0.22)
+        ink.setAlphaF(0.75 if hot else 0.35)
+        fill.setAlphaF(0.06 if hot else 0)
+        p.setPen(QPen(frame, 1.2))
+        p.setBrush(fill)
+        p.drawRoundedRect(QRectF(self.rect()).adjusted(0.5, 0.5, -0.5, -0.5), 7, 7)
+        p.setPen(QPen(ink, 2, cap=Qt.PenCapStyle.RoundCap, join=Qt.PenJoinStyle.RoundJoin))
+        p.setBrush(Qt.BrushStyle.NoBrush)
+        s = self.SIZE
+        if self.icon == "chart":
+            p.drawPolyline(QPolygonF([QPointF(8, 8), QPointF(8, s - 8), QPointF(s - 8, s - 8)]))
+            p.drawPolyline(QPolygonF([QPointF(11, s - 12), QPointF(15, 17), QPointF(19, 19), QPointF(s - 8, 10)]))
+        else:
+            p.drawRoundedRect(QRectF(7, 9, 8, 14), 2, 2)
+            p.drawRoundedRect(QRectF(17, 9, 8, 14), 2, 2)
+
+
 class Panel(QFrame):
     """Kachel mit runden Ecken in Systemfarben; Unterklassen malen in paint_inside() darauf."""
+    corner = None  # optionaler CornerButton, sitzt immer unten rechts
+
+    def resizeEvent(self, e):
+        if self.corner:
+            k = CornerButton
+            self.corner.move(self.width() - k.INSET - k.SIZE, self.height() - k.INSET - k.SIZE)
+            self.corner.raise_()
+        super().resizeEvent(e)
 
     def paintEvent(self, _):
         p = QPainter(self)
@@ -184,7 +230,8 @@ class HistoryPanel(Panel):
             p.setPen(dim)
             p.drawText(QRectF(self.rect()), Qt.AlignmentFlag.AlignCenter, "Noch keine Messwerte seit dem Start der App")
             return
-        area = QRectF(self.rect()).adjusted(52, 44, -20, -34)  # Platz fuer Legende oben, Achsen links/unten
+        # Platz fuer Legende oben, Achsen links/unten und rechts fuer den Eck-Knopf
+        area = QRectF(self.rect()).adjusted(52, 44, -(30 + CornerButton.SIZE), -34)
         t0 = self.history[0][0]
         span = max(self.history[-1][0] - t0, 60)
         ys = ticks(min(vals), max(vals))
@@ -380,6 +427,9 @@ class Window(QWidget):
 
         self.history = []  # (time.time(), p1, p2, t1, t2) je Messung seit dem Start der App
         self.chart = HistoryPanel(self.history)
+        # Eck-Knoepfe: in der rechten Karte zum Verlauf, im Verlauf an derselben Stelle zurueck
+        CornerButton("chart", "Temperaturverlauf seit dem Start", self.cards[1]).clicked.connect(self.toggle_view)
+        CornerButton("cards", "Zurück zu den Werten", self.chart).clicked.connect(self.toggle_view)
 
         self.pages = QStackedWidget()  # 0 Kopplung, 1 Karten, 2 Verlauf
         self.pages.addWidget(setup)
@@ -388,15 +438,10 @@ class Window(QWidget):
         self.view = 1  # Karten oder Verlauf: dorthin nach der Anmeldung
         self.info = QLabel()
         self.info.setForegroundRole(QPalette.ColorRole.PlaceholderText)
-        self.view_btn = QPushButton("Verlauf")
-        self.view_btn.clicked.connect(self.toggle_view)
-        bottom = QHBoxLayout()
-        bottom.addWidget(self.info, 1)
-        bottom.addWidget(self.view_btn)
         lay = QVBoxLayout(self)
         lay.setContentsMargins(12, 12, 12, 12)
         lay.addWidget(self.pages, 1)
-        lay.addLayout(bottom)
+        lay.addWidget(self.info)
 
         self.buf, self.reading, self.status, self.note, self.last_rx = "", None, "", "", time.monotonic()
         self.retry, self.authed, self.mode = False, False, "auth"  # mode: "auth" (Token) oder "pair" (Code)
@@ -538,9 +583,8 @@ class Window(QWidget):
                 self.history.append((time.time(), *r))
 
     def toggle_view(self):
-        """Knopf unten rechts: zwischen den Karten und dem Temperaturverlauf wechseln."""
+        """Eck-Knopf: zwischen den Karten und dem Temperaturverlauf wechseln."""
         self.view = 2 if self.view == 1 else 1
-        self.view_btn.setText("Werte" if self.view == 2 else "Verlauf")
         if self.pages.currentIndex() != 0:
             self.pages.setCurrentIndex(self.view)
 
@@ -559,8 +603,7 @@ class Window(QWidget):
         page = self.pages.currentIndex()
         waiting = not fresh and page != 0
         self.info.setText(self.status or ("warte auf Messwerte …" if waiting else ""))
-        self.view_btn.setVisible(page != 0)
-        self.info.setVisible(bool(self.info.text()) or page != 0)  # ganz leer: kein Platz unten verschenken
+        self.info.setVisible(bool(self.info.text()))  # leer: kein Platz unten verschenken
         if page == 2:
             self.chart.update()
 
