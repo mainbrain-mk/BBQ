@@ -288,6 +288,11 @@ class Card(Panel):
         self.title.setForegroundRole(QPalette.ColorRole.PlaceholderText)
         self.temp = QLabel("--", alignment=Qt.AlignmentFlag.AlignCenter)
         self.bar = QProgressBar(textVisible=False, maximumHeight=6)
+        if probe == 2:  # Balken in der Farbe der P2-Linie im Verlauf; P1 hat schon die Akzentfarbe wie seine Linie
+            pal = QPalette()  # nur diese Rollen setzen, der Rest folgt weiter dem System
+            pal.setColor(QPalette.ColorRole.Highlight, P2_COLOR)
+            pal.setColor(QPalette.ColorRole.Accent, P2_COLOR)  # Breeze (Qt 6) malt den Balken in Accent
+            self.bar.setPalette(pal)
         self.target = QLabel("Ziel --", alignment=Qt.AlignmentFlag.AlignCenter)
         self.target.setForegroundRole(QPalette.ColorRole.PlaceholderText)
         self.edit = TargetBox(minimum=1, maximum=249, suffix=" °C", alignment=Qt.AlignmentFlag.AlignCenter)
