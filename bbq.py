@@ -177,11 +177,16 @@ def main():
         f = tk.Frame(root, bg=CARD)
         f.place(relx=0.01 + i * 0.5, rely=0.05, relwidth=0.48, relheight=0.9)
         tk.Label(f, text=f"TEMP P{i + 1}", font=("DejaVu Sans", 22, "bold"), fg=DIM, bg=CARD).pack(anchor="w", padx=20, pady=10)
-        ist = tk.Label(f, font=("DejaVu Sans", 120, "bold"), fg=TEXT, bg=CARD)
-        ist.pack(expand=True)
+        row = tk.Frame(f, bg=CARD)
+        row.pack(expand=True)
+        # Zahl doppelt so gross wie frueher, "°C" klein daneben: so passen auch 3 Stellen (Ofen, Smoker) in die Kachel
+        ist = tk.Label(row, font=("DejaVu Sans", 240, "bold"), fg=TEXT, bg=CARD)
+        ist.pack(side="left")
+        unit = tk.Label(row, text="°C", font=("DejaVu Sans", 80, "bold"), fg=TEXT, bg=CARD)
+        unit.pack(side="left", anchor="n", pady=(60, 0))
         ziel = tk.Label(f, font=("DejaVu Sans", 40, "bold"), fg=DIM, bg=CARD)
         ziel.pack(pady=30)
-        cards.append((ist, ziel))
+        cards.append((ist, unit, ziel))
 
     # Kopplungsdialog (nur ohne BBQ_MAC): liegt ueber den Karten, bis ein Thermometer angetippt ist
     pair = tk.Frame(root, bg=BG)
@@ -242,8 +247,9 @@ def main():
                 except tk.TclError:  # Fenster noch nicht sichtbar oder Grab belegt: naechster Tick
                     pass
         elif fresh(r, time.monotonic(), idle()):
-            for (ist, ziel), p, t in zip(cards, r[:2], r[2:4]):
-                ist.config(text=f"{p} °C", fg=GREEN if t and p >= t else TEXT)
+            for (ist, unit, ziel), p, t in zip(cards, r[:2], r[2:4]):
+                ist.config(text=f"{p}", fg=GREEN if t and p >= t else TEXT)
+                unit.config(fg=GREEN if t and p >= t else TEXT)
                 ziel.config(text=f"Ziel {t} °C")
         if pairing or fresh(r, time.monotonic(), idle()):
             if root.state() == "withdrawn":
