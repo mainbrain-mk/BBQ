@@ -119,8 +119,9 @@ apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk
 Ohne `keystore.properties` entsteht `app-release-unsigned.apk`.
 
 **Versionen:** Start ist 1.0. Ein Fehlerbehebungs-Update zählt +0.01 (1.0 → 1.01 → 1.02), ein kleines
-Funktions-Update +0.1 (1.02 → 1.12, oder nach 1.0 → 1.1). `versionCode` ist immer `versionName` × 100 (1.0 → 100,
-1.01 → 101, 1.1 → 110, 1.12 → 112), so steigt er mit jeder Version. Für ein Release beide Werte in
+Funktions-Update springt auf das nächste Zehntel (1.02 → 1.1, dann 1.11, 1.12 …); zehn Fixes in Folge ergeben
+ebenso das nächste Zehntel (1.09 → 1.1). `versionCode` ist immer `versionName` × 100 (1.0 → 100, 1.01 → 101,
+1.1 → 110, 1.12 → 112), so steigt er mit jeder Version. Für ein Release beide Werte in
 `android/app/build.gradle.kts` setzen, `fastlane/metadata/android/*/changelogs/<versionCode>.txt` anlegen und den
 Stand als `v<versionName>` taggen (z. B. `git tag v1.01 && git push origin v1.01`).
 
