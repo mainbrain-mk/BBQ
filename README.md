@@ -17,8 +17,12 @@ gibt es keine funktionierende Android-App mehr. Dieses Projekt ersetzt sie:
 git clone https://github.com/<user>/BBQ.git ~/bbq && cd ~/bbq
 python3 -m venv venv && venv/bin/pip install -r requirements.txt
 BBQ_SELFTEST=1 venv/bin/python3 bbq.py      # Selbsttest, ohne Thermometer
-venv/bin/python3 bbq.py                     # Thermometer einschalten, verbindet sich von selbst
+venv/bin/python3 bbq.py                     # braucht ein Display (DISPLAY=:0), siehe unten
 ```
+
+Beim ersten Start zeigt das Display **„Thermometer koppeln“**: Thermometer einschalten, den gefundenen
+Eintrag antippen. Die Adresse landet als `BBQ_MAC` in `bbq.env`, danach verbindet sich der Pi von selbst.
+Neu koppeln: die Zeile `BBQ_MAC=…` aus `bbq.env` löschen und den Dienst neu starten.
 
 Als Dienst: Pfade und `User=` in [`bbq.service`](bbq.service) anpassen, dann
 
@@ -36,7 +40,7 @@ Alle optional, als Umgebungsvariable oder als `KEY=VALUE` in `bbq.env` neben `bb
 | Variable | Standard | Bedeutung |
 |---|---|---|
 | `BBQ_NAME` | `Day_BBQ,Day_BQQ` | BLE-Namen, an denen das Thermometer erkannt wird (Werbung / nach dem Verbinden) |
-| `BBQ_MAC` | – | Bei mehreren Thermometern: genau dieses (z. B. `AA:BB:CC:DD:EE:FF`) |
+| `BBQ_MAC` | – | Das gekoppelte Thermometer (z. B. `AA:BB:CC:DD:EE:FF`); setzt der Kopplungsdialog |
 | `BBQ_PORT` | `51235` | TCP-Port |
 | `BBQ_IDLE_IF` | – | Existiert dieser Pfad, ruht das Gateway (z. B. `/sys/class/net/can0`, wenn der Pi woanders gebraucht wird) |
 

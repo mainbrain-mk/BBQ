@@ -5,8 +5,9 @@ Vollbildfenster ueber das Display, solange frische Werte kommen. Vom Rechner aus
 
     nc <pi>.local 51235    # dort "p1 80" + Enter setzt Ziel P1 auf 80 °C
 
-Einstellungen (alle optional) als Umgebungsvariablen oder in `bbq.env` neben diesem Skript:
-BBQ_NAME, BBQ_MAC, BBQ_PORT, BBQ_IDLE_IF (siehe README).
+Beim ersten Start (kein BBQ_MAC) zeigt das Display "Thermometer koppeln": gefundene Thermometer
+antippen, die Adresse landet in `bbq.env`. Einstellungen als Umgebungsvariablen oder in `bbq.env`
+neben diesem Skript: BBQ_NAME, BBQ_MAC, BBQ_PORT, BBQ_IDLE_IF (siehe README).
 """
 import asyncio, os, re, struct, threading, time
 import tkinter as tk
@@ -25,10 +26,22 @@ def load_env(path):
         pass
 
 
-load_env(os.path.join(os.path.dirname(os.path.abspath(__file__)), "bbq.env"))
+def save_env(path, key, value):
+    """Setzt KEY=VALUE in der env-Datei: ersetzt eine vorhandene Zeile, sonst angehaengt."""
+    try:
+        with open(path) as f:
+            lines = [l for l in f.read().splitlines() if l.partition("=")[0].strip() != key]
+    except FileNotFoundError:
+        lines = []
+    with open(path, "w") as f:
+        f.write("\n".join(lines + [f"{key}={value}"]) + "\n")
+
+
+ENV_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bbq.env")
+load_env(ENV_FILE)
 # Werbung sagt "Day_BBQ", nach dem Verbinden heisst es "Day_BQQ" (GAP-Name): beide gelten
 NAMES = os.environ.get("BBQ_NAME", "Day_BBQ,Day_BQQ").split(",")
-MAC = os.environ.get("BBQ_MAC", "").upper()  # optional: bei mehreren Thermometern genau dieses
+MAC = os.environ.get("BBQ_MAC", "").upper()  # leer: Kopplungsdialog am Display
 PORT = int(os.environ.get("BBQ_PORT", "51235"))
 IDLE_IF = os.environ.get("BBQ_IDLE_IF", "")  # optional: existiert dieser Pfad, ruht BLE (z. B. /sys/class/net/can0)
 NOTIFY = "fe551582-4180-8a02-ef2c-1b42a0ac3f83"
@@ -39,6 +52,7 @@ clients = set()
 last = ""  # letzte Temperaturzeile, bekommt jeder neue TCP-Client sofort
 reading = None  # (p1, p2, t1, t2, time.monotonic())
 ble = None  # verbundener BleakClient, solange die Verbindung steht
+candidates = {}  # beim Koppeln gefundene Thermometer: Adresse -> (Name, RSSI)
 
 
 def send(text: str, log=False):
@@ -112,19 +126,22 @@ async def drop_orphans():
 
 
 async def ble_main():
-    global ble
+    global ble, candidates
     await asyncio.start_server(on_client, port=PORT)
     while True:  # Signal ist schwach: bei Abbruch einfach neu verbinden
         if idle():
             await asyncio.sleep(30)
             continue
         try:
-            if MAC:
-                dev = await BleakScanner.find_device_by_address(MAC, timeout=20)
-            else:
-                dev = await BleakScanner.find_device_by_filter(lambda d, adv: (adv.local_name or d.name) in NAMES, timeout=20)
+            if not MAC:  # Erststart: nur suchen, bis am Display eins gewaehlt ist (verbinden wuerde es unsichtbar machen)
+                await drop_orphans()
+                found = await BleakScanner.discover(timeout=5, return_adv=True)
+                candidates = {d.address: (adv.local_name or d.name, adv.rssi)
+                              for d, adv in found.values() if (adv.local_name or d.name) in NAMES}
+                continue
+            dev = await BleakScanner.find_device_by_address(MAC, timeout=20)
             if not dev:
-                send(f"\n{MAC or NAMES[0]} nicht gefunden (aus, ausser Reichweite oder Handy verbunden?), suche weiter …\n", log=True)
+                send(f"\n{MAC} nicht gefunden (aus, ausser Reichweite oder Handy verbunden?), suche weiter …\n", log=True)
                 await drop_orphans()
                 continue
             gone = asyncio.Event()
@@ -164,14 +181,68 @@ def main():
         ziel = tk.Label(f, font=("DejaVu Sans", 40, "bold"), fg=DIM, bg=CARD)
         ziel.pack(pady=30)
         cards.append((ist, ziel))
+
+    # Kopplungsdialog (nur ohne BBQ_MAC): liegt ueber den Karten, bis ein Thermometer angetippt ist
+    pair = tk.Frame(root, bg=BG)
+    pair.place(relx=0, rely=0, relwidth=1, relheight=1)
+    tk.Label(pair, text="Thermometer koppeln", font=("DejaVu Sans", 34, "bold"), fg=TEXT, bg=BG).pack(pady=(30, 6))
+    tk.Label(pair, text="Thermometer einschalten und in die Nähe stellen.\nIst es mit einem Handy verbunden, dort trennen.",
+             font=("DejaVu Sans", 16), fg=DIM, bg=BG).pack()
+    found = tk.Frame(pair, bg=BG)
+    found.pack(fill="x", padx=40, pady=20)
+    status = tk.Label(pair, font=("DejaVu Sans", 16), fg=DIM, bg=BG)
+    status.pack(side="bottom", pady=20)
+    buttons = {}  # Adresse -> Button
+
+    def choose(addr):
+        global MAC
+        save_env(ENV_FILE, "BBQ_MAC", addr)
+        MAC = addr
+        send(f"\nThermometer {addr} gekoppelt\n", log=True)
+        root.grab_release()
+        pair.destroy()
+
+    def on_tap(e):
+        # Mit dem Grab kommt der Tipp beim Fenster an, nicht beim Knopf darunter; winfo_containing
+        # sieht unter Xwayland das fremde X-Fenster, also selbst nachsehen, welcher Knopf getroffen ist
+        if e.widget is not root or MAC:
+            return
+        for b in buttons.values():
+            x, y = b.winfo_rootx(), b.winfo_rooty()
+            if x <= e.x_root < x + b.winfo_width() and y <= e.y_root < y + b.winfo_height():
+                b.invoke()
+                return
+
+    root.bind("<ButtonRelease-1>", on_tap)
     root.withdraw()
 
     def tick():
-        r = reading
-        if fresh(r, time.monotonic(), idle()):
+        r, pairing = reading, not MAC
+        if pairing:
+            c = candidates
+            if sorted(c) != sorted(buttons):
+                for b in buttons.values():
+                    b.destroy()
+                buttons.clear()
+                for addr in sorted(c, key=lambda a: -(c[a][1] or -999)):  # staerkstes Signal oben
+                    buttons[addr] = tk.Button(found, font=("DejaVu Sans", 22, "bold"), fg=TEXT, bg=CARD, activeforeground=TEXT,
+                                              activebackground=GREEN, relief="flat", pady=18, command=lambda a=addr: choose(a))
+                    buttons[addr].pack(fill="x", pady=6)
+            for addr, b in buttons.items():
+                name, rssi = c.get(addr, ("?", None))
+                b.config(text=f"{name}   {addr}   {rssi} dBm")
+            status.config(text="Antippen zum Koppeln" if c else "Suche …")
+            if root.state() != "withdrawn" and not root.grab_current():
+                # Unter Xwayland landen Tipps sonst im X-Fenster darunter (z. B. einer anderen Vollbild-App)
+                try:
+                    root.grab_set_global()
+                except tk.TclError:  # Fenster noch nicht sichtbar oder Grab belegt: naechster Tick
+                    pass
+        elif fresh(r, time.monotonic(), idle()):
             for (ist, ziel), p, t in zip(cards, r[:2], r[2:4]):
                 ist.config(text=f"{p} °C", fg=GREEN if t and p >= t else TEXT)
                 ziel.config(text=f"Ziel {t} °C")
+        if pairing or fresh(r, time.monotonic(), idle()):
             if root.state() == "withdrawn":
                 root.deiconify()
                 root.attributes("-fullscreen", True)
@@ -202,6 +273,13 @@ if __name__ == "__main__":
         load_env(f.name)
         os.unlink(f.name)
         assert os.environ["BBQ_TEST_A"] == "1" and os.environ["BBQ_TEST_B"] == "x=y"
+        save_env(f.name, "BBQ_MAC", "AA:BB:CC:DD:EE:FF")  # Datei fehlt -> neu
+        with open(f.name, "a") as g:
+            g.write("BBQ_IDLE_IF=/x\n")
+        save_env(f.name, "BBQ_MAC", "11:22:33:44:55:66")  # ersetzt, Rest bleibt
+        with open(f.name) as g:
+            assert g.read() == "BBQ_IDLE_IF=/x\nBBQ_MAC=11:22:33:44:55:66\n"
+        os.unlink(f.name)
         assert command(b"p1 75\n") == bytes.fromhex("4b00fa000045")  # am Geraet geprueft
         assert command(b"P2 80\r\n") == bytes.fromhex("fa005000004a")
         assert command(b"p1 250") is None and command(b"p3 80") is None and command(b"p1 0") is None
