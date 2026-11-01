@@ -44,7 +44,15 @@ class BbqService : Service() {
         nm.createNotificationChannel(NotificationChannel(CH_STATUS, getString(R.string.channel_status), NotificationManager.IMPORTANCE_LOW))
         nm.createNotificationChannel(NotificationChannel(CH_ALARM, getString(R.string.channel_alarm), NotificationManager.IMPORTANCE_HIGH)
             .apply { enableVibration(true) })
-        ServiceCompat.startForeground(this, ID_STATUS, status(getString(R.string.connecting)), ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE)
+        try {
+            ServiceCompat.startForeground(this, ID_STATUS, status(getString(R.string.connecting)), ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE)
+        } catch (_: IllegalStateException) {
+            // ab Android 12: nach dem Beenden der App startet das System den Dienst neu (START_STICKY), verbietet ihm
+            // aus dem Hintergrund aber den Vordergrund (ForegroundServiceStartNotAllowedException). Dann still enden,
+            // beim naechsten Oeffnen der App verbindet sie wieder.
+            stopSelf()
+            return START_NOT_STICKY
+        }
         if (!Bbq.paired) {
             stopSelf()
             return START_NOT_STICKY
