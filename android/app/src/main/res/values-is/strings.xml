@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">bíð eftir mæligildum…</string>
-    <string name="change">Breyta</string>
+    <string name="change">Tenging</string>
     <string name="target">Markmið %1$d °C</string>
     <string name="target_none">Markmið --</string>
     <string name="target_dialog">Markmið P%1$d</string>
@@ -39,7 +39,7 @@
     <string name="ble_lost">Tenging rofnaði, tengist aftur…</string>
     <string name="ble_not_found">Hitamælir %1$s fannst ekki (slökktur, utan sviðs eða tengdur við Pi?), leita áfram…</string>
     <string name="ble_connected">tengt</string>
-    <string name="ble_revoked">Forritið má ekki lengur nota Bluetooth: leitaðu aftur undir „Breyta“.</string>
+    <string name="ble_revoked">Forritið má ekki lengur nota Bluetooth: leitaðu aftur undir „Tenging“.</string>
     <string name="channel_status">Tenging</string>
     <string name="channel_alarm">Markmiði náð</string>
     <string name="connecting">tengist…</string>

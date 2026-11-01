@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">s’estan esperant mesures…</string>
-    <string name="change">Canvia</string>
+    <string name="change">Connexió</string>
     <string name="target">Objectiu %1$d °C</string>
     <string name="target_none">Objectiu --</string>
     <string name="target_dialog">Objectiu P%1$d</string>
@@ -40,7 +40,7 @@
     <string name="ble_lost">S’ha perdut la connexió, s’està reconnectant…</string>
     <string name="ble_not_found">No s’ha trobat el termòmetre %1$s (apagat, fora d’abast o connectat a la Pi?), se segueix cercant…</string>
     <string name="ble_connected">connectat</string>
-    <string name="ble_revoked">L’app ja no pot fer servir el Bluetooth: torna a cercar a «Canvia».</string>
+    <string name="ble_revoked">L’app ja no pot fer servir el Bluetooth: torna a cercar a «Connexió».</string>
     <string name="channel_status">Connexió</string>
     <string name="channel_alarm">Objectiu assolit</string>
     <string name="connecting">s’està connectant…</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">várakozás mérési értékekre…</string>
-    <string name="change">Módosítás</string>
+    <string name="change">Kapcsolat</string>
     <string name="target">Cél %1$d °C</string>
     <string name="target_none">Cél --</string>
     <string name="target_dialog">Cél P%1$d</string>
@@ -39,7 +39,7 @@
     <string name="ble_lost">A kapcsolat megszakadt, újracsatlakozás…</string>
     <string name="ble_not_found">A(z) %1$s hőmérő nem található (kikapcsolva, hatótávon kívül vagy a Pi-hez csatlakozik?), a keresés folytatódik…</string>
     <string name="ble_connected">csatlakoztatva</string>
-    <string name="ble_revoked">Az alkalmazás már nem használhatja a Bluetooth-t: keress újra a „Módosítás” gombbal.</string>
+    <string name="ble_revoked">Az alkalmazás már nem használhatja a Bluetooth-t: keress újra a „Kapcsolat” gombbal.</string>
     <string name="channel_status">Kapcsolat</string>
     <string name="channel_alarm">Cél elérve</string>
     <string name="connecting">csatlakozás…</string>

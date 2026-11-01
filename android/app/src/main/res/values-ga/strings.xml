@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">ag fanacht ar thomhais…</string>
-    <string name="change">Athraigh</string>
+    <string name="change">Ceangal</string>
     <string name="target">Sprioc %1$d °C</string>
     <string name="target_none">Sprioc --</string>
     <string name="target_dialog">Sprioc P%1$d</string>
@@ -42,7 +42,7 @@
     <string name="ble_lost">Cailleadh an ceangal, ag athcheangal…</string>
     <string name="ble_not_found">Níor aimsíodh teirmiméadar %1$s (múchta, as raon nó ceangailte leis an Pi?), ag leanúint den chuardach…</string>
     <string name="ble_connected">ceangailte</string>
-    <string name="ble_revoked">Níl cead ag an aip Bluetooth a úsáid a thuilleadh: cuardaigh arís faoi “Athraigh”.</string>
+    <string name="ble_revoked">Níl cead ag an aip Bluetooth a úsáid a thuilleadh: cuardaigh arís faoi “Ceangal”.</string>
     <string name="channel_status">Ceangal</string>
     <string name="channel_alarm">Sprioc bainte amach</string>
     <string name="connecting">ag ceangal…</string>

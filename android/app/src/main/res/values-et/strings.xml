@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">ootan mõõtmistulemusi…</string>
-    <string name="change">Muuda</string>
+    <string name="change">Ühendus</string>
     <string name="target">Siht %1$d °C</string>
     <string name="target_none">Siht --</string>
     <string name="target_dialog">Siht P%1$d</string>
@@ -39,7 +39,7 @@
     <string name="ble_lost">Ühendus katkes, ühendan uuesti…</string>
     <string name="ble_not_found">Termomeetrit %1$s ei leitud (väljas, levialast väljas või Pi-ga ühendatud?), otsin edasi…</string>
     <string name="ble_connected">ühendatud</string>
-    <string name="ble_revoked">Rakendus ei tohi enam Bluetoothi kasutada: otsi uuesti valikust „Muuda“.</string>
+    <string name="ble_revoked">Rakendus ei tohi enam Bluetoothi kasutada: otsi uuesti valikust „Ühendus“.</string>
     <string name="channel_status">Ühendus</string>
     <string name="channel_alarm">Siht saavutatud</string>
     <string name="connecting">ühendan…</string>

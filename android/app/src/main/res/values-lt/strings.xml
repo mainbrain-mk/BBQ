@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">laukiama matavimų…</string>
-    <string name="change">Keisti</string>
+    <string name="change">Ryšys</string>
     <string name="target">Tikslas %1$d °C</string>
     <string name="target_none">Tikslas --</string>
     <string name="target_dialog">Tikslas P%1$d</string>
@@ -41,7 +41,7 @@
     <string name="ble_lost">Ryšys nutrūko, jungiamasi iš naujo…</string>
     <string name="ble_not_found">Termometras %1$s nerastas (išjungtas, už ryšio zonos ar prijungtas prie Pi?), ieškoma toliau…</string>
     <string name="ble_connected">prijungta</string>
-    <string name="ble_revoked">Programai nebeleidžiama naudoti Bluetooth: ieškokite iš naujo per „Keisti“.</string>
+    <string name="ble_revoked">Programai nebeleidžiama naudoti Bluetooth: ieškokite iš naujo per „Ryšys“.</string>
     <string name="channel_status">Ryšys</string>
     <string name="channel_alarm">Tikslas pasiektas</string>
     <string name="connecting">jungiamasi…</string>

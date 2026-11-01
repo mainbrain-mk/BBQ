@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">venter på måleværdier…</string>
-    <string name="change">Skift</string>
+    <string name="change">Forbindelse</string>
     <string name="target">Mål %1$d °C</string>
     <string name="target_none">Mål --</string>
     <string name="target_dialog">Mål P%1$d</string>
@@ -39,7 +39,7 @@
     <string name="ble_lost">Forbindelsen blev afbrudt, forbinder igen…</string>
     <string name="ble_not_found">Termometer %1$s ikke fundet (slukket, uden for rækkevidde eller forbundet med Pi’en?), søger videre…</string>
     <string name="ble_connected">forbundet</string>
-    <string name="ble_revoked">Appen må ikke længere bruge Bluetooth: søg igen under »Skift«.</string>
+    <string name="ble_revoked">Appen må ikke længere bruge Bluetooth: søg igen under »Forbindelse«.</string>
     <string name="channel_status">Forbindelse</string>
     <string name="channel_alarm">Mål nået</string>
     <string name="connecting">forbinder…</string>

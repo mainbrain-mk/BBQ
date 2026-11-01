@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">në pritje të matjeve…</string>
-    <string name="change">Ndrysho</string>
+    <string name="change">Lidhja</string>
     <string name="target">Objektivi %1$d °C</string>
     <string name="target_none">Objektivi --</string>
     <string name="target_dialog">Objektivi P%1$d</string>
@@ -39,7 +39,7 @@
     <string name="ble_lost">Lidhja humbi, po rilidhet…</string>
     <string name="ble_not_found">Termometri %1$s nuk u gjet (i fikur, jashtë rrezes ose i lidhur me Pi-në?), kërkimi vazhdon…</string>
     <string name="ble_connected">i lidhur</string>
-    <string name="ble_revoked">Aplikacioni nuk lejohet më të përdorë Bluetooth-in: kërko përsëri te „Ndrysho“.</string>
+    <string name="ble_revoked">Aplikacioni nuk lejohet më të përdorë Bluetooth-in: kërko përsëri te „Lidhja“.</string>
     <string name="channel_status">Lidhja</string>
     <string name="channel_alarm">Objektivi u arrit</string>
     <string name="connecting">po lidhet…</string>

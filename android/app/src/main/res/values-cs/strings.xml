@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">čekám na naměřené hodnoty…</string>
-    <string name="change">Změnit</string>
+    <string name="change">Připojení</string>
     <string name="target">Cíl %1$d °C</string>
     <string name="target_none">Cíl --</string>
     <string name="target_dialog">Cíl P%1$d</string>
@@ -41,7 +41,7 @@
     <string name="ble_lost">Spojení ztraceno, připojuji znovu…</string>
     <string name="ble_not_found">Teploměr %1$s nenalezen (vypnutý, mimo dosah nebo připojený k Pi?), hledám dál…</string>
     <string name="ble_connected">připojeno</string>
-    <string name="ble_revoked">Aplikace už nesmí používat Bluetooth: vyhledejte znovu přes „Změnit“.</string>
+    <string name="ble_revoked">Aplikace už nesmí používat Bluetooth: vyhledejte znovu přes „Připojení“.</string>
     <string name="channel_status">Připojení</string>
     <string name="channel_alarm">Cíl dosažen</string>
     <string name="connecting">připojuji…</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">se așteaptă valori măsurate…</string>
-    <string name="change">Schimbă</string>
+    <string name="change">Conexiune</string>
     <string name="target">Țintă %1$d °C</string>
     <string name="target_none">Țintă --</string>
     <string name="target_dialog">Țintă P%1$d</string>
@@ -40,7 +40,7 @@
     <string name="ble_lost">Conexiune pierdută, se reconectează…</string>
     <string name="ble_not_found">Termometrul %1$s nu a fost găsit (oprit, în afara razei sau conectat la Pi?), se caută în continuare…</string>
     <string name="ble_connected">conectat</string>
-    <string name="ble_revoked">Aplicația nu mai are voie să folosească Bluetooth: caută din nou din „Schimbă”.</string>
+    <string name="ble_revoked">Aplicația nu mai are voie să folosească Bluetooth: caută din nou din „Conexiune”.</string>
     <string name="channel_status">Conexiune</string>
     <string name="channel_alarm">Țintă atinsă</string>
     <string name="connecting">conectare…</string>

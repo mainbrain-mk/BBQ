@@ -49,7 +49,7 @@ object Bbq {
     @Volatile private var note = "" // Grund, warum es zur Kopplung zurueckging
     @Volatile private var seenFp = ""
     @Volatile private var viaBle = false // laufende Verbindung geht direkt zum Thermometer
-    @Volatile var choosing = false // "Ändern" gedrueckt: in der Einrichtung bleiben, nicht von selbst verbinden
+    @Volatile var choosing = false // "Verbindung" gedrueckt: in der Einrichtung bleiben, nicht von selbst verbinden
         private set
     private var host: Host? = null
     private var token = ""
@@ -88,7 +88,7 @@ object Bbq {
         state.update { it.copy(running = false) }
     }
 
-    /** Knopf "Ändern": trennen und zur Einrichtung, um Pi oder Thermometer zu wechseln. */
+    /** Knopf "Verbindung": trennen und zur Einrichtung, um Pi oder Thermometer zu wechseln. */
     fun change() {
         stop()
         choosing = true
@@ -164,7 +164,7 @@ object Bbq {
         Ble.close()
         val s = socket ?: return
         socket = null
-        out.execute { // TLS schickt beim Schliessen noch etwas: nie auf dem UI-Thread ("Ändern", "Beenden")
+        out.execute { // TLS schickt beim Schliessen noch etwas: nie auf dem UI-Thread ("Verbindung", "Beenden")
             try {
                 s.close()
             } catch (_: IOException) {

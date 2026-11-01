@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">qed nistenna l-qisien…</string>
-    <string name="change">Biddel</string>
+    <string name="change">Konnessjoni</string>
     <string name="target">Mira %1$d °C</string>
     <string name="target_none">Mira --</string>
     <string name="target_dialog">Mira P%1$d</string>
@@ -42,7 +42,7 @@
     <string name="ble_lost">Il-konnessjoni ntilfet, qed nerġa’ nikkonnettja…</string>
     <string name="ble_not_found">It-termometru %1$s ma nstabx (mitfi, barra mill-firxa jew imqabbad mal-Pi?), qed nibqa’ nfittex…</string>
     <string name="ble_connected">konness</string>
-    <string name="ble_revoked">L-app m’għadhiex tista’ tuża l-Bluetooth: erġa’ fittex minn “Biddel”.</string>
+    <string name="ble_revoked">L-app m’għadhiex tista’ tuża l-Bluetooth: erġa’ fittex minn “Konnessjoni”.</string>
     <string name="channel_status">Konnessjoni</string>
     <string name="channel_alarm">Il-mira ntlaħqet</string>
     <string name="connecting">qed nikkonnettja…</string>

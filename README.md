@@ -100,7 +100,7 @@ Handy nicht, die IP-Adresse des Pi eintragen.
 bis Android 11 nach dem Standort, der dann auch eingeschaltet sein muss) und den gefundenen Eintrag antippen. Das Handy
 hält dann selbst die BLE-Verbindung, alles andere (Verlauf, Ziele, Alarm) bleibt gleich; das WLAN muss dafür nicht
 wach bleiben. Der Pi muss dazu aus sein (oder ruhen), sonst ist das Thermometer schon verbunden. Kommen keine Messwerte,
-führt **Ändern** neben der Statuszeile zurück zur Einrichtung: dort mit derselben Pi-Adresse wieder auf **Koppeln**
+führt **Verbindung** neben der Statuszeile zurück zur Einrichtung: dort mit derselben Pi-Adresse wieder auf **Koppeln**
 (ein gekoppelter Pi braucht keinen neuen Code) oder **Zurück** zur bisherigen Verbindung.
 
 ### Signierte APK und F-Droid

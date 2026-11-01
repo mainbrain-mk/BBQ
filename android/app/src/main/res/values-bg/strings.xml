@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">изчакване на измервания…</string>
-    <string name="change">Промяна</string>
+    <string name="change">Връзка</string>
     <string name="target">Цел %1$d °C</string>
     <string name="target_none">Цел --</string>
     <string name="target_dialog">Цел P%1$d</string>
@@ -39,7 +39,7 @@
     <string name="ble_lost">Връзката е прекъсната, повторно свързване…</string>
     <string name="ble_not_found">Термометър %1$s не е намерен (изключен, извън обхват или свързан с Pi?), търсенето продължава…</string>
     <string name="ble_connected">свързано</string>
-    <string name="ble_revoked">Приложението вече няма право да използва Bluetooth: потърсете отново чрез „Промяна“.</string>
+    <string name="ble_revoked">Приложението вече няма право да използва Bluetooth: потърсете отново чрез „Връзка“.</string>
     <string name="channel_status">Връзка</string>
     <string name="channel_alarm">Целта е достигната</string>
     <string name="connecting">свързване…</string>

@@ -2,7 +2,7 @@
 <resources>
     <!-- Hauptseite -->
     <string name="waiting">warte auf Messwerte …</string>
-    <string name="change">Ändern</string>
+    <string name="change">Verbindung</string>
     <string name="target">Ziel %1$d °C</string>
     <string name="target_none">Ziel --</string>
     <string name="target_dialog">Ziel P%1$d</string>
@@ -44,7 +44,7 @@
     <string name="ble_lost">Verbindung verloren, verbinde neu …</string>
     <string name="ble_not_found">Thermometer %1$s nicht gefunden (aus, außer Reichweite oder Pi verbunden?), suche weiter …</string>
     <string name="ble_connected">verbunden</string>
-    <string name="ble_revoked">Die App darf Bluetooth nicht mehr nutzen: unter „Ändern“ neu suchen.</string>
+    <string name="ble_revoked">Die App darf Bluetooth nicht mehr nutzen: unter „Verbindung“ neu suchen.</string>
 
     <!-- Benachrichtigungen -->
     <string name="channel_status">Verbindung</string>

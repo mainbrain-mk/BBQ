@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">odotetaan mittausarvoja…</string>
-    <string name="change">Vaihda</string>
+    <string name="change">Yhteys</string>
     <string name="target">Tavoite %1$d °C</string>
     <string name="target_none">Tavoite --</string>
     <string name="target_dialog">Tavoite P%1$d</string>
@@ -39,7 +39,7 @@
     <string name="ble_lost">Yhteys katkesi, yhdistetään uudelleen…</string>
     <string name="ble_not_found">Lämpömittaria %1$s ei löytynyt (pois päältä, kantaman ulkopuolella tai yhdistetty Pihin?), etsitään edelleen…</string>
     <string name="ble_connected">yhdistetty</string>
-    <string name="ble_revoked">Sovellus ei saa enää käyttää Bluetoothia: etsi uudelleen kohdasta ”Vaihda”.</string>
+    <string name="ble_revoked">Sovellus ei saa enää käyttää Bluetoothia: etsi uudelleen kohdasta ”Yhteys”.</string>
     <string name="channel_status">Yhteys</string>
     <string name="channel_alarm">Tavoite saavutettu</string>
     <string name="connecting">yhdistetään…</string>

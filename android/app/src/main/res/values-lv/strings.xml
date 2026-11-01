@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">gaida mērījumus…</string>
-    <string name="change">Mainīt</string>
+    <string name="change">Savienojums</string>
     <string name="target">Mērķis %1$d °C</string>
     <string name="target_none">Mērķis --</string>
     <string name="target_dialog">Mērķis P%1$d</string>
@@ -40,7 +40,7 @@
     <string name="ble_lost">Savienojums zaudēts, notiek atkārtota savienošana…</string>
     <string name="ble_not_found">Termometrs %1$s nav atrasts (izslēgts, ārpus darbības zonas vai savienots ar Pi?), meklēšana turpinās…</string>
     <string name="ble_connected">savienots</string>
-    <string name="ble_revoked">Lietotnei vairs nav atļauts izmantot Bluetooth: meklējiet vēlreiz, izmantojot “Mainīt”.</string>
+    <string name="ble_revoked">Lietotnei vairs nav atļauts izmantot Bluetooth: meklējiet vēlreiz, izmantojot “Savienojums”.</string>
     <string name="channel_status">Savienojums</string>
     <string name="channel_alarm">Mērķis sasniegts</string>
     <string name="connecting">savienojas…</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">ölçüm değerleri bekleniyor…</string>
-    <string name="change">Değiştir</string>
+    <string name="change">Bağlantı</string>
     <string name="target">Hedef %1$d °C</string>
     <string name="target_none">Hedef --</string>
     <string name="target_dialog">Hedef P%1$d</string>
@@ -39,7 +39,7 @@
     <string name="ble_lost">Bağlantı koptu, yeniden bağlanılıyor…</string>
     <string name="ble_not_found">%1$s termometresi bulunamadı (kapalı, menzil dışında veya Pi’ye bağlı mı?), aramaya devam ediliyor…</string>
     <string name="ble_connected">bağlandı</string>
-    <string name="ble_revoked">Uygulamanın artık Bluetooth kullanma izni yok: “Değiştir” ile yeniden arayın.</string>
+    <string name="ble_revoked">Uygulamanın artık Bluetooth kullanma izni yok: “Bağlantı” ile yeniden arayın.</string>
     <string name="channel_status">Bağlantı</string>
     <string name="channel_alarm">Hedefe ulaşıldı</string>
     <string name="connecting">bağlanılıyor…</string>

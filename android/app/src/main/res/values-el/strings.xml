@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">αναμονή για μετρήσεις…</string>
-    <string name="change">Αλλαγή</string>
+    <string name="change">Σύνδεση</string>
     <string name="target">Στόχος %1$d °C</string>
     <string name="target_none">Στόχος --</string>
     <string name="target_dialog">Στόχος P%1$d</string>
@@ -39,7 +39,7 @@
     <string name="ble_lost">Η σύνδεση χάθηκε, επανασύνδεση…</string>
     <string name="ble_not_found">Το θερμόμετρο %1$s δεν βρέθηκε (απενεργοποιημένο, εκτός εμβέλειας ή συνδεδεμένο με το Pi;), η αναζήτηση συνεχίζεται…</string>
     <string name="ble_connected">συνδέθηκε</string>
-    <string name="ble_revoked">Η εφαρμογή δεν επιτρέπεται πλέον να χρησιμοποιεί Bluetooth: αναζητήστε ξανά από το «Αλλαγή».</string>
+    <string name="ble_revoked">Η εφαρμογή δεν επιτρέπεται πλέον να χρησιμοποιεί Bluetooth: αναζητήστε ξανά από το «Σύνδεση».</string>
     <string name="channel_status">Σύνδεση</string>
     <string name="channel_alarm">Ο στόχος επιτεύχθηκε</string>
     <string name="connecting">σύνδεση…</string>

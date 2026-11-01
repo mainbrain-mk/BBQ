@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">чекам измерене вредности…</string>
-    <string name="change">Промени</string>
+    <string name="change">Веза</string>
     <string name="target">Циљ %1$d °C</string>
     <string name="target_none">Циљ --</string>
     <string name="target_dialog">Циљ P%1$d</string>
@@ -40,7 +40,7 @@
     <string name="ble_lost">Веза је прекинута, поновно повезивање…</string>
     <string name="ble_not_found">Термометар %1$s није пронађен (искључен, ван домета или повезан са Pi уређајем?), тражим даље…</string>
     <string name="ble_connected">повезано</string>
-    <string name="ble_revoked">Апликација више не сме да користи Bluetooth: поново претражите преко „Промени”.</string>
+    <string name="ble_revoked">Апликација више не сме да користи Bluetooth: поново претражите преко „Веза”.</string>
     <string name="channel_status">Веза</string>
     <string name="channel_alarm">Циљ достигнут</string>
     <string name="connecting">повезивање…</string>

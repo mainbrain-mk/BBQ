@@ -5,7 +5,7 @@
 
     <!-- Hauptseite -->
     <string name="waiting">waiting for readings …</string>
-    <string name="change">Change</string>
+    <string name="change">Connection</string>
     <string name="probe_title" translatable="false">TEMP P%1$d</string>
     <string name="target">Target %1$d °C</string>
     <string name="target_none">Target --</string>
@@ -48,7 +48,7 @@
     <string name="ble_lost">Connection lost, reconnecting …</string>
     <string name="ble_not_found">Thermometer %1$s not found (off, out of range or connected to the Pi?), still searching …</string>
     <string name="ble_connected">connected</string>
-    <string name="ble_revoked">The app may no longer use Bluetooth: search again under “Change”.</string>
+    <string name="ble_revoked">The app may no longer use Bluetooth: search again under “Connection”.</string>
 
     <!-- Benachrichtigungen -->
     <string name="channel_status">Connection</string>

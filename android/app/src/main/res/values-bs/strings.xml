@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">čekam izmjerene vrijednosti…</string>
-    <string name="change">Promijeni</string>
+    <string name="change">Veza</string>
     <string name="target">Cilj %1$d °C</string>
     <string name="target_none">Cilj --</string>
     <string name="target_dialog">Cilj P%1$d</string>
@@ -40,7 +40,7 @@
     <string name="ble_lost">Veza je prekinuta, ponovno povezivanje…</string>
     <string name="ble_not_found">Termometar %1$s nije pronađen (isključen, izvan dometa ili povezan s Pijem?), tražim dalje…</string>
     <string name="ble_connected">povezano</string>
-    <string name="ble_revoked">Aplikacija više ne smije koristiti Bluetooth: ponovno pretražite putem „Promijeni”.</string>
+    <string name="ble_revoked">Aplikacija više ne smije koristiti Bluetooth: ponovno pretražite putem „Veza”.</string>
     <string name="channel_status">Veza</string>
     <string name="channel_alarm">Cilj dosegnut</string>
     <string name="connecting">povezivanje…</string>

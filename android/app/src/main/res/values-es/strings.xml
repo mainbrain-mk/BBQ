@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">esperando mediciones…</string>
-    <string name="change">Cambiar</string>
+    <string name="change">Conexión</string>
     <string name="target">Objetivo %1$d °C</string>
     <string name="target_none">Objetivo --</string>
     <string name="target_dialog">Objetivo P%1$d</string>
@@ -40,7 +40,7 @@
     <string name="ble_lost">Conexión perdida, reconectando…</string>
     <string name="ble_not_found">Termómetro %1$s no encontrado (¿apagado, fuera de alcance o conectado a la Pi?), sigo buscando…</string>
     <string name="ble_connected">conectado</string>
-    <string name="ble_revoked">La app ya no puede usar el Bluetooth: vuelve a buscar en «Cambiar».</string>
+    <string name="ble_revoked">La app ya no puede usar el Bluetooth: vuelve a buscar en «Conexión».</string>
     <string name="channel_status">Conexión</string>
     <string name="channel_alarm">Objetivo alcanzado</string>
     <string name="connecting">conectando…</string>

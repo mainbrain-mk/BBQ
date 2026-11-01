@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">venter på måleverdier…</string>
-    <string name="change">Endre</string>
+    <string name="change">Tilkobling</string>
     <string name="target">Mål %1$d °C</string>
     <string name="target_none">Mål --</string>
     <string name="target_dialog">Mål P%1$d</string>
@@ -39,7 +39,7 @@
     <string name="ble_lost">Tilkoblingen ble brutt, kobler til igjen…</string>
     <string name="ble_not_found">Fant ikke termometer %1$s (av, utenfor rekkevidde eller koblet til Pi-en?), søker videre…</string>
     <string name="ble_connected">tilkoblet</string>
-    <string name="ble_revoked">Appen har ikke lenger lov til å bruke Bluetooth: søk på nytt under «Endre».</string>
+    <string name="ble_revoked">Appen har ikke lenger lov til å bruke Bluetooth: søk på nytt under «Tilkobling».</string>
     <string name="channel_status">Tilkobling</string>
     <string name="channel_alarm">Mål nådd</string>
     <string name="connecting">kobler til…</string>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="waiting">wachten op meetwaarden…</string>
-    <string name="change">Wijzigen</string>
+    <string name="change">Verbinding</string>
     <string name="target">Doel %1$d °C</string>
     <string name="target_none">Doel --</string>
     <string name="target_dialog">Doel P%1$d</string>
@@ -39,7 +39,7 @@
     <string name="ble_lost">Verbinding verbroken, opnieuw verbinden…</string>
     <string name="ble_not_found">Thermometer %1$s niet gevonden (uit, buiten bereik of verbonden met de Pi?), blijft zoeken…</string>
     <string name="ble_connected">verbonden</string>
-    <string name="ble_revoked">De app mag Bluetooth niet meer gebruiken: zoek opnieuw via ‘Wijzigen’.</string>
+    <string name="ble_revoked">De app mag Bluetooth niet meer gebruiken: zoek opnieuw via ‘Verbinding’.</string>
     <string name="channel_status">Verbinding</string>
     <string name="channel_alarm">Doel bereikt</string>
     <string name="connecting">verbinden…</string>
