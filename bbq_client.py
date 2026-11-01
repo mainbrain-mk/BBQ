@@ -11,10 +11,10 @@ seinem Display, der hier eingegeben wird. Danach stehen Adresse, Token und Zerti
 des Pi in ~/.config/bbq/bbq.env (nur fuer den Besitzer lesbar); verbunden wird per TLS nur mit genau
 diesem Pi.
 """
-import os, re, signal, socket, sys, time
+import math, os, re, signal, socket, sys, time
 from pathlib import Path
 from PyQt6.QtCore import QCryptographicHash, QEvent, QPointF, QRectF, QRegularExpression, Qt, QTimer, pyqtSignal
-from PyQt6.QtGui import (QColor, QFont, QIcon, QImage, QPainter, QPainterPath, QPalette,
+from PyQt6.QtGui import (QColor, QFont, QIcon, QImage, QPainter, QPainterPath, QPalette, QPen, QPolygonF,
                          QRegularExpressionValidator)
 from PyQt6.QtNetwork import QAbstractSocket, QSslSocket
 from PyQt6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel, QLineEdit, QProgressBar,
@@ -31,6 +31,9 @@ ART = {1: ("tongs.png", 0.42, -18), 2: ("fork.png", 0.58, 18)}
 ART_OPACITY = 0.08
 ART_SCALE = 1.2  # Hoehe relativ zur Karte: bewusst groesser, oben und unten gleich angeschnitten
 REACHED = QColor("#27ae60")  # Breeze "positiv", auf hell und dunkel lesbar
+P2_COLOR = QColor("#f67400")  # Verlauf: P1 in der Akzentfarbe des Systems, P2 Breeze-Orange (passt zum Logo)
+GAP_S = 10  # so lange keine Messung -> Luecke im Verlauf (Thermometer aus, Pi weg)
+NO_PROBE = 0x7FFF  # Wert eines abgezogenen Fuehlers
 
 
 def parse(text: str):
@@ -46,6 +49,29 @@ def parse(text: str):
         return None, text
     p1, t1, p2, t2 = map(int, m.groups())
     return (p1, p2, t1, t2), text[m.end():]
+
+
+def series(history, i, gap=GAP_S):
+    """Verlauf [(zeit, p1, p2, t1, t2)] -> zusammenhaengende Stuecke [(zeit, wert)] fuer Spalte i (1..4).
+    Neues Stueck nach einer Messpause oder wenn der Fuehler abgezogen war."""
+    parts, cur, last_t = [], [], None
+    for s in history:
+        t, v = s[0], s[i]
+        if v >= NO_PROBE or (last_t is not None and t - last_t > gap):
+            if cur:
+                parts.append(cur)
+            cur = []
+        if v < NO_PROBE:
+            cur.append((t, v))
+        last_t = t
+    return parts + [cur] if cur else parts
+
+
+def ticks(lo, hi, n=5):
+    """Runde Werte fuer die Temperaturachse: Schritt 5/10/20/25/50/100, hoechstens etwa n Abschnitte."""
+    step = next((s for s in (5, 10, 20, 25, 50, 100) if (hi - lo) / s <= n), 100)
+    a, b = math.floor(lo / step) * step, math.ceil(hi / step) * step
+    return list(range(a, max(b, a + step) + 1, step))
 
 
 def read_env(path):
@@ -136,6 +162,70 @@ class LogoPanel(Panel):
     def paint_inside(self, p):
         s = min(self.width(), self.height()) * 0.7
         p.drawImage(QRectF((self.width() - s) / 2, (self.height() - s) / 2, s, s), self.logo)
+
+
+class HistoryPanel(Panel):
+    """Temperaturverlauf seit dem Start der App: P1/P2 als Linien, ihre Ziele gestrichelt in derselben Farbe."""
+
+    def __init__(self, history):
+        super().__init__()
+        self.history = history  # dieselbe Liste, die das Fenster fuellt
+
+    def paint_inside(self, p):
+        pal = self.palette()
+        dim = pal.color(QPalette.ColorRole.PlaceholderText)
+        colors = {1: pal.color(QPalette.ColorRole.Highlight), 2: P2_COLOR}
+        f = p.font()
+        f.setPixelSize(13)
+        p.setFont(f)
+        lines = {i: series(self.history, i) for i in (1, 2, 3, 4)}
+        vals = [v for parts in lines.values() for part in parts for _, v in part]
+        if not vals:
+            p.setPen(dim)
+            p.drawText(QRectF(self.rect()), Qt.AlignmentFlag.AlignCenter, "Noch keine Messwerte seit dem Start der App")
+            return
+        area = QRectF(self.rect()).adjusted(52, 44, -20, -34)  # Platz fuer Legende oben, Achsen links/unten
+        t0 = self.history[0][0]
+        span = max(self.history[-1][0] - t0, 60)
+        ys = ticks(min(vals), max(vals))
+        lo, hi = ys[0], ys[-1]
+
+        def X(t):
+            return area.left() + (t - t0) / span * area.width()
+
+        def Y(v):
+            return area.bottom() - (v - lo) / (hi - lo) * area.height()
+
+        grid = QColor(dim)
+        grid.setAlpha(60)
+        right, vcenter = Qt.AlignmentFlag.AlignRight, Qt.AlignmentFlag.AlignVCenter
+        for v in ys:
+            p.setPen(grid)
+            p.drawLine(QPointF(area.left(), Y(v)), QPointF(area.right(), Y(v)))
+            p.setPen(dim)
+            p.drawText(QRectF(0, Y(v) - 9, area.left() - 8, 18), right | vcenter, f"{v}°")
+        for frac, align in ((0, Qt.AlignmentFlag.AlignLeft), (0.5, Qt.AlignmentFlag.AlignHCenter), (1, right)):
+            x = area.left() + frac * area.width()
+            box = QRectF(x - 80 * frac, area.bottom() + 6, 80, 18)
+            p.drawText(box, align, time.strftime("%H:%M", time.localtime(t0 + frac * span)))
+        for i in (3, 4, 1, 2):  # Ziele zuerst, die Messwerte liegen obenauf
+            pen = QPen(colors[1 if i in (1, 3) else 2], 2.5 if i < 3 else 1.5)
+            if i > 2:
+                pen.setStyle(Qt.PenStyle.DashLine)
+            p.setPen(pen)
+            for part in lines[i]:
+                step = max(1, len(part) // max(1, int(area.width())))  # nicht mehr Punkte als Pixel
+                pts = part[::step] + part[-1:]
+                p.drawPolyline(QPolygonF([QPointF(X(t), Y(v)) for t, v in pts]))
+        x = area.left()
+        for i, name in ((1, "P1"), (2, "P2")):
+            p.setPen(QPen(colors[i], 3))
+            p.drawLine(QPointF(x, 22), QPointF(x + 18, 22))
+            p.setPen(pal.color(QPalette.ColorRole.Text))
+            p.drawText(QPointF(x + 24, 27), name)
+            x += 70
+        p.setPen(dim)
+        p.drawText(QPointF(x, 27), "gestrichelt: Ziel")
 
 
 class Card(Panel):
@@ -288,15 +378,25 @@ class Window(QWidget):
             c.target_set.connect(self.send)
             row.addWidget(c)
 
-        self.pages = QStackedWidget()
+        self.history = []  # (time.time(), p1, p2, t1, t2) je Messung seit dem Start der App
+        self.chart = HistoryPanel(self.history)
+
+        self.pages = QStackedWidget()  # 0 Kopplung, 1 Karten, 2 Verlauf
         self.pages.addWidget(setup)
         self.pages.addWidget(cards)
+        self.pages.addWidget(self.chart)
+        self.view = 1  # Karten oder Verlauf: dorthin nach der Anmeldung
         self.info = QLabel()
         self.info.setForegroundRole(QPalette.ColorRole.PlaceholderText)
+        self.view_btn = QPushButton("Verlauf")
+        self.view_btn.clicked.connect(self.toggle_view)
+        bottom = QHBoxLayout()
+        bottom.addWidget(self.info, 1)
+        bottom.addWidget(self.view_btn)
         lay = QVBoxLayout(self)
         lay.setContentsMargins(12, 12, 12, 12)
         lay.addWidget(self.pages, 1)
-        lay.addWidget(self.info)
+        lay.addLayout(bottom)
 
         self.buf, self.reading, self.status, self.note, self.last_rx = "", None, "", "", time.monotonic()
         self.retry, self.authed, self.mode = False, False, "auth"  # mode: "auth" (Token) oder "pair" (Code)
@@ -410,7 +510,7 @@ class Window(QWidget):
         elif word == "ok":
             self.authed, self.status = True, ""
             self.code_row.hide()
-            self.pages.setCurrentIndex(1)
+            self.pages.setCurrentIndex(self.view)
         elif word == "denied":
             self.to_setup("Dieser Rechner ist auf dem Pi nicht (mehr) gekoppelt: bitte koppeln.")
             self.sock.abort()
@@ -435,6 +535,14 @@ class Window(QWidget):
             r, self.buf = parse(self.buf[-500:])
             if r:
                 self.reading = (r, time.monotonic())
+                self.history.append((time.time(), *r))
+
+    def toggle_view(self):
+        """Knopf unten rechts: zwischen den Karten und dem Temperaturverlauf wechseln."""
+        self.view = 2 if self.view == 1 else 1
+        self.view_btn.setText("Werte" if self.view == 2 else "Verlauf")
+        if self.pages.currentIndex() != 0:
+            self.pages.setCurrentIndex(self.view)
 
     def send(self, probe, t):
         if self.authed:
@@ -448,9 +556,13 @@ class Window(QWidget):
         for i, c in enumerate(self.cards):
             r = self.reading[0] if fresh else None
             c.show_reading(r and r[i], r and r[2 + i])
-        waiting = not fresh and self.pages.currentIndex() == 1
+        page = self.pages.currentIndex()
+        waiting = not fresh and page != 0
         self.info.setText(self.status or ("warte auf Messwerte …" if waiting else ""))
-        self.info.setVisible(bool(self.info.text()))  # leer: kein Platz unten verschenken
+        self.view_btn.setVisible(page != 0)
+        self.info.setVisible(bool(self.info.text()) or page != 0)  # ganz leer: kein Platz unten verschenken
+        if page == 2:
+            self.chart.update()
 
 
 def main():
@@ -473,6 +585,11 @@ if __name__ == "__main__":
         assert parse("\nverbunden\n") == (None, "\nverbunden\n")
         _, rest = parse(line)
         assert parse(rest + "\nnicht gefunden …\n")[0] is None  # alte Zeile zaehlt nicht noch einmal
+        h = [(0, 20, 30, 65, 65), (1, 21, NO_PROBE, 65, 65), (2, 22, 31, 65, 65), (30, 40, 32, 70, 65)]
+        assert series(h, 1) == [[(0, 20), (1, 21), (2, 22)], [(30, 40)]]  # Pause > 10 s: Luecke
+        assert series(h, 2) == [[(0, 30)], [(2, 31)], [(30, 32)]]  # Fuehler abgezogen: Luecke
+        assert series([], 1) == []
+        assert ticks(19, 23) == [15, 20, 25] and ticks(20, 188) == [0, 50, 100, 150, 200] and ticks(65, 65) == [65, 70]
         assert parse_host(" car.local ") == ("car.local", PORT)
         assert parse_host("192.168.0.5:4000") == ("192.168.0.5", 4000)
         assert parse_host("tcp://car.local:51235/") == ("car.local", 51235)
