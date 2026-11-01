@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.view.ContextThemeWrapper
+import android.widget.NumberPicker
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -51,6 +53,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -70,6 +73,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -83,6 +87,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
@@ -280,24 +285,38 @@ fun ProbeCard(probe: Int, r: Reading?, modifier: Modifier) {
     if (edit && t != null) TargetDialog(probe, t) { edit = false }
 }
 
+/** Ziel waehlen mit dem Android-Rad (NumberPicker), 1 … 249 °C. */
 @Composable
 fun TargetDialog(probe: Int, current: Int, onDismiss: () -> Unit) {
-    var text by remember { mutableStateOf(current.toString()) }
-    val v = text.toIntOrNull()?.takeIf { it in 1..249 }
-    val set = {
-        if (v != null) {
-            Bbq.setTarget(probe, v)
-            onDismiss()
-        }
-    }
+    var v by rememberSaveable { mutableIntStateOf(current.coerceIn(1, 249)) }
+    val dark = isSystemInDarkTheme()
+    val ink = MaterialTheme.colorScheme.onSurface.toArgb()
     AlertDialog(onDismissRequest = onDismiss, title = { Text("Ziel P$probe") },
         text = {
-            OutlinedTextField(text, { if (it.length <= 3 && it.all(Char::isDigit)) text = it }, singleLine = true,
-                suffix = { Text("°C") }, supportingText = { Text("1 … 249 °C") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { set() }))
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                AndroidView(factory = { ctx ->
+                    // Eigenes Theme fuers Rad: das der Activity ist immer dunkel, der Dialog folgt dem System
+                    val themed = ContextThemeWrapper(ctx, if (dark) android.R.style.Theme_Material else android.R.style.Theme_Material_Light)
+                    NumberPicker(themed).apply {
+                        minValue = 1
+                        maxValue = 249
+                        wrapSelectorWheel = false
+                        descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS // nur drehen, keine Tastatur
+                        setOnValueChangedListener { _, _, n -> v = n }
+                    }
+                }, update = { np ->
+                    np.value = v
+                    if (Build.VERSION.SDK_INT >= 29) np.textColor = ink
+                })
+                Text("°C", Modifier.padding(start = 12.dp), style = MaterialTheme.typography.headlineSmall)
+            }
         },
-        confirmButton = { TextButton(set, enabled = v != null) { Text("Setzen") } },
+        confirmButton = {
+            TextButton({
+                Bbq.setTarget(probe, v)
+                onDismiss()
+            }) { Text("Setzen") }
+        },
         dismissButton = { TextButton(onDismiss) { Text("Abbrechen") } })
 }
 
