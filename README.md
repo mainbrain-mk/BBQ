@@ -93,7 +93,8 @@ ro, sk, sl, sv) sowie bs, ca, is, mk, nb, ru, sq, sr, tr und uk. Eine weitere Sp
 Koppeln wie am Rechner (Adresse, **Koppeln**, Pi-Kennung vergleichen, Code). Danach hält ein Dienst die Verbindung
 auch bei ausgeschaltetem Bildschirm: Die Benachrichtigung zeigt beide Werte, erreicht ein Fühler sein Ziel, kommt
 ein Alarm mit Ton und Vibration (erneut erst, wenn er 2 °C darunter war). Dafür bleiben CPU und WLAN wach, solange
-der Dienst läuft; **Beenden** in der Benachrichtigung trennt und gibt beides frei. Klappt `<name>.local` auf dem
+der Dienst läuft, auch wenn man die App wegwischt; **Beenden** in der Benachrichtigung oder das Kreuz oben rechts in
+der App trennt und gibt beides frei. Klappt `<name>.local` auf dem
 Handy nicht, die IP-Adresse des Pi eintragen.
 
 **Ohne Pi:** In der Einrichtung unter „Ohne Pi“ **Thermometer suchen** (die App fragt nach dem Bluetooth-Recht,

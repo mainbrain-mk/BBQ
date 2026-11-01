@@ -79,6 +79,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
@@ -107,7 +109,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         Bbq.init(applicationContext)
-        setContent { BbqTheme { App(::startService) } }
+        setContent { BbqTheme { App(::startService, ::quit) } }
     }
 
     override fun onResume() {
@@ -116,6 +118,13 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun startService() = ContextCompat.startForegroundService(this, Intent(this, BbqService::class.java))
+
+    /** Kreuz oben rechts: Wegwischen laesst den Dienst (und damit den Alarm) laufen, das hier beendet beides. */
+    private fun quit() {
+        Bbq.stop()
+        stopService(Intent(this, BbqService::class.java))
+        finishAndRemoveTask()
+    }
 }
 
 /** Material You: hell/dunkel wie das System, ab Android 12 in den Farben des Hintergrundbilds. */
@@ -132,7 +141,7 @@ fun BbqTheme(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun App(startService: () -> Unit) {
+fun App(startService: () -> Unit, quit: () -> Unit) {
     val s by Bbq.state.collectAsStateWithLifecycle()
     val askNotify = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {}
     LaunchedEffect(Unit) {
@@ -157,6 +166,8 @@ fun App(startService: () -> Unit) {
                     Page.CARDS -> Cards(if (fresh) s.reading else null)
                     Page.CHART -> Chart(s.historySize)
                 }
+                if (s.page != Page.SETUP) CornerButton(Pict.CLOSE, Modifier.align(Alignment.TopEnd).padding(12.dp),
+                    stringResource(R.string.stop), quit)
             }
             val waiting = stringResource(R.string.waiting)
             val info = s.status.ifEmpty { if (!fresh && s.page != Page.SETUP) waiting else "" }
@@ -280,7 +291,7 @@ fun ProbeCard(probe: Int, r: Reading?, modifier: Modifier) {
                 Text(if (t == null) stringResource(R.string.target_none) else stringResource(R.string.target, t), Modifier.fillMaxWidth().padding(top = 8.dp),
                     color = cs.onSurfaceVariant, style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
             }
-            if (probe == 2) CornerButton(chart = true, Modifier.align(Alignment.BottomEnd).padding(12.dp)) { Bbq.toggleView() }
+            if (probe == 2) CornerButton(Pict.CHART, Modifier.align(Alignment.BottomEnd).padding(12.dp)) { Bbq.toggleView() }
         }
     }
     if (edit && t != null) TargetDialog(probe, t) { edit = false }
@@ -322,16 +333,22 @@ fun TargetDialog(probe: Int, current: Int, onDismiss: () -> Unit) {
 }
 
 /** Kleiner Eck-Knopf im Stil der Schatten: Achse mit Kurve (zum Verlauf) oder zwei Kacheln (zurueck). */
+enum class Pict { CHART, CARDS, CLOSE }
+
 @Composable
-fun CornerButton(chart: Boolean, modifier: Modifier, onClick: () -> Unit) {
+fun CornerButton(pict: Pict, modifier: Modifier, label: String? = null, onClick: () -> Unit) {
     val c = MaterialTheme.colorScheme.onSurface
     val shape = RoundedCornerShape(8.dp)
-    Box(modifier.size(36.dp).clip(shape).border(1.dp, c.copy(alpha = 0.22f), shape).clickable(onClick = onClick)) {
+    Box(modifier.size(36.dp).clip(shape).border(1.dp, c.copy(alpha = 0.22f), shape).clickable(onClick = onClick)
+        .semantics { if (label != null) contentDescription = label }) {
         Canvas(Modifier.fillMaxSize()) {
             val u = size.width / 32f // Piktogramm auf einem 32er-Raster wie in bbq_client.py
             val ink = c.copy(alpha = 0.45f)
             val st = Stroke(2.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round)
-            if (chart) {
+            if (pict == Pict.CLOSE) {
+                drawLine(ink, Offset(10 * u, 10 * u), Offset(22 * u, 22 * u), st.width, StrokeCap.Round)
+                drawLine(ink, Offset(22 * u, 10 * u), Offset(10 * u, 22 * u), st.width, StrokeCap.Round)
+            } else if (pict == Pict.CHART) {
                 drawPath(Path().apply { moveTo(8 * u, 8 * u); lineTo(8 * u, 24 * u); lineTo(24 * u, 24 * u) }, ink, style = st)
                 drawPath(Path().apply { moveTo(11 * u, 20 * u); lineTo(15 * u, 17 * u); lineTo(19 * u, 19 * u); lineTo(24 * u, 10 * u) },
                     ink, style = st)
@@ -406,6 +423,6 @@ fun Chart(historySize: Int) {
                 drawText(m, topLeft = Offset(lx, 22.dp.toPx() - m.size.height / 2))
             }
         }
-        CornerButton(chart = false, Modifier.align(Alignment.BottomEnd).padding(12.dp)) { Bbq.toggleView() }
+        CornerButton(Pict.CARDS, Modifier.align(Alignment.BottomEnd).padding(12.dp)) { Bbq.toggleView() }
     }
 }
