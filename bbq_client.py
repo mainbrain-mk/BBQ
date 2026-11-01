@@ -10,7 +10,7 @@ fragt das Fenster danach; nach der ersten erfolgreichen Verbindung wird sie dort
 """
 import os, re, signal, sys, time
 from pathlib import Path
-from PyQt6.QtCore import QPointF, QRectF, Qt, QTimer, pyqtSignal
+from PyQt6.QtCore import QEvent, QPointF, QRectF, Qt, QTimer, pyqtSignal
 from PyQt6.QtGui import QColor, QFont, QIcon, QImage, QPainter, QPainterPath, QPalette
 from PyQt6.QtNetwork import QAbstractSocket, QTcpSocket
 from PyQt6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel, QLineEdit, QProgressBar,
@@ -241,9 +241,10 @@ class Window(QWidget):
         f.setPixelSize(22)
         f.setWeight(QFont.Weight.Bold)
         title.setFont(f)
-        hint = QLabel("Adresse des Raspberry Pi, auf dem bbq.py läuft:", wordWrap=True)
+        hint = QLabel("Adresse des Raspberry Pi,\nder mit dem Thermometer verbunden ist:", wordWrap=True)
         hint.setForegroundRole(QPalette.ColorRole.PlaceholderText)
         self.addr = QLineEdit(placeholderText="z. B. raspberrypi.local oder 192.168.0.10")
+        self.recolor_addr()
         self.addr.returnPressed.connect(self.submit)
         go = QPushButton("Verbinden")
         go.clicked.connect(self.submit)
@@ -294,6 +295,18 @@ class Window(QWidget):
             self.connect_pi()
         else:
             self.addr.setFocus()
+
+    def recolor_addr(self):
+        """Das Feld liegt auf einer Kachel, die schon die Base-Farbe hat: Fensterfarbe nehmen, sonst
+        verschwindet es. Nur Base setzen, alle anderen Farben erbt es weiter vom System."""
+        pal = QPalette()
+        pal.setColor(QPalette.ColorRole.Base, self.palette().color(QPalette.ColorRole.Window))
+        self.addr.setPalette(pal)
+
+    def changeEvent(self, e):
+        if e.type() == QEvent.Type.PaletteChange:  # Farbschema gewechselt
+            self.recolor_addr()
+        super().changeEvent(e)
 
     def label(self):
         host, port = self.host
