@@ -334,8 +334,10 @@ def main():
     code_head.pack(pady=(60, 10))
     code_big = tk.Label(codeview, font=("DejaVu Sans", 160, "bold"), fg=TEXT, bg=BG)
     code_big.pack(expand=True)
+    code_id = tk.Label(codeview, font=("DejaVu Sans", 30, "bold"), fg=TEXT, bg=BG)  # Pi-Kennung: zum Vergleich mit der App
+    code_id.pack()
     code_foot = tk.Label(codeview, font=("DejaVu Sans", 20), fg=DIM, bg=BG)
-    code_foot.pack(pady=40)
+    code_foot.pack(pady=(10, 40))
     root.withdraw()
 
     def overlay(now):
@@ -344,12 +346,13 @@ def main():
         if p and now < p[1]:
             code_head.config(text=f"Kopplung mit „{p[3]}“", fg=TEXT)
             code_big.config(text=f"{p[0][:3]} {p[0][3:]}", fg=TEXT)
-            code_foot.config(text=f"Diesen Code in der BBQ-App eingeben · Pi-Kennung {FPR[:4]} {FPR[4:8]}"
-                                  f" (muss in der App gleich sein) · noch {int(p[1] - now)} s")
+            code_id.config(text=f"Pi-Kennung {FPR[:4]} {FPR[4:8]}")
+            code_foot.config(text=f"Kennung muss in der BBQ-App gleich sein, dann dort den Code eingeben · noch {int(p[1] - now)} s")
         elif done and now < done[1]:
             code_head.config(text="Gekoppelt", fg=GREEN)
             code_big.config(text="✓", fg=GREEN)
-            code_foot.config(text=done[0])
+            code_id.config(text=done[0])
+            code_foot.config(text="")
         else:
             codeview.place_forget()
             return False
