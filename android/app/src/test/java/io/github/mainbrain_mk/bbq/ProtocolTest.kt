@@ -28,6 +28,14 @@ class ProtocolTest {
         assertEquals("car.local:4000", Host("car.local", 4000).toString())
     }
 
+    @Test fun blePackets() { // Beispiele aus der README
+        fun bytes(vararg v: Int) = v.map { it.toByte() }.toByteArray()
+        assertEquals(Reading(23, NO_PROBE, 75, 80), decode(bytes(0x17, 0, 0xff, 0x7f, 0x4b, 0, 0x50, 0, 0xa0, 0xa0)))
+        assertNull(decode(bytes(0x17, 0, 0xff)))
+        assert(bytes(0x4b, 0, 0xfa, 0, 0, 0x45).contentEquals(targetCommand(1, 75)))
+        assert(bytes(0xfa, 0, 0x50, 0, 0, 0x4a).contentEquals(targetCommand(2, 80)))
+    }
+
     @Test fun chartHelpers() {
         val h = listOf(0L to Reading(20, 30, 65, 65), 1L to Reading(21, NO_PROBE, 65, 65),
             2L to Reading(22, 31, 65, 65), 30L to Reading(40, 32, 70, 65)).map { Sample(it.first, it.second) }

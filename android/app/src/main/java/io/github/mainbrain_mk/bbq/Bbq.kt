@@ -29,27 +29,34 @@ data class UiState(
     val piId: String = "", // Pi-Kennung: erste 8 Zeichen des Zertifikat-Fingerabdrucks
     val historySize: Int = 0, // waechst mit jeder Messung -> Verlauf neu zeichnen
     val running: Boolean = false, // Verbindung soll stehen (Dienst laeuft)
+    val found: Map<String, String> = emptyMap(), // beim Suchen gefundene Thermometer: Adresse -> "Name · RSSI"
+    val scanning: Boolean = false,
 )
 
-/** Verbindung zum Pi und Zustand der App, geteilt von Oberflaeche und Hintergrunddienst.
- *  Wie bbq_client.py: TLS, Koppeln per Code, danach nur noch mit genau diesem Pi (Zertifikat gepinnt). */
+/** Verbindung zum Pi oder direkt zum Thermometer (Ble) und Zustand der App, geteilt von Oberflaeche und Dienst.
+ *  Pi wie bbq_client.py: TLS, Koppeln per Code, danach nur noch mit genau diesem Pi (Zertifikat gepinnt). */
 object Bbq {
     val state = MutableStateFlow(UiState())
     private val history = ArrayList<Sample>() // seit dem Start der App
     private val out = Executors.newSingleThreadExecutor() // Netz nie auf dem UI-Thread
     private lateinit var prefs: SharedPreferences
+    private lateinit var ctx: Context
     @Volatile private var generation = 0 // jede neue Verbindung zaehlt hoch, alte Threads geben dann auf
     @Volatile private var socket: SSLSocket? = null
     @Volatile private var mode = "auth" // "auth" (Token) oder "pair" (Code)
     @Volatile private var authed = false
     @Volatile private var note = "" // Grund, warum es zur Kopplung zurueckging
     @Volatile private var seenFp = ""
+    @Volatile private var viaBle = false // laufende Verbindung geht direkt zum Thermometer
+    @Volatile var choosing = false // "Ändern" gedrueckt: in der Einrichtung bleiben, nicht von selbst verbinden
+        private set
     private var host: Host? = null
     private var token = ""
     private var pin = ""
 
     fun init(ctx: Context) {
         if (::prefs.isInitialized) return
+        this.ctx = ctx
         prefs = ctx.getSharedPreferences("bbq", Context.MODE_PRIVATE) // App-eigen, andere Apps lesen das nicht
         host = parseHost(prefs.getString("host", "") ?: "")
         token = prefs.getString("token", "") ?: ""
@@ -57,7 +64,11 @@ object Bbq {
         state.update { it.copy(address = host?.toString() ?: "") }
     }
 
-    val paired get() = host != null && token.isNotEmpty()
+    /** Direkt zum Thermometer statt ueber den Pi (gewaehlt in der Einrichtung). */
+    val direct get() = prefs.getBoolean("direct", false)
+    private val mac get() = prefs.getString("mac", "") ?: ""
+
+    val paired get() = if (direct) mac.isNotEmpty() else host != null && token.isNotEmpty()
 
     fun historySnapshot(): List<Sample> = synchronized(history) { ArrayList(history) }
 
@@ -66,7 +77,7 @@ object Bbq {
         if (!paired || state.value.running) return
         mode = "auth"
         state.update { it.copy(page = it.view, running = true) }
-        connect()
+        connect(direct)
     }
 
     fun stop() {
@@ -76,6 +87,13 @@ object Bbq {
         state.update { it.copy(running = false) }
     }
 
+    /** Knopf "Ändern": trennen und zur Einrichtung, um Pi oder Thermometer zu wechseln. */
+    fun change() {
+        stop()
+        choosing = true
+        state.update { it.copy(page = Page.SETUP, status = "") }
+    }
+
     /** Knopf "Koppeln": verbinden und um einen Code bitten, den der Pi auf seinem Display zeigt. */
     fun pair(address: String) {
         val h = parseHost(address)
@@ -83,10 +101,37 @@ object Bbq {
             state.update { it.copy(status = "Bitte Hostname oder IP-Adresse eingeben, z. B. raspberrypi.local") }
             return
         }
+        if (h == host && token.isNotEmpty()) { // schon gekoppelt, z. B. zurueck vom Direktbetrieb: kein neuer Code
+            prefs.edit().putBoolean("direct", false).apply()
+            stop()
+            start()
+            return
+        }
         host = h
         mode = "pair"
         state.update { it.copy(address = h.toString(), codeAsked = false, page = Page.SETUP) }
-        connect()
+        connect(false)
+    }
+
+    /** Knopf "Thermometer suchen" (Rechte sind dann erteilt). */
+    fun scan() {
+        state.update { it.copy(found = emptyMap(), scanning = true, status = "") }
+        val ok = Ble.scan(ctx, { addr, name, rssi -> state.update { it.copy(found = it.found + (addr to "$name · $rssi dBm")) } }) {
+            state.update {
+                it.copy(scanning = false, status = if (it.found.isNotEmpty()) "" else
+                    "Kein Thermometer gefunden: eingeschaltet? Pi aus? (Android 8 bis 11: auch Standort einschalten)")
+            }
+        }
+        if (!ok) state.update { it.copy(scanning = false, status = "Bluetooth ist aus: bitte einschalten.") }
+    }
+
+    /** Gefundenes Thermometer angetippt: ab jetzt direkt mit ihm verbinden. */
+    fun useThermometer(address: String) {
+        Ble.stopScan()
+        prefs.edit().putString("mac", address).putBoolean("direct", true).apply()
+        stop()
+        state.update { it.copy(found = emptyMap()) }
+        start()
     }
 
     fun sendCode(code: String) {
@@ -94,7 +139,8 @@ object Bbq {
     }
 
     fun setTarget(probe: Int, t: Int) {
-        if (authed && t in 1..249) write("p$probe $t")
+        if (t !in 1..249) return
+        if (viaBle) Ble.write(targetCommand(probe, t)) else if (authed) write("p$probe $t")
     }
 
     fun toggleView() = state.update { s ->
@@ -102,20 +148,27 @@ object Bbq {
         s.copy(view = v, page = if (s.page == Page.SETUP) s.page else v)
     }
 
-    private fun connect() {
+    private fun connect(ble: Boolean) {
         val gen = ++generation
         close()
         authed = false
         note = ""
-        Thread({ run(gen) }, "bbq-net").apply { isDaemon = true }.start()
+        choosing = false
+        viaBle = ble
+        if (ble) Ble.connect(ctx, mac, ::onReading) { msg -> state.update { it.copy(status = msg) } }
+        else Thread({ run(gen) }, "bbq-net").apply { isDaemon = true }.start()
     }
 
     private fun close() {
-        try {
-            socket?.close()
-        } catch (_: IOException) {
-        }
+        Ble.close()
+        val s = socket ?: return
         socket = null
+        out.execute { // TLS schickt beim Schliessen noch etwas: nie auf dem UI-Thread ("Ändern", "Beenden")
+            try {
+                s.close()
+            } catch (_: IOException) {
+            }
+        }
     }
 
     private fun run(gen: Int) {
@@ -157,14 +210,16 @@ object Bbq {
         }
         if (!authed) return buf
         val (r, rest) = parse(buf.takeLast(500))
-        if (r != null) {
-            val n = synchronized(history) {
-                history += Sample(System.currentTimeMillis(), r)
-                history.size
-            }
-            state.update { it.copy(reading = r, readingAt = SystemClock.elapsedRealtime(), historySize = n) }
-        }
+        if (r != null) onReading(r)
         return rest
+    }
+
+    private fun onReading(r: Reading) {
+        val n = synchronized(history) {
+            history += Sample(System.currentTimeMillis(), r)
+            history.size
+        }
+        state.update { it.copy(reading = r, readingAt = SystemClock.elapsedRealtime(), historySize = n) }
     }
 
     private fun onReply(line: String) {
@@ -183,7 +238,8 @@ object Bbq {
                 token = arg
                 pin = seenFp
                 mode = "auth"
-                prefs.edit().putString("host", host.toString()).putString("token", token).putString("pin", pin).apply()
+                prefs.edit().putString("host", host.toString()).putString("token", token).putString("pin", pin)
+                    .putBoolean("direct", false).apply()
             }
             "ok" -> {
                 authed = true

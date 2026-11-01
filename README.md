@@ -10,7 +10,8 @@ gibt es keine funktionierende Android-App mehr. Dieses Projekt ersetzt sie:
   Zieltemperaturen an. Mit Display zeigt es ein Vollbildfenster, solange Messwerte kommen.
 - **`bbq_client.py`** ist das Fenster für den Rechner: beide Temperaturen, Klick auf eine Karte setzt das Ziel.
   Qt (PyQt6), folgt den Systemfarben hell/dunkel.
-- **`android/`** ist dieselbe App fürs Handy (Kotlin, Jetpack Compose, ab Android 8), dazu ein Hintergrunddienst,
+- **`android/`** ist dieselbe App fürs Handy (Kotlin, Jetpack Compose, ab Android 8), über den Pi oder direkt per
+  Bluetooth, dazu ein Hintergrunddienst,
   der die Werte als Benachrichtigung zeigt und Alarm gibt, wenn ein Fühler sein Ziel erreicht.
 
 ## Gateway auf dem Pi
@@ -89,11 +90,18 @@ ein Alarm mit Ton und Vibration (erneut erst, wenn er 2 °C darunter war). Dafü
 der Dienst läuft; **Beenden** in der Benachrichtigung trennt und gibt beides frei. Klappt `<name>.local` auf dem
 Handy nicht, die IP-Adresse des Pi eintragen.
 
+**Ohne Pi:** In der Einrichtung unter „Ohne Pi“ **Thermometer suchen** (die App fragt nach dem Bluetooth-Recht,
+bis Android 11 nach dem Standort, der dann auch eingeschaltet sein muss) und den gefundenen Eintrag antippen. Das Handy
+hält dann selbst die BLE-Verbindung, alles andere (Verlauf, Ziele, Alarm) bleibt gleich; das WLAN muss dafür nicht
+wach bleiben. Der Pi muss dazu aus sein (oder ruhen), sonst ist das Thermometer schon verbunden. Kommen keine Messwerte,
+führt **Ändern** neben der Statuszeile zurück zur Einrichtung: dort mit derselben Pi-Adresse wieder auf **Koppeln**
+(ein gekoppelter Pi braucht keinen neuen Code) oder **Zurück** zur bisherigen Verbindung.
+
 ## Protokoll
 
 Herausgefunden aus der Android-App „lazy BBQ“ (`com.bbq.dc`) und am Gerät geprüft. Dienst `fe551580-4180-8a02-ef2c-1b42a0ac3f83`:
 
-- **`…1582` (Notify):** 10 Bytes, `<4H` = Ist P1, Ist P2, Ziel P1, Ziel P2 in °C, dann 2 Bytes unbekannt
+- **`…1582` (Indicate, kein Notify):** 10 Bytes, `<4H` = Ist P1, Ist P2, Ziel P1, Ziel P2 in °C, dann 2 Bytes unbekannt
   (immer `a0 a0`, auch während das Gerät Alarm piept: Der Alarm wird nicht übertragen). Fühler ab: `0x7fff`.
 - **`…1581` (Write without response):** `[Ziel P1, 0, Ziel P2, 0, 0, Summe der Bytes & 0xFF]`, ganze °C;
   `0xFA` heißt „diesen Fühler nicht ändern“. Beispiel Ziel P1 = 75 °C: `4b 00 fa 00 00 45`.

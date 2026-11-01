@@ -39,6 +39,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -92,6 +93,8 @@ import kotlin.math.max
 
 val P2_COLOR = Color(0xFFF67400) // wie in bbq_client.py: P2 orange, P1 in der Akzentfarbe des Systems
 val REACHED = Color(0xFF27AE60)
+val BLE_PERMISSIONS = if (Build.VERSION.SDK_INT >= 31) arrayOf(Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
+else arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +106,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (Bbq.paired && !Bbq.state.value.running) startService() // z. B. nach "Beenden" in der Benachrichtigung
+        if (Bbq.paired && !Bbq.choosing && !Bbq.state.value.running) startService() // z. B. nach "Beenden" in der Benachrichtigung
     }
 
     private fun startService() = ContextCompat.startForegroundService(this, Intent(this, BbqService::class.java))
@@ -151,8 +154,12 @@ fun App(startService: () -> Unit) {
             }
             val info = s.status.ifEmpty { if (!fresh && s.page != Page.SETUP) "warte auf Messwerte …" else "" }
             if (info.isNotEmpty()) {
-                Text(info, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(top = 8.dp))
+                Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Text(info, Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodySmall)
+                    // ohne Messwerte (Pi oder Thermometer weg): wechseln zwischen Pi und direkt
+                    if (!fresh && s.page != Page.SETUP) TextButton(Bbq::change) { Text("Ändern") }
+                }
             }
         }
     }
@@ -191,6 +198,11 @@ fun Setup(s: UiState) {
     var addr by rememberSaveable { mutableStateOf(s.address) }
     var code by rememberSaveable { mutableStateOf("") }
     LaunchedEffect(s.status) { if (s.status.startsWith("Falscher Code")) code = "" }
+    var denied by remember { mutableStateOf(false) }
+    val askBle = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { r ->
+        denied = !r.values.all { it }
+        if (!denied) Bbq.scan()
+    }
     TwoTiles(0.6f, { m ->
         Tile(m) {
             Image(painterResource(R.drawable.logo), "BBQ", Modifier.align(Alignment.Center).fillMaxSize(0.7f))
@@ -214,6 +226,18 @@ fun Setup(s: UiState) {
                         keyboardActions = KeyboardActions(onDone = { Bbq.sendCode(code) }))
                     Button({ Bbq.sendCode(code) }, Modifier.fillMaxWidth(), enabled = code.length == 6) { Text("Bestätigen") }
                 }
+                Text("Ohne Pi", Modifier.padding(top = 14.dp), style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold)
+                Text("Das Handy verbindet sich selbst per Bluetooth. Nur ein Gerät kann mit dem Thermometer verbunden sein: "
+                    + "den Pi dafür ausschalten.", color = cs.onSurfaceVariant)
+                OutlinedButton({ askBle.launch(BLE_PERMISSIONS) }, Modifier.fillMaxWidth(), enabled = !s.scanning) {
+                    Text(if (s.scanning) "suche …" else "Thermometer suchen")
+                }
+                if (denied) Text("Ohne Bluetooth-Recht findet die App das Thermometer nicht.", color = cs.error)
+                for ((addr, label) in s.found) {
+                    Button({ Bbq.useThermometer(addr) }, Modifier.fillMaxWidth()) { Text("$label\n$addr", textAlign = TextAlign.Center) }
+                }
+                if (Bbq.paired) TextButton(Bbq::start, Modifier.fillMaxWidth()) { Text("Zurück") }
             }
         }
     })

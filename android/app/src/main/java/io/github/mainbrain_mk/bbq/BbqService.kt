@@ -20,7 +20,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-/** Haelt die Verbindung zum Pi, auch mit ausgeschaltetem Bildschirm, zeigt die Werte als dauerhafte
+/** Haelt die Verbindung zum Pi oder direkt zum Thermometer, auch mit ausgeschaltetem Bildschirm, zeigt die Werte als dauerhafte
  *  Benachrichtigung und schlaegt Alarm, sobald ein Fuehler sein Ziel erreicht. "Beenden" trennt. */
 class BbqService : Service() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
@@ -49,14 +49,14 @@ class BbqService : Service() {
             stopSelf()
             return START_NOT_STICKY
         }
-        // ponytail: CPU und WLAN bleiben wach, solange der Dienst laeuft (kostet Akku, dafuer kein Messwert-Loch
-        // im Standby); gehen mit "Beenden" bzw. dem Ende des Dienstes wieder frei.
+        // ponytail: CPU (und ueber den Pi auch WLAN) bleiben wach, solange der Dienst laeuft (kostet Akku, dafuer
+        // kein Messwert-Loch im Standby); gehen mit "Beenden" bzw. dem Ende des Dienstes wieder frei.
         if (wake == null) {
             wake = getSystemService(PowerManager::class.java).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "bbq:verbindung")
                 .apply { acquire() }
             @Suppress("DEPRECATION")
-            wifi = getSystemService(WifiManager::class.java).createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "bbq:wlan")
-                .apply { acquire() }
+            if (!Bbq.direct) wifi = getSystemService(WifiManager::class.java)
+                .createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "bbq:wlan").apply { acquire() }
         }
         Bbq.start()
         if (watch == null) watch = scope.launch { Bbq.state.collect(::onState) }

@@ -24,6 +24,22 @@ data class Host(val name: String, val port: Int = DEFAULT_PORT) {
 
 private val LINE = Regex("""P1\s+(\d+) °C \(Ziel (\d+)\)\s+P2\s+(\d+) °C \(Ziel (\d+)\)""")
 
+// Direkt per Bluetooth wie in bbq.py: Namen des Thermometers (Werbung / nach dem Verbinden) und seine Pakete
+val NAMES = setOf("Day_BBQ", "Day_BQQ")
+
+/** Notify-Paket: <4H = Ist P1, Ist P2, Ziel P1, Ziel P2 in °C, dahinter 2 unbekannte Bytes; zu kurz -> null. */
+fun decode(b: ByteArray): Reading? {
+    if (b.size < 8) return null
+    fun u16(i: Int) = (b[i].toInt() and 0xFF) or ((b[i + 1].toInt() and 0xFF) shl 8)
+    return Reading(u16(0), u16(2), u16(4), u16(6))
+}
+
+/** Ziel setzen: [Ziel P1, 0, Ziel P2, 0, 0, Summe]; 0xFA heisst "Fuehler nicht aendern", daher max. 249 °C. */
+fun targetCommand(probe: Int, t: Int): ByteArray {
+    val b = if (probe == 1) intArrayOf(t, 0, 0xFA, 0, 0) else intArrayOf(0xFA, 0, t, 0, 0)
+    return (b + (b.sum() and 0xFF)).map { it.toByte() }.toByteArray()
+}
+
 /** Letzte vollstaendige Temperaturzeile im Text -> (Messung oder null, Rest dahinter). Den Rest als
  *  neuen Puffer behalten: sonst gilt eine alte Zeile bei jeder spaeteren Meldung wieder als frisch. */
 fun parse(text: String): Pair<Reading?, String> {
