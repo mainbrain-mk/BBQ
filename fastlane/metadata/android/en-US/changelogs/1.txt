@@ -1,0 +1,1 @@
+First release: readings and targets of both probes, number wheel for the target, alarm, background service, history; directly via Bluetooth or through a Raspberry Pi.

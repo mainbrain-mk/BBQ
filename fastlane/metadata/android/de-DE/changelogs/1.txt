@@ -1,0 +1,1 @@
+Erste Version: Werte und Ziele beider Fühler, Drehrad fürs Ziel, Alarm, Hintergrunddienst, Verlauf; direkt per Bluetooth oder über einen Raspberry Pi.

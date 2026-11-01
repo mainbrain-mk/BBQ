@@ -97,6 +97,39 @@ wach bleiben. Der Pi muss dazu aus sein (oder ruhen), sonst ist das Thermometer 
 führt **Ändern** neben der Statuszeile zurück zur Einrichtung: dort mit derselben Pi-Adresse wieder auf **Koppeln**
 (ein gekoppelter Pi braucht keinen neuen Code) oder **Zurück** zur bisherigen Verbindung.
 
+### Signierte APK und F-Droid
+
+Einmalig einen Release-Schlüssel anlegen, **außerhalb des Repos** aufheben und sichern: Updates müssen immer mit
+demselben Schlüssel signiert sein, sonst lassen sie sich nicht über die installierte App spielen.
+
+```bash
+keytool -genkeypair -v -keystore ~/schluessel/bbq-release.jks -alias bbq -keyalg RSA -keysize 4096 -validity 10000
+```
+
+`android/keystore.properties.example` als `android/keystore.properties` kopieren (steht in `.gitignore`) und Pfad
+und Passwörter eintragen. Dann:
+
+```bash
+cd android && ./gradlew clean assembleRelease
+apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk
+```
+
+(`apksigner` liegt in `$ANDROID_HOME/build-tools/<version>/`.)
+
+Ohne `keystore.properties` entsteht `app-release-unsigned.apk`. Für jede neue Version `versionCode` (+1) und
+`versionName` in `android/app/build.gradle.kts` erhöhen, `fastlane/metadata/android/*/changelogs/<versionCode>.txt`
+anlegen und den Stand als `v<versionName>` taggen (z. B. `git tag v1.0 && git push origin v1.0`).
+
+Store-Texte, Icon und Screenshot liegen im Fastlane-Format unter [`fastlane/metadata/android`](fastlane/metadata/android).
+Die lesen F-Droid und IzzyOnDroid von selbst.
+
+- **IzzyOnDroid** (schnell): die signierte APK als Asset an ein GitHub-Release zum Tag hängen, dann die Aufnahme
+  beantragen (Anleitung auf apt.izzysoft.de/fdroid). Izzy übernimmt künftige Releases automatisch.
+- **F-Droid** (offizielles Repo): F-Droid baut selbst aus dem Quellcode und signiert mit eigenem Schlüssel. Die
+  Vorlage [`android/fdroid/io.github.mainbrain_mk.bbq.yml`](android/fdroid/io.github.mainbrain_mk.bbq.yml) als
+  Merge Request in [fdroiddata](https://gitlab.com/fdroid/fdroiddata) einreichen. Neue Tags erkennt F-Droid dann
+  selbst.
+
 ## Protokoll
 
 Herausgefunden aus der Android-App „lazy BBQ“ (`com.bbq.dc`) und am Gerät geprüft. Dienst `fe551580-4180-8a02-ef2c-1b42a0ac3f83`:
