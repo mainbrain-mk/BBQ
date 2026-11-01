@@ -1,8 +1,8 @@
-# Day_BBQ-Grillthermometer im Netz
+# Day_BBQ-Fleischthermometer im Netz
 
 <img src="assets/bbq-logo.png" width="96" align="right" alt="Logo: gekreuzte Grillzange und Fleischgabel">
 
-Für das Bluetooth-Grillthermometer „Day_BBQ“ (Boomex, Artikel 57675, meldet sich per BLE als `Day_BBQ` bzw. `Day_BQQ`)
+Für das Bluetooth-Fleischthermometer „Day_BBQ“ (Boomex, Artikel 57675, meldet sich per BLE als `Day_BBQ` bzw. `Day_BQQ`)
 gibt es keine funktionierende Android-App mehr. Dieses Projekt ersetzt sie:
 
 - **`bbq.py`** läuft auf einem Raspberry Pi (oder jedem Linux mit Bluetooth), hält die BLE-Verbindung,

@@ -1,4 +1,4 @@
-"""Fenster fuer den Rechner: zeigt die Grilltemperaturen vom Pi, Klick auf eine Karte setzt das Ziel.
+"""Fenster fuer den Rechner: zeigt die Temperaturen vom Pi, Klick auf eine Karte setzt das Ziel.
 
 Qt (PyQt6) uebernimmt Farben und Stil vom System, hell wie dunkel, auch beim Umschalten.
 Spricht dasselbe TCP-Protokoll wie `nc <pi>.local 51235`:
@@ -7,8 +7,8 @@ Spricht dasselbe TCP-Protokoll wie `nc <pi>.local 51235`:
 """
 import os, re, signal, sys, time
 from pathlib import Path
-from PyQt6.QtCore import Qt, QTimer, pyqtSignal
-from PyQt6.QtGui import QColor, QFont, QIcon, QPainter, QPalette
+from PyQt6.QtCore import QPointF, QRectF, Qt, QTimer, pyqtSignal
+from PyQt6.QtGui import QColor, QFont, QIcon, QImage, QPainter, QPainterPath, QPalette
 from PyQt6.QtNetwork import QAbstractSocket, QTcpSocket
 from PyQt6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel, QProgressBar, QSpinBox,
                              QStackedWidget, QVBoxLayout, QWidget)
@@ -19,6 +19,10 @@ STALE_S = 10  # so lange ohne Messung -> Werte ausgrauen
 SILENT_S = 60  # so lange gar nichts vom Pi -> Verbindung neu aufbauen (Pi aus, WLAN weg)
 LINE = re.compile(r"P1\s+(\d+) °C \(Ziel (\d+)\)\s+P2\s+(\d+) °C \(Ziel (\d+)\)")
 ICON = Path(__file__).resolve().parent / "assets" / "bbq-logo.png"
+# Schatten im Kartenhintergrund: Silhouette, Lage (Anteil der Kartenbreite), Neigung in Grad
+ART = {1: ("tongs.png", 0.42, -18), 2: ("fork.png", 0.58, 18)}
+ART_OPACITY = 0.08
+ART_SCALE = 1.2  # Hoehe relativ zur Karte: bewusst groesser, oben und unten gleich angeschnitten
 REACHED = QColor("#27ae60")  # Breeze "positiv", auf hell und dunkel lesbar
 
 
@@ -63,6 +67,7 @@ class Card(QFrame):
     def __init__(self, probe):
         super().__init__()
         self.probe, self.t = probe, None
+        self.art, self.tinted = QImage(str(ICON.parent / ART[probe][0])), (None, None)  # (Farbe, eingefaerbt)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)  # Klick holt den Fokus -> offenes Feld schliesst
         self.title = QLabel(f"TEMP P{probe}")
@@ -87,10 +92,33 @@ class Card(QFrame):
     def paintEvent(self, _):
         p = QPainter(self)
         p.setRenderHint(QPainter.RenderHint.Antialiasing)
+        p.setRenderHint(QPainter.RenderHint.SmoothPixmapTransform)
         pal = self.palette()
+        card = QPainterPath()
+        card.addRoundedRect(QRectF(self.rect().adjusted(1, 1, -1, -1)), 14, 14)
         p.setPen(pal.color(QPalette.ColorRole.Mid))
         p.setBrush(pal.color(QPalette.ColorRole.Base))
-        p.drawRoundedRect(self.rect().adjusted(1, 1, -1, -1), 14, 14)
+        p.drawPath(card)
+        if self.art.isNull():  # Bild fehlt: Karte ohne Schatten
+            return
+        color = pal.color(QPalette.ColorRole.Text)
+        if self.tinted[0] != color.rgba():  # Silhouette in Textfarbe einfaerben, neu nur beim Farbwechsel
+            img = QImage(self.art.size(), QImage.Format.Format_ARGB32_Premultiplied)
+            img.fill(Qt.GlobalColor.transparent)
+            q = QPainter(img)
+            q.drawImage(0, 0, self.art)
+            q.setCompositionMode(QPainter.CompositionMode.CompositionMode_SourceIn)
+            q.fillRect(img.rect(), color)
+            q.end()
+            self.tinted = (color.rgba(), img)
+        img, (_, x, angle) = self.tinted[1], ART[self.probe]
+        p.setClipPath(card)
+        p.setOpacity(ART_OPACITY)
+        p.translate(self.width() * x, self.height() * 0.5)  # Bildmitte = Kartenmitte -> gleich viel weg oben wie unten
+        p.rotate(angle)
+        s = self.height() * ART_SCALE / img.height()
+        p.scale(s, s)
+        p.drawImage(QPointF(-img.width() / 2, -img.height() / 2), img)
 
     def resizeEvent(self, e):
         f = self.temp.font()
@@ -139,7 +167,7 @@ class Card(QFrame):
 class Window(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Grill")
+        self.setWindowTitle("BBQ")
         self.resize(640, 380)
         self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)  # Klick neben die Karten schliesst ein offenes Feld
         self.cards = [Card(1), Card(2)]
@@ -204,7 +232,7 @@ class Window(QWidget):
 def main():
     signal.signal(signal.SIGINT, signal.SIG_DFL)  # Strg+C im Terminal beendet sofort (Qt-Schleife faengt es sonst nicht)
     app = QApplication(sys.argv)
-    app.setApplicationName("Grill")
+    app.setApplicationName("BBQ")
     app.setDesktopFileName("bbq-client")  # Wayland: Fenster-Icon kommt aus bbq-client.desktop
     app.setWindowIcon(QIcon(str(ICON)))
     w = Window()

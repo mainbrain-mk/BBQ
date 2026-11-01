@@ -1,7 +1,7 @@
-# Grillthermometer-Gateway. Pfade und User anpassen, dann nach /etc/systemd/system/ (siehe README.md).
+# Fleischthermometer-Gateway. Pfade und User anpassen, dann nach /etc/systemd/system/ (siehe README.md).
 # Startet vor der Grafiksitzung ins Leere (kein :0) und wird dann neu gestartet, bis das Fenster aufgeht.
 [Unit]
-Description=Day_BBQ-Grillthermometer (BLE -> TCP 51235 + Vollbildfenster)
+Description=Day_BBQ-Fleischthermometer (BLE -> TCP 51235 + Vollbildfenster)
 After=bluetooth.service
 
 [Service]

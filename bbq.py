@@ -1,4 +1,4 @@
-"""Day_BBQ-Grillthermometer: BLE -> WLAN (TCP) + Vollbildfenster auf dem Pi-Display.
+"""Day_BBQ-Fleischthermometer: BLE -> WLAN (TCP) + Vollbildfenster auf dem Pi-Display.
 
 Haelt die BLE-Verbindung zum Thermometer, schickt die Live-Zeile an jeden TCP-Client und legt ein
 Vollbildfenster ueber das Display, solange frische Werte kommen. Vom Rechner aus:
@@ -170,7 +170,7 @@ def fresh(r, now, idle_now):
 def main():
     threading.Thread(target=lambda: asyncio.run(ble_main()), daemon=True).start()
     root = tk.Tk()
-    root.title("Grill")
+    root.title("BBQ")
     root.configure(bg=BG)
     cards = []
     for i in range(2):
