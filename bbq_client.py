@@ -23,12 +23,18 @@ REACHED = QColor("#27ae60")  # Breeze "positiv", auf hell und dunkel lesbar
 
 
 def parse(text: str):
-    """Letzte vollstaendige Temperaturzeile im Text -> (p1, p2, t1, t2) oder None."""
-    found = LINE.findall(text)
-    if not found:
-        return None
-    p1, t1, p2, t2 = map(int, found[-1])
-    return p1, p2, t1, t2
+    """Letzte vollstaendige Temperaturzeile im Text -> ((p1, p2, t1, t2) oder None, Rest dahinter).
+
+    Den Rest als neuen Puffer behalten: Sonst gilt eine alte Zeile bei jeder spaeteren Meldung
+    vom Pi ("nicht gefunden …") wieder als frische Messung.
+    """
+    m = None
+    for m in LINE.finditer(text):
+        pass
+    if not m:
+        return None, text
+    p1, t1, p2, t2 = map(int, m.groups())
+    return (p1, p2, t1, t2), text[m.end():]
 
 
 class TargetBox(QSpinBox):
@@ -174,8 +180,8 @@ class Window(QWidget):
 
     def read(self):
         self.last_rx = time.monotonic()
-        self.buf = (self.buf + bytes(self.sock.readAll()).decode(errors="replace"))[-500:]
-        if r := parse(self.buf):
+        r, self.buf = parse((self.buf + bytes(self.sock.readAll()).decode(errors="replace"))[-500:])
+        if r:
             self.reading = (r, time.monotonic())
 
     def send(self, probe, t):
@@ -209,8 +215,12 @@ def main():
 if __name__ == "__main__":
     if os.environ.get("BBQ_SELFTEST"):
         line = "\r16:21:08   P1  23 °C (Ziel 75)   P2  19 °C (Ziel 80)   "
-        assert parse("\nverbunden\n" + line + line.replace(" 23 ", "  24 ")[:20]) == (23, 19, 75, 80)  # halbe Zeile ignoriert
-        assert parse("\nverbunden\n") is None
+        half = line.replace(" 23 ", "  24 ")[:20]
+        r, rest = parse("\nverbunden\n" + line + half)
+        assert r == (23, 19, 75, 80) and rest.endswith(half)  # halbe Zeile bleibt fuer spaeter
+        assert parse("\nverbunden\n") == (None, "\nverbunden\n")
+        _, rest = parse(line)
+        assert parse(rest + "\nnicht gefunden …\n")[0] is None  # alte Zeile zaehlt nicht noch einmal
         print("ok")
     else:
         main()

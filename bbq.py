@@ -85,7 +85,8 @@ def command(line: bytes):
 
 async def on_client(reader, writer):
     clients.add(writer)
-    writer.write(last.encode())
+    if fresh(reading, time.monotonic(), False):  # alte Werte nicht als aktuelle ausgeben (Thermometer aus)
+        writer.write(last.encode())
     try:
         while line := await reader.readline():  # bis der Client trennt
             cmd = command(line)
