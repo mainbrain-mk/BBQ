@@ -54,7 +54,7 @@ Fenster-App auf dem Rechner (braucht PyQt6, z. B. `sudo apt install python3-pyqt
 
 ```bash
 python3 bbq_client.py <pi-hostname>          # oder BBQ_HOST setzen; Standard raspberrypi.local
-sed "s|@DIR@|$PWD|g; s|@HOST@|<pi-hostname>|" bbq-client.desktop > ~/.local/share/applications/bbq-client.desktop
+sed "s|@DIR@|$PWD|g; s|@HOST@|<pi-hostname>|" bbq-client.desktop.in > ~/.local/share/applications/bbq-client.desktop
 ```
 
 Klick auf eine Karte öffnet das Ziel: Enter oder Klick daneben übernimmt, Esc verwirft.
