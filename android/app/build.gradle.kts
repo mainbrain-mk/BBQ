@@ -21,7 +21,7 @@ android {
         applicationId = "io.github.mainbrain_mk.bbq"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
+        versionCode = 100 // = versionName × 100: 1.0 -> 100, 1.01 -> 101, 1.1 -> 110
         versionName = "1.0"
     }
     signingConfigs {

@@ -116,9 +116,13 @@ apksigner verify --print-certs app/build/outputs/apk/release/app-release.apk
 
 (`apksigner` liegt in `$ANDROID_HOME/build-tools/<version>/`.)
 
-Ohne `keystore.properties` entsteht `app-release-unsigned.apk`. Für jede neue Version `versionCode` (+1) und
-`versionName` in `android/app/build.gradle.kts` erhöhen, `fastlane/metadata/android/*/changelogs/<versionCode>.txt`
-anlegen und den Stand als `v<versionName>` taggen (z. B. `git tag v1.0 && git push origin v1.0`).
+Ohne `keystore.properties` entsteht `app-release-unsigned.apk`.
+
+**Versionen:** Start ist 1.0. Ein Fehlerbehebungs-Update zählt +0.01 (1.0 → 1.01 → 1.02), ein kleines
+Funktions-Update +0.1 (1.02 → 1.12, oder nach 1.0 → 1.1). `versionCode` ist immer `versionName` × 100 (1.0 → 100,
+1.01 → 101, 1.1 → 110, 1.12 → 112), so steigt er mit jeder Version. Für ein Release beide Werte in
+`android/app/build.gradle.kts` setzen, `fastlane/metadata/android/*/changelogs/<versionCode>.txt` anlegen und den
+Stand als `v<versionName>` taggen (z. B. `git tag v1.01 && git push origin v1.01`).
 
 Store-Texte, Icon und Screenshot liegen im Fastlane-Format unter [`fastlane/metadata/android`](fastlane/metadata/android).
 Die lesen F-Droid und IzzyOnDroid von selbst.

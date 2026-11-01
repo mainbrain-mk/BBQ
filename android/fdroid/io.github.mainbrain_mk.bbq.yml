@@ -14,7 +14,7 @@ Repo: https://github.com/mainbrain-mk/BBQ.git
 
 Builds:
   - versionName: '1.0'
-    versionCode: 1
+    versionCode: 100
     commit: v1.0
     subdir: android/app
     gradle:
@@ -23,4 +23,4 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: '1.0'
-CurrentVersionCode: 1
+CurrentVersionCode: 100
