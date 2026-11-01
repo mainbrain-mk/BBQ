@@ -214,6 +214,8 @@ def main():
                 return
 
     root.bind("<ButtonRelease-1>", on_tap)
+    if MAC:  # schon gekoppelt: Dialog gar nicht erst zeigen, er laege sonst ueber den Karten
+        pair.destroy()
     root.withdraw()
 
     def tick():
