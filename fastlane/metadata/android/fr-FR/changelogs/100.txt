@@ -1,0 +1,1 @@
+Première version : mesures et cibles des deux sondes, molette pour la cible, alarme, service en arrière-plan, courbe ; directement en Bluetooth ou via un Raspberry Pi.

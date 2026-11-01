@@ -1,0 +1,1 @@
+Eerste versie: meetwaarden en doelen van beide voelers, draaiwiel voor het doel, alarm, achtergronddienst, verloop; direct via Bluetooth of via een Raspberry Pi.

@@ -84,9 +84,10 @@ cd android && ANDROID_HOME=~/Android/Sdk ./gradlew assembleDebug testDebugUnitTe
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Die App spricht Deutsch und Englisch (Systemsprache, ab Android 13 auch pro App unter Einstellungen → Apps → BBQ →
-Sprache); Texte in `app/src/main/res/values/strings.xml` (Englisch, Standard) und `values-de/`. Eine weitere Sprache:
-`values-<code>/strings.xml` mit denselben Namen anlegen.
+Die App folgt der Systemsprache (ab Android 13 auch pro App unter Einstellungen → Apps → BBQ → Sprache):
+Englisch (Standard, `app/src/main/res/values/strings.xml`), Deutsch, Französisch, Spanisch, Italienisch,
+Niederländisch, Polnisch, Portugiesisch, Tschechisch und Slowakisch (`values-<code>/`). Eine weitere Sprache:
+`values-<code>/strings.xml` mit denselben Namen anlegen, Store-Texte unter `fastlane/metadata/android/<locale>/`.
 
 Koppeln wie am Rechner (Adresse, **Koppeln**, Pi-Kennung vergleichen, Code). Danach hält ein Dienst die Verbindung
 auch bei ausgeschaltetem Bildschirm: Die Benachrichtigung zeigt beide Werte, erreicht ein Fühler sein Ziel, kommt

@@ -8,7 +8,7 @@
 <li>keeps running in the background, readings shown in the notification</li>
 <li>temperature history since the app was started</li>
 <li>follows the system light/dark theme, Material You colors on Android 12+</li>
-<li>in English and German, following the system language</li>
+<li>available in 10 languages, following the system language</li>
 </ul>
 
 <p><b>Two ways to the thermometer</b></p>

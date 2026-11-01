@@ -1,0 +1,1 @@
+Primeira versão: medições e alvos de ambas as sondas, roda para o alvo, alarme, serviço em segundo plano, histórico; diretamente por Bluetooth ou através de um Raspberry Pi.

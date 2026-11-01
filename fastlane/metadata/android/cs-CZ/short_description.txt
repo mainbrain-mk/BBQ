@@ -1,0 +1,1 @@
+Teploměr na maso Day_BBQ: hodnoty, cíle a alarm přes Bluetooth nebo Pi

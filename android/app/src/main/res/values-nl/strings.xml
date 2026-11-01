@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="waiting">wachten op meetwaarden…</string>
+    <string name="change">Wijzigen</string>
+    <string name="target">Doel %1$d °C</string>
+    <string name="target_none">Doel --</string>
+    <string name="target_dialog">Doel P%1$d</string>
+    <string name="set">Instellen</string>
+    <string name="cancel">Annuleren</string>
+    <string name="chart_empty">Nog geen meetwaarden sinds de start van de app</string>
+    <string name="chart_dashed">gestippeld: doel</string>
+    <string name="pair_title">Pi koppelen</string>
+    <string name="pair_hint">Adres van de Raspberry Pi\ndie met de thermometer verbonden is:</string>
+    <string name="pair_placeholder">bijv. raspberrypi.local of 192.168.0.10</string>
+    <string name="pair">Koppelen</string>
+    <string name="pi_id">Pi-ID %1$s: moet overeenkomen met die op het Pi-scherm.</string>
+    <string name="code_label">Code van het Pi-scherm</string>
+    <string name="confirm">Bevestigen</string>
+    <string name="direct_title">Zonder Pi</string>
+    <string name="direct_hint">De telefoon maakt zelf verbinding via Bluetooth. Er kan maar één apparaat met de thermometer verbonden zijn: zet de Pi daarvoor uit.</string>
+    <string name="scan">Thermometer zoeken</string>
+    <string name="scanning">zoeken…</string>
+    <string name="ble_denied">Zonder Bluetooth-toestemming kan de app de thermometer niet vinden.</string>
+    <string name="back">Terug</string>
+    <string name="bad_address">Voer een hostnaam of IP-adres in, bijv. raspberrypi.local</string>
+    <string name="none_found">Geen thermometer gevonden: staat hij aan? Is de Pi uit? (Android 8 t/m 11: zet ook locatie aan)</string>
+    <string name="bt_off">Bluetooth staat uit: zet het aan.</string>
+    <string name="connecting_to">verbinden met %1$s…</string>
+    <string name="pi_closed">De Pi heeft de verbinding verbroken</string>
+    <string name="code_shown">De code staat nu op het Pi-scherm (2 minuten geldig).</string>
+    <plurals name="wrong_code">
+        <item quantity="one">Verkeerde code, nog %d poging.</item>
+        <item quantity="other">Verkeerde code, nog %d pogingen.</item>
+    </plurals>
+    <string name="code_expired">Code verlopen of te vaak fout: koppel opnieuw.</string>
+    <string name="busy">Te veel mislukte pogingen: koppel over 30 seconden opnieuw.</string>
+    <string name="not_paired">Deze telefoon is niet (meer) gekoppeld met de Pi: koppel opnieuw.</string>
+    <string name="other_cert">De Pi meldt zich met een ander certificaat dan bij het koppelen. Koppel opnieuw als hij opnieuw is ingericht.</string>
+    <string name="ble_lost">Verbinding verbroken, opnieuw verbinden…</string>
+    <string name="ble_not_found">Thermometer %1$s niet gevonden (uit, buiten bereik of verbonden met de Pi?), blijft zoeken…</string>
+    <string name="ble_connected">verbonden</string>
+    <string name="ble_revoked">De app mag Bluetooth niet meer gebruiken: zoek opnieuw via ‘Wijzigen’.</string>
+    <string name="channel_status">Verbinding</string>
+    <string name="channel_alarm">Doel bereikt</string>
+    <string name="connecting">verbinden…</string>
+    <string name="notify_readings">P1 %1$s (doel %2$d) · P2 %3$s (doel %4$d)</string>
+    <string name="alarm_title">P%1$d heeft %2$d °C bereikt</string>
+    <string name="alarm_text">Doel was %1$d °C</string>
+    <string name="stop">Stoppen</string>
+</resources>
